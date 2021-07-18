@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Jquery JS-->
+<script src="vendor/jquery/jquery.js"></script>
+<!-- Vendor JS-->
+<script src="vendor/select2/select2.min.js"></script>
+<script src="vendor/datepicker/moment.min.js"></script>
+<script src="vendor/datepicker/daterangepicker.js"></script>
+
+<!-- Main JS-->
+<script src="js/global.js"></script>
+
+
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
@@ -36,184 +47,28 @@
                 <div class="card-body">
                     <!--STARTING THE FORM-->
                     <form method="POST">
-                    <!--BASIC INFORMATION-->
-                        <!--FULL NAME-->
-                        <div class="form-row m-b-55">
-                            <div class="name">Full Name</div>
-                            <div class="value">
-                                <div class="row row-space">
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="first_name" required>
-                                            <label class="label--desc">first name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="last_name" required>
-                                            <label class="label--desc">last name</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <script>
+                            $(function() {
+                                $("#contact_info").load("html/contact_info.html");
+                                $("#other_info").load("html/other_info.html");
+                            });
+                        </script>
 
-                       <!--AFFILIATION-->
-                        <div class="form-row">
-                            <div class="name">Affiliation</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-5" type="text" name="affiliation">
-                                </div>
-                            </div>
-                        </div>
+                        <!--CONTACT INFORMATION-->
+                        <div id="contact_info"></div>
+                       
+                        <!--OTHER INFORMATION-->
+                        <div id="other_info"></div>
 
-                        <!--ADDRESS-->
-                        <div class="form-row">
-                            <div class="name">Address</div>
-                            <div class="value">
-                                <div class="col-1">
-                                    <div class="input-group-desc">
-                                        <input class="input--style-5" type="text" name="street_address" required>
-                                        <label class="label--desc">Street Address</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--CITY, STATE/PROVINCE-->
-                        <div class="form-row" >
-                            <div class="name"></div>
-                            <div class="value">
-                                <div class="row row-space">
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="city_address" required>
-                                            <label class="label--desc">City</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="state_address" required>
-                                            <label class="label--desc">State/Province</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--POSTAL, COUNTRY-->
-                        <div class="form-row m-b-55" >
-                            <div class="name"></div>
-                            <div class="value">
-                                <div class="row row-space">
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="zip_address" required>
-                                            <label class="label--desc">Zip Code</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="country_address" required>
-                                            <label class="label--desc">Country</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--EMAIL-->
-                        <div class="form-row">
-                            <div class="name">Email</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-5" type="email" name="email">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--PHONE-->
-                        <!--COUNTRY CODE< AREA CODE-->
-                        <div class="form-row">
-                            <div class="name">Phone</div>
-                            <div class="value">
-                                <div class="row row-space">
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="country_code">
-                                            <label class="label--desc">Country Code</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="area_code">
-                                            <label class="label--desc">Area Code</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row m-b-55">
-                            <div class="name"></div>
-                            <div class="value">
-                                <div class="col-1">
-                                    <div class="input-group-desc">
-                                        <input class="input--style-5" type="text" name="phone">
-                                        <label class="label--desc">Phone Number</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--PHONE NUMBER-->
-                        <div class="form-row">
-                            <div class="name">Subject</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="subject">
-                                            <option disabled="disabled" selected="selected">Choose option</option>
-                                            <option>Subject 1</option>
-                                            <option>Subject 2</option>
-                                            <option>Subject 3</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row p-t-20">
-                            <label class="label label--block">Are you an existing customer?</label>
-                            <div class="p-t-15">
-                                <label class="radio-container m-r-55">Yes
-                                    <input type="radio" checked="checked" name="exist">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="radio-container">No
-                                    <input type="radio" name="exist">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
                         <div>
                             <button class="btn btn--radius-2 btn--red" type="submit">Register</button>
                         </div>
                     </form>
+                    <!---->
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Jquery JS-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <!-- Vendor JS-->
-    <script src="vendor/select2/select2.min.js"></script>
-    <script src="vendor/datepicker/moment.min.js"></script>
-    <script src="vendor/datepicker/daterangepicker.js"></script>
-
-    <!-- Main JS-->
-    <script src="js/global.js"></script>
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
