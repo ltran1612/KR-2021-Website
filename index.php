@@ -38,13 +38,13 @@
                 </div>
                 <div class="card-body">
                     <!--STARTING THE FORM-->
-                    <form method="POST">
+                    <form action="php/register.php" method="POST">
                         <!--CONTACT INFORMATION-->
                         <!--FULL NAME-->
                         <div class="form-row m-b-55">
                             <div class="name">Full Name</div>
                             <div class="value">
-                                <div class="row row-space">
+                                <!-- <div class="row row-space">
                                     <div class="col-2">
                                         <div class="input-group-desc">
                                             <input class="input--style-5" type="text" name="first_name" required>
@@ -57,6 +57,10 @@
                                             <label class="label--desc">last name</label>
                                         </div>
                                     </div>
+                                </div> -->
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="name" required>
+                                    <label class="label--desc">(first, middle, last)</label>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +70,7 @@
                             <div class="name">Affiliation</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="text" name="affiliation">
+                                    <input class="input--style-5" type="text" name="affiliation" required>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +142,7 @@
 
                         <!--PHONE-->
                         <!--COUNTRY CODE< AREA CODE-->
-                        <div class="form-row">
+                        <!-- <div class="form-row">
                             <div class="name">Phone</div>
                             <div class="value">
                                 <div class="row row-space">
@@ -156,22 +160,21 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!--PHONE NUMBER-->
                         <div class="form-row m-b-55">
-                            <div class="name"></div>
+                            <div class="name">Phone Number</div>
                             <div class="value">
                                 <div class="col-1">
                                     <div class="input-group-desc">
                                         <input class="input--style-5" type="text" name="phone_number" required>
-                                        <label class="label--desc">Phone Number</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!--OTHER INFORMATION-->
-                        <div class="form-row">
+                        <!-- <div class="form-row">
                             <div class="name">Subject</div>
                             <div class="value">
                                 <div class="input-group">
@@ -186,33 +189,117 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!--STUDENT?-->
                         <div class="form-row p-t-20">
                             <label class="label label--block">Are you a student?</label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Yes
-                                    <input type="radio" name="is_student" required>
+                                    <input type="radio" name="is_student" value="yes" required>
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="radio-container">No
-                                    <input type="radio" name="is_student">
+                                    <input type="radio" name="is_student" value="no">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
                         </div>
 
+                        <h3>Paper Submission?</h3>
                         <!--PAPER REGISTRATION-->
                         <div class="form-row p-t-20">
                             <label class="label label--block">Did you submit a paper?</label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Yes
-                                    <input type="radio" name="has_paper" required>
+                                    <input type="radio" name="has_paper" value="yes" required>
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="radio-container">No
-                                    <input type="radio" name="has_paper">
+                                    <input type="radio" name="has_paper" value="no">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <h4>If you chose yes, please fill out these information:</h4><br>
+                        <!--PAPER NUMBER-->
+                        <div class="form-row">
+                            <div class="name">Paper Number</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="paper_number">
+                                </div>
+                            </div>
+                        </div>
+                        <!--TIME ZONE-->
+                        <div class="form-row">
+                            <div class="name">The Time Zone of the Presenter</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="submitter_time_zone">
+                                    <label class="label--desc">Please type in the time zone as text (like +7)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--PARTICIPATION-->
+                        <h3>Participation</h3>
+                        <div class="form-row">
+                            <div class="name">Which workshops will you attend?</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="workshops">
+                                    <label class="label--desc">Please enter the name of workshops separated by a comma</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Which tutorials will you attend?</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="tutorials">
+                                    <label class="label--desc">Please enter the name of tutorials separated by a comma</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Which social events will you attend?</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <input class="input--style-5" type="text" name="events">
+                                    <label class="label--desc">Please enter the name of social events separated by a comma</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row p-t-20">
+                            <label class="label label--block">Will you participate in NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?</label>
+                            <div class="p-t-15">
+                                <label class="radio-container m-r-55">Yes
+                                    <input type="radio" name="participate_nmr" value="yes">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radio-container">No
+                                    <input type="radio" name="participate_nmr" value="no">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <h3>Other Information</h3>
+                        <!--GENDER-->
+                        <div class="form-row p-t-20">
+                            <label class="label label--block">What is your gender?</label>
+                            <div class="p-t-15">
+                                <label class="radio-container m-r-55">Male
+                                    <input type="radio" name="gender" value="male" required>
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radio-container m-r-55">Female
+                                    <input type="radio" name="gender" value="female">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radio-container">Other
+                                    <input type="radio" name="gender" value="other">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>

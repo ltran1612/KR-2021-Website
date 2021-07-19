@@ -5,6 +5,7 @@
 4) Email
 5) Phone (?)
 
+
 ## Occupation and Paper Submission Status
 6) Student (Yes/No)
 7) Paper registration (Yes/No) – only Yes goes to payment. If yes:

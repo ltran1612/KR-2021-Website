@@ -634,6 +634,17 @@ input {
   left: 0;
 }
 
+.label--desc--nocap {
+  position: absolute;
+  text-transform: capitalize;
+  display: block;
+  color: #999;
+  font-size: 14px;
+  margin: 0;
+  margin-top: 7px;
+  left: 0;
+}
+
 /* ==========================================================================
    #SELECT2
    ========================================================================== */
