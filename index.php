@@ -157,7 +157,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!--PHONE NUMBER-->
                         <div class="form-row m-b-55">
                             <div class="name"></div>
                             <div class="value">
@@ -169,6 +169,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!--OTHER INFORMATION-->
                         <div class="form-row">
                             <div class="name">Subject</div>
@@ -217,8 +218,6 @@
                             </div>
                         </div>
 
-
-
                         <div>
                             <button class="btn btn--radius-2 btn--orange" type="submit">Register</button>
                         </div>
@@ -234,6 +233,8 @@
     <script src="vendor/datepicker/moment.min.js"></script>
     <script src="vendor/datepicker/daterangepicker.js"></script>
    
+    <!-- Main JS-->
+    <script src="js/global.js"></script>
 </body><!-- This was made based on a template of Colorlib (https://colorlib.com) -->
 
 </html>
