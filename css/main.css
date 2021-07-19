@@ -441,6 +441,14 @@ h6 {
   background: #ff4b5a;
 }
 
+.btn--orange {
+  background-color: #e36d25;
+}
+
+.btn--orange:hover {
+  background-color: #ff6200;
+}
+
 .btn--red:hover {
   background: #eb3746;
 }

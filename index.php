@@ -1,24 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Jquery JS-->
-<script src="vendor/jquery/jquery.js"></script>
-<!-- Vendor JS-->
-<script src="vendor/select2/select2.min.js"></script>
-<script src="vendor/datepicker/moment.min.js"></script>
-<script src="vendor/datepicker/daterangepicker.js"></script>
-
-<!-- Main JS-->
-<script src="js/global.js"></script>
-
-
 <head>
+    <!-- Jquery JS-->
+    <script src="vendor/jquery/jquery.js"></script>
+
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Colorlib Templates">
-    <meta name="author" content="Colorlib">
-    <meta name="keywords" content="Colorlib Templates">
+    <meta name="description" content="KR-2021 Registration Based On Colorlib Template">
+    <meta name="author" content="">
+    <meta name="keywords" content="KR-2021 Registration">
 
     <!-- Title Page-->
     <title>KR-2021 Registration</title>
@@ -47,21 +39,25 @@
                 <div class="card-body">
                     <!--STARTING THE FORM-->
                     <form method="POST">
-                        <script>
-                            $(function() {
-                                $("#contact_info").load("html/contact_info.html");
-                                $("#other_info").load("html/other_info.html");
-                            });
-                        </script>
-
                         <!--CONTACT INFORMATION-->
                         <div id="contact_info"></div>
                        
                         <!--OTHER INFORMATION-->
                         <div id="other_info"></div>
 
+                        <div id="dummy"></div>
+
+                        <script>
+                            $(document).ready(function() {                
+                                const promise = new Promise();                
+                                $("#contact_info").load("html/contact_info.html");
+                                $("#other_info").load("html/other_info.html");
+                                $.getScript("js/global.js");
+                            });
+                        </script>
+
                         <div>
-                            <button class="btn btn--radius-2 btn--red" type="submit">Register</button>
+                            <button class="btn btn--radius-2 btn--orange" type="submit">Register</button>
                         </div>
                     </form>
                     <!---->
@@ -70,7 +66,12 @@
         </div>
     </div>
 
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+    <!--Vendor JS-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/datepicker/moment.min.js"></script>
+    <script src="vendor/datepicker/daterangepicker.js"></script>
+   
+</body><!-- This was made based on a template of Colorlib (https://colorlib.com) -->
 
 </html>
 <!-- end document-->
