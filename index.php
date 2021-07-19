@@ -60,7 +60,7 @@
                                 </div> -->
                                 <div class="input-group">
                                     <input class="input--style-5" type="text" name="name" required>
-                                    <label class="label--desc">(first, middle, last)</label>
+                                    <label class="label--desc">(first middle last)</label>
                                 </div>
                             </div>
                         </div>
