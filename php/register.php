@@ -1,6 +1,47 @@
 <?php
     function sendInformation($data) {
-        echo $data;
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        $servername = "localhost:3306";
+        $username = "long";
+        $password = "123456";
+        $dbname = "KR_2021_PARTICIPANTS";
+        
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        
+        // Check connection
+        if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+        }
+        
+        // prepare and bind
+        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, HasPaper, PaperNumber, TimeZone, Workshops, Tutorials, SocialEvents, GoNMR, Gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $hasPaper, $paperNumber, $timeZone, $workshops, $tutorials, $socialEvents, $goNMR, $gender);
+        
+        // set parameters and execute
+        $name = $data['name'];
+        $affiliation = $data['affiliation'];
+        $address = $data['street_address'].$data['city_address'].$data['state_address'].$data['zip_address'].$data['country_address'];
+        $email = $data['email_address'];
+        $phone = $data['phone_number'];
+        $isStudent = strtoupper($data['is_student']);
+        $hasPaper = strtoupper($data['has_paper']);
+        $paperNumber = $data['paper_number'];
+        $timeZone = $data['submitter_time_zone'];
+        $workshops = $data['workshops'];
+        $tutorials = $data['tutorials'];
+        $socialEvents = $data['events'];
+        $goNMR = strtoupper($data['participate_nmr']);
+        $gender = strtoupper($data['gender']);
+        $stmt->execute();
+        
+        echo "New records created successfully";
+        
+        $stmt->close();
+        $conn->close();
+        
+
+        print_r($data);
     } // end sendInformation
 
     // check if the information already exists. 
