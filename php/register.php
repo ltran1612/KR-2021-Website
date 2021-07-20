@@ -26,10 +26,19 @@
 
         $name = $data['name'];
         $affiliation = $data['affiliation'];
-        $address = $data['street_address'].", ".$data['city_address'].', '.$data['state_address'].', '.$data['country_address'];
-        if ($data['zip_address' != '']) {
-            $address = $address . ', ' . $data['zip_address'];
-        } // end if
+
+        //
+        $street_address = $data['street_address'];
+        $city_address = $data['city_address'];
+        $state_address = $data['state_address'];
+        $country_address = $data['country_address'];
+        $zip_address = $data['zip_address'];
+
+        $address = $street_address . ", " 
+                    .($city_address == "" || $city_address == null ? "" : "City: " . $city_address . ', ') 
+                    .($state_address == "" || $state_address == null ? "" : "State: " . $state_address . ', ')
+                    .$country_address
+                    .($zip_address == "" || $zip_address == null ? "" : ", " . "Zip code: ". $zip_address) ;
 
         $email = $data['email_address'];
         $phone = $data['phone_number'];
@@ -37,12 +46,15 @@
         $hasPaper = strtoupper($data['has_paper']);
         $paperNumber = $data['paper_number'];
         //$timeZone = $data['submitter_time_zone'];
+
+        // workshops
         $workshops = $data['workshops'];
+        // tutorials
         $tutorials = $data['tutorials'];
         //$socialEvents = $data['events'];
         $goNMR = strtoupper($data['participate_nmr']);
         $gender = strtoupper($data['gender']);
-        
+
         // execute
         if (!$stmt->execute()) {
             $stmt->close();
