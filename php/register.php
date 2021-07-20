@@ -19,9 +19,18 @@
         $stmt->bind_param("ssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $hasPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender);
         
         // set parameters and execute
+        // trim the values
+        foreach ($data as $key => $value) {
+            $data[$key] = trim($value);
+        } // end foreach
+
         $name = $data['name'];
         $affiliation = $data['affiliation'];
-        $address = $data['street_address'].$data['city_address'].$data['state_address'].$data['zip_address'].$data['country_address'];
+        $address = $data['street_address'].", ".$data['city_address'].', '.$data['state_address'].', '.$data['country_address'];
+        if ($data['zip_address' != '']) {
+            $address = $address . ', ' . $data['zip_address'];
+        } // end if
+
         $email = $data['email_address'];
         $phone = $data['phone_number'];
         $isStudent = strtoupper($data['is_student']);
@@ -33,7 +42,7 @@
         //$socialEvents = $data['events'];
         $goNMR = strtoupper($data['participate_nmr']);
         $gender = strtoupper($data['gender']);
-
+        
         // execute
         if (!$stmt->execute()) {
             $stmt->close();
@@ -51,14 +60,15 @@
     } // end sendInformation
 
     function goToPayment() {
-        $service_url = 'https://shopcart.nmsu.edu/service/';
+        $service_url = 'https://shopcart.nmsu.edu';
         $store_key = 'dab150eq6a7r2642736m85594a23d1x4';
-        $store_id = 1;
+        $store_id = 97;
         $order_id = 1;
         // Fetch the order information, with verbose details
-        $url = $service_url . $store_id . '/order/' . $order_id . '?key=' . $store_key . '&verbose=1';
+        $url = $service_url . '/service/' . $store_id . '/products';
+        echo($url);
         $result = file_get_contents( $url );
-        print_r($result);
+        echo($result);
     }
 
     // check if the information already exists. 
