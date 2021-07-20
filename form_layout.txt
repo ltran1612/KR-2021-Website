@@ -13,8 +13,3 @@
     phone_number: "Phone Number"
 }
 
-SUMMARY:
-1) remove timezone
-2) "would like to participate in"
-3) remove social events
-4) Add "Prefer not to answer" in gender

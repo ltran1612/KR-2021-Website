@@ -35,26 +35,43 @@
         $gender = strtoupper($data['gender']);
 
         // execute
-        $stmt->execute();
+        if (!$stmt->execute()) {
+            $stmt->close();
+            $conn->close();
+            die("Cannot add the values into the database");
+        } // end if
         
         echo "New records created successfully";
         
+        // closing connection
         $stmt->close();
         $conn->close();
     
         print_r($data);
     } // end sendInformation
 
+    function goToPayment() {
+        $service_url = 'https://shopcart.nmsu.edu/service/';
+        $store_key = 'dab150eq6a7r2642736m85594a23d1x4';
+        $store_id = 1;
+        $order_id = 1;
+        // Fetch the order information, with verbose details
+        $url = $service_url . $store_id . '/order/' . $order_id . '?key=' . $store_key . '&verbose=1';
+        $result = file_get_contents( $url );
+        print_r($result);
+    }
+
     // check if the information already exists. 
     if ($_POST['has_paper'] == "yes") {    
         sendInformation($_POST);
         // redirect to new page
+        goToPayment();
         //header("Location: https://www.google.com");
         //die();
     } elseif ($_POST['has_paper'] == "no") {
         // sending information to database
         sendInformation($_POST);
-        $message = "Here is you registration code";
+        $message = "HERE IS YOUR REGISTRATION CODE: ";
     } else {
         $message = "Something is wrong with the form, please fill the form again. \n We apologize for the inconvenience.";
     } // end else
