@@ -44,20 +44,6 @@
                         <div class="form-row m-b-55">
                             <div class="name">Full Name</div>
                             <div class="value">
-                                <!-- <div class="row row-space">
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="first_name" required>
-                                            <label class="label--desc">first name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="last_name" required>
-                                            <label class="label--desc">last name</label>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="input-group">
                                     <input class="input--style-5" type="text" name="name" required>
                                     <label class="label--desc">(first middle last)</label>
@@ -141,56 +127,18 @@
                         </div>
 
                         <!--PHONE-->
-                        <!--COUNTRY CODE< AREA CODE-->
-                        <!-- <div class="form-row">
-                            <div class="name">Phone</div>
-                            <div class="value">
-                                <div class="row row-space">
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="country_code">
-                                            <label class="label--desc">Country Code</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="area_code">
-                                            <label class="label--desc">Area Code</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         <!--PHONE NUMBER-->
                         <div class="form-row m-b-55">
                             <div class="name">Phone Number</div>
                             <div class="value">
                                 <div class="col-1">
                                     <div class="input-group-desc">
-                                        <input class="input--style-5" type="tel" placeholder="(1) 911 " pattern="\([0-9]+\)[ ][0-9]+" name="phone_number" required>
+                                        <input class="input--style-5" type="tel" placeholder="(1) 575111 " pattern="\([0-9]+\)[ ][0-9]+" name="phone_number" required>
                                         <label class="label--desc">(country code) phone number</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!--OTHER INFORMATION-->
-                        <!-- <div class="form-row">
-                            <div class="name">Subject</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="subject">
-                                            <option disabled="disabled" selected="selected">Choose option</option>
-                                            <option>Subject 1</option>
-                                            <option>Subject 2</option>
-                                            <option>Subject 3</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
 
                         <!--STUDENT?-->
                         <div class="form-row p-t-20">
@@ -232,21 +180,11 @@
                                 </div>
                             </div>
                         </div>
-                        <!--TIME ZONE-->
-                        <div class="form-row">
-                            <div class="name">The Time Zone of the Presenter</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-5" type="text" name="submitter_time_zone">
-                                    <label class="label--desc">Please type in the time zone as text (like +7)</label>
-                                </div>
-                            </div>
-                        </div>
 
                         <!--PARTICIPATION-->
                         <h3>Participation</h3>
                         <div class="form-row">
-                            <div class="name">Which workshops will you attend?</div>
+                            <div class="name">Which workshops would you like to participate in?</div>
                             <div class="value">
                                 <div class="input-group">
                                     <input class="input--style-5" type="text" name="workshops">
@@ -255,7 +193,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="name">Which tutorials will you attend?</div>
+                            <div class="name">Which tutorials would you like to participate in?</div>
                             <div class="value">
                                 <div class="input-group">
                                     <input class="input--style-5" type="text" name="tutorials">
@@ -263,15 +201,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="name">Which social events will you attend?</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-5" type="text" name="events">
-                                    <label class="label--desc">Please enter the name of social events separated by a comma</label>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="form-row p-t-20">
                             <label class="label label--block">Will you participate in NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?</label>
                             <div class="p-t-15">
@@ -299,8 +229,13 @@
                                     <input type="radio" name="gender" value="female">
                                     <span class="checkmark"></span>
                                 </label>
-                                <label class="radio-container">Other
+                                <label class="radio-container m-r-55">Other
                                     <input type="radio" name="gender" value="other">
+                                    <span class="checkmark"></span>
+                                </label>
+
+                                <label class="radio-container">Prefer Not To Answer
+                                    <input type="radio" name="gender" value="prefer_not_to_answer">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>

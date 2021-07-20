@@ -15,8 +15,8 @@
         }
         
         // prepare and bind
-        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, HasPaper, PaperNumber, TimeZone, Workshops, Tutorials, SocialEvents, GoNMR, Gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $hasPaper, $paperNumber, $timeZone, $workshops, $tutorials, $socialEvents, $goNMR, $gender);
+        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, HasPaper, PaperNumber, TimeZone, Workshops, Tutorials, SocialEvents, GoNMR, Gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $hasPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender);
         
         // set parameters and execute
         $name = $data['name'];
@@ -27,20 +27,21 @@
         $isStudent = strtoupper($data['is_student']);
         $hasPaper = strtoupper($data['has_paper']);
         $paperNumber = $data['paper_number'];
-        $timeZone = $data['submitter_time_zone'];
+        //$timeZone = $data['submitter_time_zone'];
         $workshops = $data['workshops'];
         $tutorials = $data['tutorials'];
-        $socialEvents = $data['events'];
+        //$socialEvents = $data['events'];
         $goNMR = strtoupper($data['participate_nmr']);
         $gender = strtoupper($data['gender']);
+
+        // execute
         $stmt->execute();
         
         echo "New records created successfully";
         
         $stmt->close();
         $conn->close();
-        
-
+    
         print_r($data);
     } // end sendInformation
 
