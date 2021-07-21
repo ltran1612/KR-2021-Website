@@ -72,19 +72,19 @@
             die("Cannot add the values into the database");
         } // end if
         
-        echo "New records created successfully";
+        //echo "New records created successfully";
         
         // closing connection
         $stmt->close();
         $conn->close();
     
-        print_r($data);
+        //print_r($data);
     } // end sendInformation
 
     // check if the information already exists. 
     if ($_POST['has_paper'] == "yes") {    
         sendInformation($_POST);
-        $message = "<b>The payment for the Paper Registration is separate</b> and has to be done by following these steps:
+        $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
             <br>
         1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>
         <br>
@@ -147,6 +147,9 @@
                         echo "<br><br>";
                         echo $message;
                     ?>
+
+                    <br>
+                    You can also download the confirmation now here
                     <!---->
                 </div>
             </div>
