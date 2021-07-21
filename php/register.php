@@ -76,7 +76,13 @@
             $state = $conn->sqlstate;
             if ($state == "23000") {
                 die("Someone has already registered with this email address: " . $_POST['email_address']. ". Please register with a different email address");
-            }
+            } else {
+                // for debug
+                die("$exception");
+
+                // for production
+                die("Something is wrong, please try again");
+            } // end else
         } // end 
        
         

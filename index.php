@@ -67,7 +67,7 @@
                                 <div class="col-1">
                                     <div class="input-group-desc">
                                         <input class="input--style-5" type="text" name="address_line" required>
-                                        <label class="label--desc">Address Line (Please enter full address (excluding country) here if there are not appropriate fields)<span class="required-field"></span></label>
+                                        <label class="label--desc">Address Line<span class="required-field"></span> (Please enter full address (excluding country) here if there are not appropriate fields)</label>
                                     </div>
                                 </div>
                             </div>
@@ -384,11 +384,11 @@
                         <!--PHONE-->
                         <!--PHONE NUMBER-->
                         <div class="form-row m-b-55">
-                            <div class="name">Phone Number<span class="required-field"></span></div>
+                            <div class="name">Phone Number</div>
                             <div class="value">
                                 <div class="col-1">
                                     <div class="input-group-desc">
-                                        <input class="input--style-5" type="tel" placeholder="Ex: (1) 575 111" pattern="\([0-9]+\)[0-9 ]+" name="phone_number" required>
+                                        <input class="input--style-5" type="tel" placeholder="Ex: (1) 575 111" pattern="\([0-9]+\)[0-9 ]+" name="phone_number">
                                         <label class="label--desc">(country code) phone number</label>
                                     </div>
                                 </div>
