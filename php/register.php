@@ -27,7 +27,7 @@
         $name = $data['name'];
         $affiliation = $data['affiliation'];
 
-        //
+        //address
         $street_address = $data['street_address'];
         $city_address = $data['city_address'];
         $state_address = $data['state_address'];
@@ -40,18 +40,28 @@
                     .$country_address
                     .($zip_address == "" || $zip_address == null ? "" : ", " . "Zip code: ". $zip_address) ;
 
+        // other
         $email = $data['email_address'];
         $phone = $data['phone_number'];
         $isStudent = strtoupper($data['is_student']);
         $hasPaper = strtoupper($data['has_paper']);
         $paperNumber = $data['paper_number'];
-        //$timeZone = $data['submitter_time_zone'];
 
         // workshops
-        $workshops = $data['workshops'];
+        $workshops = [];
+        for ($i = 0; $i < 6; ++$i) {
+            $workshops[$i] = $data["workshop".($i+1)];
+        } // end for i
+        $workshops = json_encode($workshops);
+
         // tutorials
-        $tutorials = $data['tutorials'];
-        //$socialEvents = $data['events'];
+        $tutorials = [];
+        for ($i = 0; $i < 8; ++$i) {
+            $tutorials[$i] = $data["tutorial".($i+1)];
+        } // end for i
+        $tutorials = json_encode($tutorials);
+
+        // others
         $goNMR = strtoupper($data['participate_nmr']);
         $gender = strtoupper($data['gender']);
 

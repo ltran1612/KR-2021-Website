@@ -362,6 +362,10 @@ h6 {
   margin-bottom: 55px;
 }
 
+.m-b-10 {
+  margin-bottom: 10px;
+}
+
 /* ==========================================================================
    #WRAPPER
    ========================================================================== */
@@ -533,11 +537,25 @@ input {
 }
 
 .checkbox-container {
-  display: inline-block;
+  display: block;
   position: relative;
   padding-left: 30px;
   cursor: pointer;
   font-size: 16px;
+  color: #666;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkbox-caption-container {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  font-style: italic;
   color: #666;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -688,17 +706,6 @@ input {
 }
 
 .label--desc {
-  position: absolute;
-  text-transform: capitalize;
-  display: block;
-  color: #999;
-  font-size: 14px;
-  margin: 0;
-  margin-top: 7px;
-  left: 0;
-}
-
-.label--desc--nocap {
   position: absolute;
   text-transform: capitalize;
   display: block;
