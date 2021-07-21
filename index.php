@@ -37,8 +37,8 @@
                     <h2 class="title">KR-2021 REGISTRATION FORM</h2>
                 </div>
                 <div class="card-body">
-                    <!--STARTING THE FORM-->
-                    <form id="registration_form" action="php/register.php" method="POST">
+                        <!--STARTING THE FORM-->
+                        <form id="registration_form" action="php/register.php" method="POST">
                         <!--CONTACT INFORMATION-->
                         <!--FULL NAME-->
                         <div class="form-row">
@@ -437,18 +437,24 @@
 
                         <!--PARTICIPATION-->
                         <h3>Participation</h3>
-                        <div class="form-row">
-                            <div class="name">Which workshops would you like to participate in?</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-5" type="text" name="workshops">
-                                    <label class="label--desc">Please enter the name of workshops separated by a comma</label>
-                                </div>
+
+                        <div class="form-row p-t-20">
+                            <label class="label label--block">Which workshops would you like to participate in?</label>
+                            <div class="p-t-15">
+                                <label class="checkbox-container m-r-55">Proof-Theoretic Approaches to Logical Argumentation 
+                                    <input type="checkbox" name="workshop1" value="">
+                                    <span class="checkbox"></span>
+                                </label>
+                                <label class="checkbox-container">Completeness, Recall, and Negation in Open-World Knowledge Bases 
+                                    <input type="checkbox" name="workshop2" value="no">
+                                    <span class="checkbox"></span>
+                                </label>
                             </div>
                         </div>
+
                         <div class="form-row">
                             <div class="name">Which tutorials would you like to participate in?</div>
-                            <div class="value">
+                                <div class="value">
                                 <div class="input-group">
                                     <input class="input--style-5" type="text" name="tutorials">
                                     <label class="label--desc">Please enter the name of tutorials separated by a comma</label>

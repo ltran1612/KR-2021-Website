@@ -71,29 +71,28 @@
         print_r($data);
     } // end sendInformation
 
-    function goToPayment() {
-        $service_url = 'https://shopcart.nmsu.edu';
-        $store_key = 'dab150eq6a7r2642736m85594a23d1x4';
-        $store_id = 97;
-        $order_id = 1;
-        // Fetch the order information, with verbose details
-        $url = $service_url . '/service/' . $store_id . '/products';
-        echo($url);
-        $result = file_get_contents( $url );
-        echo($result);
-    }
-
     // check if the information already exists. 
     if ($_POST['has_paper'] == "yes") {    
         sendInformation($_POST);
+        $message = "<b>The payment for the Paper Registration is separate</b> and has to be done by following these steps:
+            <br>
+        1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>
+        <br>
+        2) Click on...
+        <br>
+        3) Pay 
+        <br>
+        4) You are done!
+        
+        ";
+
         // redirect to new page
-        goToPayment();
+        //goToPayment();
         //header("Location: https://www.google.com");
         //die();
     } elseif ($_POST['has_paper'] == "no") {
         // sending information to database
         sendInformation($_POST);
-        $message = "HERE IS YOUR REGISTRATION CODE: ";
     } else {
         $message = "Something is wrong with the form, please fill the form again. \n We apologize for the inconvenience.";
     } // end else
@@ -132,8 +131,10 @@
                 </div>
                 <div class="card-body">
                     <!--STARTING THE RESULT-->
+                    You will receive a confirmation email in your mailbox at:
                     <?php
-
+                        echo "<b>".$_POST['email_address']."</b>";
+                        echo "<br><br>";
                         echo $message;
                     ?>
                     <!---->
