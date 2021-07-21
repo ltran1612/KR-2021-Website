@@ -52,7 +52,7 @@
 
                         <!--AFFILIATION-->
                         <div class="form-row">
-                            <div class="name">Affiliation<span class="required-field"></div>
+                            <div class="name">Affiliation<span class="required-field"></span></div>
                             <div class="value">
                                 <div class="input-group">
                                     <input class="input--style-5" type="text" name="affiliation" required>
@@ -67,7 +67,7 @@
                                 <div class="col-1">
                                     <div class="input-group-desc">
                                         <input class="input--style-5" type="text" name="street_address" required>
-                                        <label class="label--desc">Street Address<span class="required-field"></label>
+                                        <label class="label--desc">Street Address<span class="required-field"></span></label>
                                     </div>
                                 </div>
                             </div>
@@ -362,7 +362,7 @@
                                                         <option value="Zimbabwe">Zimbabwe</option>
                                                 </select>
                                                 <div class="select-dropdown"></div> <!--Important for this to work-->
-                                                <label class="label--desc">Country<span class="required-field"></label>
+                                                <label class="label--desc">Country<span class="required-field"></span></label>
                                             </div>
                                         </div>
                                     </div>
@@ -372,7 +372,7 @@
 
                         <!--EMAIL-->
                         <div class="form-row">
-                            <div class="name">Email<span class="required-field"></div>
+                            <div class="name">Email<span class="required-field"></span></div>
                             <div class="value">
                                 <div class="input-group">
                                     <input class="input--style-5" type="email" name="email_address" required>
@@ -383,7 +383,7 @@
                         <!--PHONE-->
                         <!--PHONE NUMBER-->
                         <div class="form-row m-b-55">
-                            <div class="name">Phone Number<span class="required-field"></div>
+                            <div class="name">Phone Number<span class="required-field"></span></div>
                             <div class="value">
                                 <div class="col-1">
                                     <div class="input-group-desc">
@@ -396,7 +396,7 @@
 
                         <!--STUDENT?-->
                         <div class="form-row p-t-20">
-                            <label class="label label--block">Are you a student?<span class="required-field"></label>
+                            <label class="label label--block">Are you a student?<span class="required-field"></span></label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Yes
                                     <input type="radio" name="is_student" value="yes" required>
@@ -412,29 +412,35 @@
                         <h3>Paper Registration?</h3>
                         <!--PAPER REGISTRATION-->
                         <div class="form-row p-t-20">
-                            <label class="label label--block">Did you register a paper?<span class="required-field"></label>
+                            <label class="label label--block">Did you register a paper?<span class="required-field"></span></label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Yes
-                                    <input type="radio" name="has_paper" value="yes" required>
+                                    <input type="radio" name="register_paper" value="yes" required>
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="radio-container">No
-                                    <input type="radio" name="has_paper" value="no">
+                                    <input type="radio" name="register_paper" value="no">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
                         </div>
-                        <h4>If you chose yes, please fill out these information:</h4><br>
+                        
                         <!--PAPER NUMBER-->
-                        <div class="form-row">
-                            <div class="name">Paper Number</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-5" type="text" name="paper_number">
+                        <div id="paper_number_section">
+                            <h4>If you chose yes, please fill out these information:</h4>
+                            <div class="form-row">
+                                
+                                <br>
+                                <div class="name">Paper Number<span id="paper_number_asterisk" class="required-field hide"></span></div>
+                                <div class="value">
+                                    <div class="input-group">
+                                        <input class="input--style-5" type="text" name="paper_number" required>
+                                        <label class="label--desc"></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
+                        
                         <!--PARTICIPATION-->
                         <h3>Participation</h3>
 
@@ -611,12 +617,8 @@
         </div>
     </div>
 
-    <style>
-        .required-field::before {
-        content: "*";
-        color: red;
-        }
-    </style>
+    <!--Custom Stylesheet-->
+    <link href="css/my.css" rel="stylesheet" media="all">
     
     <!--Vendor JS-->
     <script src="vendor/select2/select2.min.js"></script>
@@ -625,6 +627,9 @@
    
     <!-- Main JS-->
     <script src="js/global.js"></script>
+
+    <!-- My JS -->
+    <script src="js/condition.js"></script>
 </body><!-- This was made based on a template of Colorlib (https://colorlib.com) -->
 
 </html>

@@ -1,0 +1,8 @@
+.required-field::before {
+    content: "*";
+    color: red;
+}
+
+.hide {
+    display: none;
+}

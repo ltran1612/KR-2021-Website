@@ -15,8 +15,8 @@
         }
         
         // prepare and bind
-        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, HasPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $hasPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender);
+        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender);
         
         // set parameters and execute
         // trim the values
@@ -42,10 +42,14 @@
 
         // other
         $email = $data['email_address'];
-        $phone = $data['phone_number'];
+        // remove all spaces in phone number
+        $phone = str_replace(" ", "", $data['phone_number']);
+
+        // change them to uppercase
         $isStudent = strtoupper($data['is_student']);
-        $hasPaper = strtoupper($data['has_paper']);
-        $paperNumber = $data['paper_number'];
+        $registerPaper = strtoupper($data['register_paper']);
+        // paper number
+        $paperNumber = ($registerPaper != null && $registerPaper == "YES") ? $data['paper_number'] : null;
 
         // workshops
         $workshops = [];
@@ -66,11 +70,15 @@
         $gender = strtoupper($data['gender']);
 
         // execute
-        if (!$stmt->execute()) {
-            $stmt->close();
-            $conn->close();
-            die("Cannot add the values into the database");
-        } // end if
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $exception) {
+            $state = $conn->sqlstate;
+            if ($state == "23000") {
+                die("Someone has already registered with this email address: " . $_POST['email_address']. ". Please register with a different email address");
+            }
+        } // end 
+       
         
         //echo "New records created successfully";
         
@@ -82,7 +90,7 @@
     } // end sendInformation
 
     // check if the information already exists. 
-    if ($_POST['has_paper'] == "yes") {    
+    if ($_POST['register_paper'] == "yes") {    
         sendInformation($_POST);
         $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
             <br>
@@ -100,7 +108,7 @@
         //goToPayment();
         //header("Location: https://www.google.com");
         //die();
-    } elseif ($_POST['has_paper'] == "no") {
+    } elseif ($_POST['register_paper'] == "no") {
         // sending information to database
         sendInformation($_POST);
     } else {
@@ -147,11 +155,35 @@
                         echo "<br><br>";
                         echo $message;
                     ?>
-
-                    <br>
-                    You can also download the confirmation now here
                     <!---->
                 </div>
+
+            </div>
+
+            <div class="card card-5 m-t-50">
+                <div class="card-heading">
+                    <h2 class="title">CONFIRMATION INFORMATION</h2>
+                </div>
+                <div class="card-body">
+                    Name: <?php echo $_POST['name'] ?>
+                    <br>
+                    Affiliation: <?php echo $_POST['affiliation'] ?>
+                    <br>
+                    Email: <?php echo $_POST['email_address'] ?>
+                    <br>
+                    Phone Number: <?php echo $_POST['phone_number'] ?>
+                    <br>
+                    Is Student: <?php echo $_POST['is_student'] ?>
+                    <br>
+                    Register Paper: <?php echo $_POST['register_paper'] ?>
+                    <br>
+                    <?php 
+                        if($_POST['register_paper'] == "yes") echo "Paper Number: ".$_POST['paper_number']
+                    ?>
+                    <br>
+                    <!---->
+                </div>
+
             </div>
         </div>
     </div>
