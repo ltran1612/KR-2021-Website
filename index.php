@@ -61,13 +61,13 @@
                         </div>
 
                         <!--ADDRESS-->
-                        <div class="form-row">
+                        <div class="form-row m-b-55">
                             <div class="name">Address</div>
                             <div class="value">
                                 <div class="col-1">
                                     <div class="input-group-desc">
-                                        <input class="input--style-5" type="text" name="street_address" required>
-                                        <label class="label--desc">Street Address<span class="required-field"></span></label>
+                                        <input class="input--style-5" type="text" name="address_line" required>
+                                        <label class="label--desc">Address Line (Please enter full address (excluding country) here if there are not appropriate fields)<span class="required-field"></span></label>
                                     </div>
                                 </div>
                             </div>
@@ -376,6 +376,7 @@
                             <div class="value">
                                 <div class="input-group">
                                     <input class="input--style-5" type="email" name="email_address" required>
+                                    <label class="label--desc">Note: Each registration is uniquely identified by This email address</label>
                                 </div>
                             </div>
                         </div>

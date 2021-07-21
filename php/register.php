@@ -28,13 +28,13 @@
         $affiliation = $data['affiliation'];
 
         //address
-        $street_address = $data['street_address'];
+        $address_line = $data['address_line'];
         $city_address = $data['city_address'];
         $state_address = $data['state_address'];
         $country_address = $data['country_address'];
         $zip_address = $data['zip_address'];
 
-        $address = $street_address . ", " 
+        $address = $address_line . ", " 
                     .($city_address == "" || $city_address == null ? "" : "City: " . $city_address . ', ') 
                     .($state_address == "" || $state_address == null ? "" : "State: " . $state_address . ', ')
                     .$country_address
