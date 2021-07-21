@@ -447,7 +447,7 @@
 
                         <!--WORKSHOPS-->
                         <div class="form-row p-t-20">
-                            <label class="label label--block">Which workshops would you like to participate in?</label>
+                            <label class="label label--block">Which workshops would you plan to participate in?</label>
                             <div class="p-t-15">
                                 <!--WORKSHOP 1-->
                                 <label class="checkbox-container">
@@ -501,7 +501,7 @@
 
                         <!--TUTORIALS-->
                         <div class="form-row">
-                            <label class="label label--block">Which tutorials would you like to participate in?</label>
+                            <label class="label label--block">Which tutorials would you plan to participate in?</label>
                             <div class="p-t-15">
                                 <!--TUTORIAL 1-->
                                 <label class="checkbox-container">
@@ -570,7 +570,7 @@
                         </div>
 
                         <div class="form-row p-t-20">
-                            <label class="label label--block">Would you like to participate in NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?</label>
+                            <label class="label label--block">Would you plan to participate in NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?</label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Yes
                                     <input type="radio" name="participate_nmr" value="yes">
