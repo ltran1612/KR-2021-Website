@@ -1,4 +1,7 @@
-
+.kr-icon {
+  text-align: center;
+  display: block;
+}
 
 /* ==========================================================================
    #FONT
@@ -280,14 +283,14 @@ h6 {
    ========================================================================== */
 .bg-blue {
   background: #2c6ed5;
-}
+} 
 
 .bg-red {
   background: #fa4251;
 }
 
 .bg-kr-color {
-  background: #fc9403;
+  background: #0a0400;
 }
 
 .bg-gra-01 {
@@ -317,14 +320,20 @@ h6 {
 .bg-kr {
   background-image: url("../images/bbg1.jpeg"), 
   linear-gradient(to top,#fc9403, #fc9403 100%, transparent 100%, transparent 100%);
+
   background-image: url("../images/bbg1.jpeg"), 
   -webkit-linear-gradient(top, #fc9403, #fc9403 100%, transparent 100%, transparent 100%);
+
   background-image: url("../images/bbg1.jpeg"), 
   --moz-linear-gradient(top, #fc9403, #fc9403 100%, transparent 100%, transparent 100%);
+
   background-image: url("../images/bbg1.jpeg"), 
   -o-linear-gradient(top, #fc9403, #fc9403 100%, transparent 100%, transparent 100%);
+
+  background-color: rgb(233, 233, 233);
+
   background-repeat: no-repeat;
-  background-size: 100% 21.7%, 100% 21.9%;
+  background-size: 100% 21.7%, 100% 21.9%, 100% 100%;
 }
 
 /* ==========================================================================

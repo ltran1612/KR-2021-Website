@@ -31,10 +31,16 @@
 
 <body>
     <div class="page-wrapper bg-kr p-t-45 p-b-50">
+
         <div class="wrapper wrapper--w790">
             <div class="card card-5 m-t-30-pc">
                 <div class="card-heading bg-kr-color">
-                    <h2 class="title">KR-2021 REGISTRATION FORM</h2>
+                    <div class="kr-icon">
+                        <a href="https://kr2021.kbsg.rwth-aachen.de/" class="kr-icon"><img src="images/krlogo-small.png"/></a> 
+                    </div>
+                    <h2 class="title">
+                        KR-2021 REGISTRATION FORM
+                    </h2>
                 </div>
                 <div class="card-body">
                         <!--STARTING THE FORM-->
