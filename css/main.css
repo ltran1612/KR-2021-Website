@@ -242,6 +242,9 @@ body {
   font-family: "Open Sans", "Arial", "Helvetica Neue", sans-serif;
   font-weight: 400;
   font-size: 14px;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -283,8 +286,8 @@ h6 {
   background: #fa4251;
 }
 
-.bg-orange {
-  background: #e36d25;
+.bg-kr-color {
+  background: #fc9403;
 }
 
 .bg-gra-01 {
@@ -309,6 +312,19 @@ h6 {
   background: -moz-linear-gradient(bottom left, #08aeea 0%, #b721ff 100%);
   background: -o-linear-gradient(bottom left, #08aeea 0%, #b721ff 100%);
   background: linear-gradient(to top right, #08aeea 0%, #b721ff 100%);
+}
+
+.bg-kr {
+  background-image: url("../images/bbg1.jpeg"), 
+  linear-gradient(to top,#fc9403, #fc9403 100%, transparent 100%, transparent 100%);
+  background-image: url("../images/bbg1.jpeg"), 
+  -webkit-linear-gradient(top, #fc9403, #fc9403 100%, transparent 100%, transparent 100%);
+  background-image: url("../images/bbg1.jpeg"), 
+  --moz-linear-gradient(top, #fc9403, #fc9403 100%, transparent 100%, transparent 100%);
+  background-image: url("../images/bbg1.jpeg"), 
+  -o-linear-gradient(top, #fc9403, #fc9403 100%, transparent 100%, transparent 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 21.7%, 100% 21.9%;
 }
 
 /* ==========================================================================
@@ -372,6 +388,10 @@ h6 {
 
 .m-t-50 {
   margin-top: 50px;
+}
+
+.m-t-30-pc {
+  margin-top: 30%;
 }
 
 /* ==========================================================================
@@ -454,12 +474,12 @@ h6 {
   background: #ff4b5a;
 }
 
-.btn--orange {
-  background-color: #e36d25;
+.btn--kr {
+  background-color: #ff6200;
 }
 
-.btn--orange:hover {
-  background-color: #ff6200;
+.btn--kr:hover {
+  background-color: #e05701;
 }
 
 .btn--red:hover {
@@ -850,7 +870,7 @@ input {
 
 .card-5 .card-heading {
   padding: 20px 0;
-  background: #1a1a1a;
+  /*background: #1a1a1a;*/
   -webkit-border-top-left-radius: 10px;
   -moz-border-radius-topleft: 10px;
   border-top-left-radius: 10px;

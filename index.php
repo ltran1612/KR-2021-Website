@@ -30,10 +30,10 @@
 </head>
 
 <body>
-    <div class="page-wrapper bg-orange p-t-45 p-b-50">
+    <div class="page-wrapper bg-kr p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
-            <div class="card card-5">
-                <div class="card-heading">
+            <div class="card card-5 m-t-30-pc">
+                <div class="card-heading bg-kr-color">
                     <h2 class="title">KR-2021 REGISTRATION FORM</h2>
                 </div>
                 <div class="card-body">
@@ -609,7 +609,7 @@
                         </div>
 
                         <div>
-                            <button class="btn btn--radius-2 btn--orange" type="submit">Register</button>
+                            <button class="btn btn--radius-2 btn--kr" type="submit">Register</button>
                         </div>
                     </form>
                     <!---->
