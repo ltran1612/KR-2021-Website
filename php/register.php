@@ -1,5 +1,25 @@
 <?php
-    function sendInformation($data) {
+    require_once '../vendor/autoload.php';
+    require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
+    // variables
+    $message = "";
+
+    function validEmail($email) {
+        // check for email address rfc format
+        try {
+            $message = (new Swift_Message('Wonderful Subject'))
+            ->setTo(["$email"]);
+            ;
+        } catch(Swift_RfcComplianceException $e) {
+            return false;
+        } // end catch
+
+        // check for dns availability
+
+        return true;
+    } // end function
+
+    function saveToDatabase($data) {
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         $servername = "localhost:3306";
         $username = "long";
@@ -93,30 +113,104 @@
         $conn->close();
     
         //print_r($data);
-    } // end sendInformation
+    } // end saveToDatabase
+
+    function sendEmail($email, $registerPaper) {
+        // create the Transport
+        $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, "ssl"))
+        ->setUsername("kr2021reg@gmail.com")
+        -> setPassword("hoinghikr#2021");
+
+        // create a mailer
+        $mailer = new Swift_Mailer($transport);
+
+        try {
+            $message = (new Swift_Message('Wonderful Subject'))
+            ->setFrom(['kr2021reg@gmail.com' => "KR-2021"])
+            ->setTo(["$email"])
+            ->setBody($registerPaper ? "Hello stranger who need to pay" : "Hello stranger who doesn't need to pay")
+            ;
+        } catch(Swift_RfcComplianceException $e) {
+            throw $e;
+        } // end catch
+        
+        
+        $result = $mailer->send($message);
+        //$result = 0;
+
+        return $result;
+    } // end sendEmail
+
+    function getEmail($data) {
+        return trim($data['email_address']);
+    } // end getEmail
 
     // check if the information already exists. 
     if ($_POST['register_paper'] == "yes") {    
-        sendInformation($_POST);
-        $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
-            <br>
-        1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>
-        <br>
-        2) Click on...
-        <br>
-        3) Pay 
-        <br>
-        4) You are done!
+        // get the email
+        $email = getEmail($_POST);
         
-        ";
+        // check email
+        if (!validEmail($email)) {
+            die("Your email is invalid, please go back and update your email address");
+        } // end if
 
-        // redirect to new page
-        //goToPayment();
-        //header("Location: https://www.google.com");
-        //die();
+        // save to database
+        saveToDatabase($_POST);
+
+        // send email
+        try {
+            $result = sendEmail($email, true);
+            echo ($result);
+
+            if ($result == 0) {
+                $email_result = "Something is wrong with the mail server, we cannot send you an email confirmation";
+            } else {
+                $email_result = "You will receive a confirmation email in your mailbox at: "
+                . "<b>" . $_POST['email_address']."</b>"
+                . "<br><br>";
+            } // end else
+    
+            $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
+                <br>
+            1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>
+            <br>
+            2) Click on...
+            <br>
+            3) Pay 
+            <br>
+            4) You are done!
+            ";
+        } catch(Swift_RfcComplianceException $e) {
+            $email_result = "Your email is invalid, please register with an another email address";
+        } // end catch
     } elseif ($_POST['register_paper'] == "no") {
-        // sending information to database
-        sendInformation($_POST);
+        // get the email
+        $email = getEmail($_POST);
+
+        // check email
+        if (!validEmail($email)) {
+            die("Your email is invalid, please go back and update your email address");
+        } // end if
+
+        // save to database
+        saveToDatabase($_POST);
+
+        // send email
+        try {
+            $result = sendEmail($email, false);
+
+            if ($result == 0) {
+                $email_result = "We cannot send you an email confirmation";
+            } else {
+                $email_result = "You will receive a confirmation email in your mailbox at: "
+                . "<b>" . $_POST['email_address']."</b>"
+                . "<br><br>";
+            } // end else
+        } catch (Swift_RfcComplianceException $e) {
+            echo $e;
+            $email_result = "Your email is invalid, please register with an another email address";
+        } // end catch
     } else {
         $message = "Something is wrong with the form, please fill the form again. \n We apologize for the inconvenience.";
     } // end else
@@ -147,7 +241,7 @@
 </head>
 
 <body>
-    <div class="page-wrapper bg-orange p-t-45 p-b-50">
+    <div class="page-wrapper bg-kr p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
             <div class="card card-5">
                 <div class="card-heading">
@@ -155,10 +249,8 @@
                 </div>
                 <div class="card-body">
                     <!--STARTING THE RESULT-->
-                    You will receive a confirmation email in your mailbox at:
                     <?php
-                        echo "<b>".$_POST['email_address']."</b>";
-                        echo "<br><br>";
+                        echo $email_result;
                         echo $message;
                     ?>
                     <!---->

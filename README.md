@@ -1,3 +1,9 @@
+# STEPS TO INSTALL
+1) Install PHP
+2) Install Composer
+3) Install SwiftMailer
+4) Install OracleServer
+
 ## Basic Information
 1) Name
 2) Affiliation
