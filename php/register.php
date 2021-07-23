@@ -128,7 +128,7 @@
             $message = (new Swift_Message('Wonderful Subject'))
             ->setFrom(['kr2021reg@gmail.com' => "KR-2021"])
             ->setTo(["$email"])
-            ->setBody($registerPaper ? "Hello stranger who need to pay" : "Hello stranger who doesn't need to pay")
+            ->setBody($registerPaper ? "(yes)Hello, this is just a test message meant to send to invalid email message.\nSorry if it's sent to you" : "(no)Hello, this is just a test message meant to send to invalid email message.\nSorry if it's sent to you")
             ;
         } catch(Swift_RfcComplianceException $e) {
             throw $e;
