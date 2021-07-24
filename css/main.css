@@ -857,6 +857,14 @@ input {
   color: #fff;
 }
 
+.title-sub {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+}
+
 /* ==========================================================================
    #CARD
    ========================================================================== */

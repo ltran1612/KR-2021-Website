@@ -3,6 +3,7 @@
     require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
     // variables
     $message = "";
+    $email_result = "";
 
     function validEmail($email) {
         // check for email address rfc format
@@ -146,7 +147,13 @@
     } // end getEmail
 
     // check if the information already exists. 
-    if ($_POST['register_paper'] == "yes") {    
+    $success = true;
+    $email_failure_message = "Something is wrong, we werent' able to send you a confirmation email";
+    $email_success_message = "You should be <b>receiving a confirmation email</b> in your mailbox at: "
+    . "<b>" . $_POST['email_address']."</b>"
+    . "<br><br>";
+
+    if ($_POST['register_paper'] == "yes" ||$_POST['register_paper'] == "no") {    
         // get the email
         $email = getEmail($_POST);
         
@@ -161,58 +168,31 @@
         // send email
         try {
             $result = sendEmail($email, true);
-            echo ($result);
 
             if ($result == 0) {
-                $email_result = "Something is wrong with the mail server, we cannot send you an email confirmation";
+                $email_result = $email_failure_message;
             } else {
-                $email_result = "You will receive a confirmation email in your mailbox at: "
-                . "<b>" . $_POST['email_address']."</b>"
-                . "<br><br>";
+                $email_result = $email_success_message;
             } // end else
-    
-            $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
+
+            if ($_POST['register_paper'] == "yes") {
+                $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
+                    <br>
+                1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>
                 <br>
-            1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>
-            <br>
-            2) Click on...
-            <br>
-            3) Pay 
-            <br>
-            4) You are done!
-            ";
+                2) Click on...
+                <br>
+                3) Pay 
+                <br>
+                4) You are done!
+                ";
+            } // end if
         } catch(Swift_RfcComplianceException $e) {
             $email_result = "Your email is invalid, please register with an another email address";
         } // end catch
-    } elseif ($_POST['register_paper'] == "no") {
-        // get the email
-        $email = getEmail($_POST);
-
-        // check email
-        if (!validEmail($email)) {
-            die("Your email is invalid, please go back and update your email address");
-        } // end if
-
-        // save to database
-        saveToDatabase($_POST);
-
-        // send email
-        try {
-            $result = sendEmail($email, false);
-
-            if ($result == 0) {
-                $email_result = "We cannot send you an email confirmation";
-            } else {
-                $email_result = "You will receive a confirmation email in your mailbox at: "
-                . "<b>" . $_POST['email_address']."</b>"
-                . "<br><br>";
-            } // end else
-        } catch (Swift_RfcComplianceException $e) {
-            echo $e;
-            $email_result = "Your email is invalid, please register with an another email address";
-        } // end catch
     } else {
-        $message = "Something is wrong with the form, please fill the form again. \n We apologize for the inconvenience.";
+        $message = "The value of register paper is other than yes and no, please fill the form again.";
+        $success = false;
     } // end else
 ?>
 
@@ -244,12 +224,24 @@
     <div class="page-wrapper bg-kr p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
             <div class="card card-5">
-                <div class="card-heading">
-                    <h2 class="title">THANK YOU FOR REGISTERING FOR KR-2021</h2>
+                <div class="card-heading bg-blue">
+                    <h2 class="title">
+                        <?php
+                            if ($success)
+                                echo "YOUR REGISTRATION HAS BEEN SAVED";
+                            else
+                                echo "ERROR";
+                        ?>
+                    </h2>
                 </div>
                 <div class="card-body">
                     <!--STARTING THE RESULT-->
                     <?php
+                        if ($success) {
+                            echo "<b>THANK YOU FOR REGISTERING FOR KR-2021!</b>";
+                            echo " ";
+                        } // END IF
+                             
                         echo $email_result;
                         echo $message;
                     ?>
@@ -258,8 +250,8 @@
 
             </div>
 
-            <div class="card card-5 m-t-50">
-                <div class="card-heading">
+            <div <?php if (!$success) echo "hidden";?> class="card card-5 m-t-50">
+                <div class="card-heading bg-red">
                     <h2 class="title">CONFIRMATION INFORMATION</h2>
                 </div>
                 <div class="card-body">
@@ -269,11 +261,9 @@
                     <br>
                     Email: <?php echo $_POST['email_address'] ?>
                     <br>
-                    Phone Number: <?php echo $_POST['phone_number'] ?>
+                    Is a Student?: <?php echo $_POST['is_student'] ?>
                     <br>
-                    Is Student: <?php echo $_POST['is_student'] ?>
-                    <br>
-                    Register Paper: <?php echo $_POST['register_paper'] ?>
+                    Will Register a Paper?: <?php echo $_POST['register_paper'] ?>
                     <br>
                     <?php 
                         if($_POST['register_paper'] == "yes") echo "Paper Number: ".$_POST['paper_number']
