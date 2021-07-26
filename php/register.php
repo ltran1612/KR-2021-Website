@@ -1,10 +1,6 @@
 <?php
     require_once '../vendor/autoload.php';
     require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
-    // variables
-    $message = "";
-    $email_result = "";
-
     function validEmail($email) {
         // check for email address rfc format
         try {
@@ -116,7 +112,7 @@
         //print_r($data);
     } // end saveToDatabase
 
-    function sendEmail($email, $registerPaper) {
+    function sendEmail($email, $header, $body) {
         // create the Transport
         $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, "ssl"))
         ->setUsername("kr2021reg@gmail.com")
@@ -126,10 +122,10 @@
         $mailer = new Swift_Mailer($transport);
 
         try {
-            $message = (new Swift_Message('Wonderful Subject'))
+            $message = (new Swift_Message($header))
             ->setFrom(['kr2021reg@gmail.com' => "KR-2021"])
             ->setTo(["$email"])
-            ->setBody($registerPaper ? "(yes)Hello, this is just a test message meant to send to invalid email message.\nSorry if it's sent to you" : "(no)Hello, this is just a test message meant to send to invalid email message.\nSorry if it's sent to you")
+            ->setBody($body)
             ;
         } catch(Swift_RfcComplianceException $e) {
             throw $e;
@@ -146,6 +142,14 @@
         return trim($data['email_address']);
     } // end getEmail
 
+    function getEmailGenericBody() {
+        return file_get_contents('../mail_content/mail_content.txt');
+    } // end getEmailGenericBody
+
+// START
+    // variables
+    $message = "";
+    $email_result = "";
     // check if the information already exists. 
     $success = true;
     $email_failure_message = "Something is wrong, we werent' able to send you a confirmation email";
@@ -153,7 +157,7 @@
     . "<b>" . $_POST['email_address']."</b>"
     . "<br><br>";
 
-    if ($_POST['register_paper'] == "yes" ||$_POST['register_paper'] == "no") {    
+    if ($_POST['register_paper'] == "yes" || $_POST['register_paper'] == "no") {    
         // get the email
         $email = getEmail($_POST);
         
@@ -167,26 +171,58 @@
 
         // send email
         try {
-            $result = sendEmail($email, true);
-
-            if ($result == 0) {
-                $email_result = $email_failure_message;
-            } else {
-                $email_result = $email_success_message;
-            } // end else
-
+            $email_body = getEmailGenericBody();
+            // add name
+            $email_body = str_replace("{user}", ucwords($_POST['name']), $email_body);
+            // add confirmation
+            $confirmation = "CONFIRMATION:".
+        "\n\t+ Name: " . $_POST['name'] .
+        "\n\t+ Affiliation: " . $_POST['affiliation'] .
+        "\n\t+ Email: " . $_POST['email_address'] .
+        "\n\t+ Is a Student?: " . $_POST['is_student'] .
+        "\n\t+ Will Register a Paper?: " . $_POST['register_paper']
+                ;
+            
+            $paper_message = "";
             if ($_POST['register_paper'] == "yes") {
                 $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
                     <br>
-                1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>
+                1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>.
                 <br>
-                2) Click on...
+                2) Click on \"Paper Registration\" under Featured Products.
                 <br>
-                3) Pay 
+                3) Add the item to cart.
+                <br>
+                4) Proceed to checkout.
+                <br>
+                5) Enter Name, Email Address, and Address, then proceed to checkout
                 <br>
                 4) You are done!
                 ";
+                
+                // add paper number
+                $confirmation = $confirmation . "\n        +Paper Number: " . $_POST['paper_number'];
+                // add paper registration
+                $paper_message = "\nPlease note that you have to pay for the Paper Registration separately by: "
+                                . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021."
+                                . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
+                                . "\n\t3) Add the item to cart"
+                                . "\n\t4) Proceed to checkout"
+                                . "\n\t5) Enter Name, Email Address, and Address, then proceed to checkout"
+                                . "\n\t6) Something..."
+                ;
             } // end if
+
+            // put the confirmation into the email body
+            $email_body = str_replace(["{confirmation}\n", "{confirmation}\r\n"], $confirmation, $email_body);
+            // put the paper message into the email body
+            $email_body = str_replace("{paper_registration}", $paper_message, $email_body);
+
+            // send the email
+            $result = sendEmail($email, "KR-2021 REGISTRATION CONFIRMATION", $email_body);
+
+             // get email result message
+             $email_result = $result == 0 ? $email_failure_message : $email_success_message;
         } catch(Swift_RfcComplianceException $e) {
             $email_result = "Your email is invalid, please register with an another email address";
         } // end catch

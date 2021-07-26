@@ -1,0 +1,8 @@
+Dear {user},
+    Thank you for registering for KR 2021. Here is the confirmation of your registration.
+
+    {confirmation}
+
+    {paper_registration}
+Best Regards,
+KR 2021 
