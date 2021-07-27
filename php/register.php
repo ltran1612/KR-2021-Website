@@ -31,10 +31,6 @@
           die("Connection failed: " . $conn->connect_error);
         }
         
-        // prepare and bind
-        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender);
-        
         // set parameters and execute
         // trim the values
         foreach ($data as $key => $value) {
@@ -85,6 +81,11 @@
         // others
         $goNMR = strtoupper($data['participate_nmr']);
         $gender = strtoupper($data['gender']);
+        $videoConsent = strtoupper($data['video_consent']);
+
+        // prepare and bind
+        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent);
 
         // execute
         try {

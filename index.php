@@ -571,11 +571,11 @@
                                     <input type="checkbox" name="tutorial8" value="Answer Set Programming: From Theory to Practice">
                                     <span class="checkbox"></span>
                                 </label>
-                                <label class="checkbox-caption-container m-b-10">Roland Kaminski, Javier Romero, Torsten Schaub and Philipp Wanko</label>
+                                <label class="checkbox-caption-container">Roland Kaminski, Javier Romero, Torsten Schaub and Philipp Wanko</label>
                             </div>
                         </div>
 
-                        <div class="form-row p-t-20">
+                        <div class="form-row">
                             <label class="label label--block">Would you plan to participate in NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?</label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Yes
@@ -609,6 +609,21 @@
 
                                 <label class="radio-container">Prefer Not To Answer
                                     <input type="radio" name="gender" value="prefer_not_to_answer">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!--VIDEO CONSENT-->
+                        <div class="form-row hidden">
+                            <label class="label label--block">I agree to let KR 2021 publish recorded videos<span class="required-field"></span></label>
+                            <div class="p-t-15">
+                                <label class="radio-container m-r-55">Yes
+                                    <input type="radio" name="video_consent" value="yes" required>
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radio-container m-r-55">No
+                                    <input type="radio" name="video_consent" value="no">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
