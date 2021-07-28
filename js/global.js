@@ -49,7 +49,34 @@
     } catch(er) {console.log(er);}
     /*[ Select 2 Config ]
         ===========================================================*/
+    /**
+     * Modified codes taken from select2 website
+     */
+    function matchCustom(params, data) {
+        // If there are no search terms, return all of the data
+        if ($.trim(params.term) === '') {
+            return data;
+        }
     
+        // Do not display the item if there is no 'text' property
+        if (typeof data.text === 'undefined') {
+            return null;
+        }
+    
+        // `params.term` should be the term that is used for searching
+        // `data.text` is the text that is displayed for the data object
+        const text = data.text.toLowerCase();
+        const term = params.term.toLowerCase();
+        if (text.indexOf(term) === 0) {
+            // You can return modified objects from here
+            // This includes matching the `children` how you want in nested data sets
+            return data;
+        } // end if
+    
+        // Return `null` if the term should not be displayed
+        return null;
+    } // end matchCustom
+
     try {
         var selectSimple = $('.js-select-simple');
     
@@ -58,7 +85,8 @@
             var selectBox = that.find('select');
             var selectDropdown = that.find('.select-dropdown');
             selectBox.select2({
-                dropdownParent: selectDropdown
+                dropdownParent: selectDropdown,
+                matcher: matchCustom
             });
         });
     

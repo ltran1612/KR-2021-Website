@@ -119,7 +119,7 @@
                                     </div> -->
                                     <div class="col-2">
                                         <div class="input-group">
-                                            <div class="rs-select2 js-select-simple select--no-search">
+                                            <div class="rs-select2 js-select-simple">
                                                 <select name="country_address" form="registration_form" required>
                                                     <option disabled="disabled" value="" selected="selected">Choose option</option>
                                                     <option value="Afghanistan">Afghanistan</option>
