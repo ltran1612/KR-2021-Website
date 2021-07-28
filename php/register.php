@@ -1,6 +1,7 @@
 <?php
     require_once '../vendor/autoload.php';
-    require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
+    //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
+    
     function validEmail($email) {
         // check for email address rfc format
         try {
@@ -271,7 +272,7 @@
     <script src="../vendor/jquery/jquery.min.js"></script>
 
     <!-- Title Page-->
-    <title>CONFIRMATION</title>
+    <title>REGISTRATION STATUS</title>
 
     <!-- Icons font CSS-->
     <link href="../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -288,7 +289,7 @@
 </head>
 
 <body>
-    <div class="page-wrapper bg-kr p-t-45 p-b-50">
+    <div class="page-wrapper p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
             <div class="card card-5">
                 <div class="card-heading bg-blue">
@@ -338,11 +339,10 @@
                     <br>
                     <!---->
                 </div>
-
             </div>
         </div>
     </div>
-
+     
     <!--Vendor JS-->
     <script src="../vendor/select2/select2.min.js"></script>
     <script src="../vendor/datepicker/moment.min.js"></script>
