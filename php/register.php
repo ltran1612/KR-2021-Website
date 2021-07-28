@@ -16,7 +16,24 @@
         return true;
     } // end function
 
-    function saveToDatabase($data) {
+    function uniqueEmail($email) {
+        $conn = createConn();
+        $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
+        $stmt->bind_param("s", $email);
+
+        try {
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->num_rows == 0;
+        } catch(mysqli_sql_exception $ex) {
+            die("Something is wrong when checking the email with the database");
+        } finally {
+            $stmt->close();
+            $conn->close();
+        } // end finally
+    } // end uniqueEmail
+
+    function createConn() {
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         $servername = "localhost:3306";
         $username = "long";
@@ -25,6 +42,18 @@
         
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
+        
+        // Check connection
+        if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+        }
+
+        return $conn;
+    } // end createConn
+
+    function saveToDatabase($data) { 
+        // Create connection
+        $conn = createConn();
         
         // Check connection
         if ($conn->connect_error) {
@@ -101,16 +130,11 @@
                 // for production
                 die("Something is wrong, please try again");
             } // end else
-        } // end 
-       
-        
-        //echo "New records created successfully";
-        
-        // closing connection
-        $stmt->close();
-        $conn->close();
-    
-        //print_r($data);
+        } finally {
+            // closing connection
+            $stmt->close();
+            $conn->close();
+        } // end finally
     } // end saveToDatabase
 
     function sendEmail($email, $header, $body) {
@@ -167,66 +191,72 @@
             die("Your email is invalid, please go back and update your email address");
         } // end if
 
-        // save to database
-        saveToDatabase($_POST);
-
-        // send email
-        try {
-            $email_body = getEmailGenericBody();
-            // add name
-            $email_body = str_replace("{user}", ucwords($_POST['name']), $email_body);
-            // add confirmation
-            $confirmation = "CONFIRMATION:".
-        "\n\t+ Name: " . $_POST['name'] .
-        "\n\t+ Affiliation: " . $_POST['affiliation'] .
-        "\n\t+ Email: " . $_POST['email_address'] .
-        "\n\t+ Is a Student?: " . $_POST['is_student'] .
-        "\n\t+ Will Register a Paper?: " . $_POST['register_paper']
-                ;
-            
-            $paper_message = "";
-            if ($_POST['register_paper'] == "yes") {
-                $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
-                    <br>
-                1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>.
-                <br>
-                2) Click on \"Paper Registration\" under Featured Products.
-                <br>
-                3) Add the item to cart.
-                <br>
-                4) Proceed to checkout.
-                <br>
-                5) Enter Name, Email Address, and Address, then proceed to checkout
-                <br>
-                4) You are done!
-                ";
+        // check unique email
+        if (uniqueEmail($email)) {
+            // save to database
+            saveToDatabase($_POST);
+            // send email
+            try {
+                $email_body = getEmailGenericBody();
+                // add name
+                $email_body = str_replace("{user}", ucwords($_POST['name']), $email_body);
+                // add confirmation
+                $confirmation = "CONFIRMATION:".
+                "\n\t+ Name: " . $_POST['name'] .
+                "\n\t+ Affiliation: " . $_POST['affiliation'] .
+                "\n\t+ Email: " . $_POST['email_address'] .
+                "\n\t+ Is a Student?: " . $_POST['is_student'] .
+                "\n\t+ Will Register a Paper?: " . $_POST['register_paper']
+                    ;
                 
-                // add paper number
-                $confirmation = $confirmation . "\n        +Paper Number: " . $_POST['paper_number'];
-                // add paper registration
-                $paper_message = "\nPlease note that you have to pay for the Paper Registration separately by: "
-                                . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021."
-                                . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
-                                . "\n\t3) Add the item to cart"
-                                . "\n\t4) Proceed to checkout"
-                                . "\n\t5) Enter Name, Email Address, and Address, then proceed to checkout"
-                                . "\n\t6) Something..."
-                ;
-            } // end if
+                $paper_message = "";
+                if ($_POST['register_paper'] == "yes") {
+                    $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
+                        <br>
+                    1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>.
+                    <br>
+                    2) Click on \"Paper Registration\" under Featured Products.
+                    <br>
+                    3) Add the item to cart.
+                    <br>
+                    4) Proceed to checkout.
+                    <br>
+                    5) Enter Name, Email Address, and Address, then proceed to checkout
+                    <br>
+                    4) You are done!
+                    ";
+                    
+                    // add paper number
+                    $confirmation = $confirmation . "\n        +Paper Number: " . $_POST['paper_number'];
+                    // add paper registration
+                    $paper_message = "\nPlease note that you have to pay for the Paper Registration separately by: "
+                                    . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021."
+                                    . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
+                                    . "\n\t3) Add the item to cart"
+                                    . "\n\t4) Proceed to checkout"
+                                    . "\n\t5) Enter Name, Email Address, and Address, then proceed to checkout"
+                                    . "\n\t6) Something..."
+                    ;
+                } // end if
 
-            // put the confirmation into the email body
-            $email_body = str_replace(["{confirmation}\n", "{confirmation}\r\n"], $confirmation, $email_body);
-            // put the paper message into the email body
-            $email_body = str_replace("{paper_registration}", $paper_message, $email_body);
+                // put the confirmation into the email body
+                $email_body = str_replace(["{confirmation}\n", "{confirmation}\r\n"], $confirmation, $email_body);
+                // put the paper message into the email body
+                $email_body = str_replace("{paper_registration}", $paper_message, $email_body);
 
-            // send the email
-            $result = sendEmail($email, "KR-2021 REGISTRATION CONFIRMATION", $email_body);
+                // send the email
+                $result = sendEmail($email, "KR-2021 REGISTRATION CONFIRMATION", $email_body);
 
-             // get email result message
-             $email_result = $result == 0 ? $email_failure_message : $email_success_message;
-        } catch(Swift_RfcComplianceException $e) {
-            $email_result = "Your email is invalid, please register with an another email address";
-        } // end catch
+                // get email result message
+                $email_result = $result == 0 ? $email_failure_message : $email_success_message;
+            } catch(Swift_RfcComplianceException $e) {
+                $email_result = "Your email is invalid, please register with an another email address";
+            } // end catch
+        } // end if
+        else {
+            $message = "The email you entered has already been used. Please register with a unique email address";
+            $success = false;
+        } // end else
     } else {
         $message = "The value of register paper is other than yes and no, please fill the form again.";
         $success = false;
