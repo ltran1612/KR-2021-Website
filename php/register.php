@@ -218,13 +218,21 @@
                     <br>
                     2) Click on \"Paper Registration\" under Featured Products.
                     <br>
-                    3) Add the item to cart.
+                    3) Click \"Add to cart\".
                     <br>
-                    4) Proceed to checkout.
+                    4) Make sure the quantity is correct, you can adjust and update it with Update Quantities. 
                     <br>
-                    5) Enter Name, Email Address, and Address, then proceed to checkout
+                    5) Proceed to checkout.
                     <br>
-                    4) You are done!
+                    6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later).
+                    <br>
+                    7) Proceed to checkout.
+                    <br>
+                    8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required). 
+                    <br>
+                    9) Continue Checkout.
+                    <br>
+                    10) Review your order and payment information, then click \"Submit Payment\".
                     ";
                     
                     // add paper number
@@ -233,10 +241,14 @@
                     $paper_message = "\nPlease note that you have to pay for the Paper Registration separately by: "
                                     . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021."
                                     . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
-                                    . "\n\t3) Add the item to cart"
-                                    . "\n\t4) Proceed to checkout"
-                                    . "\n\t5) Enter Name, Email Address, and Address, then proceed to checkout"
-                                    . "\n\t6) Something..."
+                                    . "\n\t3) Click \"Add to cart\"."
+                                    . "\n\t4) Make sure the quantity is correct, you can adjust and update it with Update Quantities."
+                                    . "\n\t5) Proceed to checkout"
+                                    . "\n\t6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later)."
+                                    . "\n\t7) Proceed to checkout."
+                                    . "\n\t8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required)."
+                                    . "\n\t9) Continue Checkout."
+                                    . "\n\t10) Review your order and payment information, then click \"Submit Payment\"."
                     ;
                 } // end if
 
