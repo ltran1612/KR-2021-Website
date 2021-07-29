@@ -185,97 +185,102 @@
     . "<b>" . $_POST['email_address']."</b>"
     . "<br><br>";
 
-    if ($_POST['register_paper'] == "yes" || $_POST['register_paper'] == "no") {    
-        // get the email
-        $email = getEmail($_POST);
-        
-        // check email
-        if (!validEmail($email)) {
-            die("Your email is invalid, please go back and update your email address");
-        } // end if
-
-        // check unique email
-        if (uniqueEmail($email, $account)) {
-            // save to database
-            saveToDatabase($_POST, $account);
-            // send email
-            try {
-                $email_body = getEmailGenericBody();
-                // add name
-                $email_body = str_replace("{user}", ucwords($_POST['name']), $email_body);
-                // add confirmation
-                $confirmation = "CONFIRMATION:".
-                "\n\t+ Name: " . $_POST['name'] .
-                "\n\t+ Affiliation: " . $_POST['affiliation'] .
-                "\n\t+ Email: " . $_POST['email_address'] .
-                "\n\t+ Is a Student?: " . $_POST['is_student'] .
-                "\n\t+ Will Register a Paper?: " . $_POST['register_paper']
-                    ;
-                
-                $paper_message = "";
-                if ($_POST['register_paper'] == "yes") {
-                    $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
-                        <br>
-                    1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>.
-                    <br>
-                    2) Click on \"Paper Registration\" under Featured Products.
-                    <br>
-                    3) Click \"Add to cart\".
-                    <br>
-                    4) Make sure the quantity is correct, you can adjust and update it with Update Quantities. 
-                    <br>
-                    5) Proceed to checkout.
-                    <br>
-                    6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later).
-                    <br>
-                    7) Proceed to checkout.
-                    <br>
-                    8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required). 
-                    <br>
-                    9) Continue Checkout.
-                    <br>
-                    10) Review your order and payment information, then click \"Submit Payment\".
-                    ";
+    try {
+        if ($_POST['register_paper'] == "yes" || $_POST['register_paper'] == "no") {    
+            // get the email
+            $email = getEmail($_POST);
+            
+            // check email
+            if (!validEmail($email)) {
+                die("Your email is invalid, please go back and update your email address");
+            } // end if
+    
+            // check unique email
+            if (uniqueEmail($email, $account)) {
+                // save to database
+                saveToDatabase($_POST, $account);
+                // send email
+                try {
+                    $email_body = getEmailGenericBody();
+                    // add name
+                    $email_body = str_replace("{user}", ucwords($_POST['name']), $email_body);
+                    // add confirmation
+                    $confirmation = "CONFIRMATION:".
+                    "\n\t+ Name: " . $_POST['name'] .
+                    "\n\t+ Affiliation: " . $_POST['affiliation'] .
+                    "\n\t+ Email: " . $_POST['email_address'] .
+                    "\n\t+ Is a Student?: " . $_POST['is_student'] .
+                    "\n\t+ Will Register a Paper?: " . $_POST['register_paper']
+                        ;
                     
-                    // add paper number
-                    $confirmation = $confirmation . "\n        +Paper Number: " . $_POST['paper_number'];
-                    // add paper registration
-                    $paper_message = "\nPlease note that you have to pay for the Paper Registration separately by: "
-                                    . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021."
-                                    . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
-                                    . "\n\t3) Click \"Add to cart\"."
-                                    . "\n\t4) Make sure the quantity is correct, you can adjust and update it with Update Quantities."
-                                    . "\n\t5) Proceed to checkout"
-                                    . "\n\t6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later)."
-                                    . "\n\t7) Proceed to checkout."
-                                    . "\n\t8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required)."
-                                    . "\n\t9) Continue Checkout."
-                                    . "\n\t10) Review your order and payment information, then click \"Submit Payment\"."
-                    ; // end paper_message
-                } // end if
-
-                // put the confirmation into the email body
-                $email_body = str_replace(["{confirmation}\n", "{confirmation}\r\n"], $confirmation, $email_body);
-                // put the paper message into the email body
-                $email_body = str_replace("{paper_registration}", $paper_message, $email_body);
-
-                // send the email
-                $result = sendEmail($email, "KR-2021 REGISTRATION CONFIRMATION", $email_body);
-
-                // get email result message
-                $email_result = $result == 0 ? $email_failure_message : $email_success_message;
-            } catch(Swift_RfcComplianceException $e) {
-                $email_result = "Your email is invalid, please register with an another email address";
-            } // end catch
-        } // end if
-        else {
-            $message = "The email you entered has already been used. Please register with a unique email address";
+                    $paper_message = "";
+                    if ($_POST['register_paper'] == "yes") {
+                        $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
+                            <br>
+                        1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>.
+                        <br>
+                        2) Click on \"Paper Registration\" under Featured Products.
+                        <br>
+                        3) Click \"Add to cart\".
+                        <br>
+                        4) Make sure the quantity is correct, you can adjust and update it with Update Quantities. 
+                        <br>
+                        5) Proceed to checkout.
+                        <br>
+                        6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later).
+                        <br>
+                        7) Proceed to checkout.
+                        <br>
+                        8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required). 
+                        <br>
+                        9) Continue Checkout.
+                        <br>
+                        10) Review your order and payment information, then click \"Submit Payment\".
+                        ";
+                        
+                        // add paper number
+                        $confirmation = $confirmation . "\n        +Paper Number: " . $_POST['paper_number'];
+                        // add paper registration
+                        $paper_message = "\nPlease note that you have to pay for the Paper Registration separately by: "
+                                        . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021."
+                                        . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
+                                        . "\n\t3) Click \"Add to cart\"."
+                                        . "\n\t4) Make sure the quantity is correct, you can adjust and update it with Update Quantities."
+                                        . "\n\t5) Proceed to checkout"
+                                        . "\n\t6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later)."
+                                        . "\n\t7) Proceed to checkout."
+                                        . "\n\t8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required)."
+                                        . "\n\t9) Continue Checkout."
+                                        . "\n\t10) Review your order and payment information, then click \"Submit Payment\"."
+                        ; // end paper_message
+                    } // end if
+    
+                    // put the confirmation into the email body
+                    $email_body = str_replace(["{confirmation}\n", "{confirmation}\r\n"], $confirmation, $email_body);
+                    // put the paper message into the email body
+                    $email_body = str_replace("{paper_registration}", $paper_message, $email_body);
+    
+                    // send the email
+                    $result = sendEmail($email, "KR-2021 REGISTRATION CONFIRMATION", $email_body);
+    
+                    // get email result message
+                    $email_result = $result == 0 ? $email_failure_message : $email_success_message;
+                } catch(Swift_RfcComplianceException $e) {
+                    $email_result = "Your email is invalid, please register with an another email address";
+                } // end catch
+            } // end if
+            else {
+                $message = "The email you entered has already been used. Please register with a unique email address";
+                $success = false;
+            } // end else
+        } else {
+            $message = "The value of register paper is other than yes and no, please fill the form again.";
             $success = false;
         } // end else
-    } else {
-        $message = "The value of register paper is other than yes and no, please fill the form again.";
-        $success = false;
-    } // end else
+    } catch(Exception $e) {
+        print_r($e);
+    }
+    
 ?>
 
 <!DOCTYPE html>
