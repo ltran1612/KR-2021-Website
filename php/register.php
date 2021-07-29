@@ -278,7 +278,7 @@
             $success = false;
         } // end else
     } catch(Exception $e) {
-        print_r($e);
+        echo ($e);
     }
     
 ?>
