@@ -17,8 +17,8 @@
         return true;
     } // end function
 
-    function uniqueEmail($email) {
-        $conn = createConn();
+    function uniqueEmail($email, $account) {
+        $conn = createConn($account);
         $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
         $stmt->bind_param("s", $email);
 
@@ -34,12 +34,11 @@
         } // end finally
     } // end uniqueEmail
 
-    function createConn() {
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-        $servername = "localhost:3306";
-        $username = "long";
-        $password = "123456";
-        $dbname = "KR_2021_PARTICIPANTS";
+    function createConn($account) {
+        $servername = $account->serverName;
+        $username = $account->userName;
+        $password = $account->passWord;
+        $dbname = $account->dbName;
         
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -47,14 +46,14 @@
         // Check connection
         if ($conn->connect_error) {
           die("Connection failed: " . $conn->connect_error);
-        }
+        } // end if
 
         return $conn;
     } // end createConn
 
-    function saveToDatabase($data) { 
+    function saveToDatabase($data, $account) { 
         // Create connection
-        $conn = createConn();
+        $conn = createConn($account);
         
         // Check connection
         if ($conn->connect_error) {
@@ -173,6 +172,9 @@
     } // end getEmailGenericBody
 
 // START
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    // get account
+    $account = json_decode(file_get_contents('../db_account.json'));
     // variables
     $message = "";
     $email_result = "";
@@ -193,9 +195,9 @@
         } // end if
 
         // check unique email
-        if (uniqueEmail($email)) {
+        if (uniqueEmail($email, $account)) {
             // save to database
-            saveToDatabase($_POST);
+            saveToDatabase($_POST, $account);
             // send email
             try {
                 $email_body = getEmailGenericBody();
@@ -249,7 +251,7 @@
                                     . "\n\t8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required)."
                                     . "\n\t9) Continue Checkout."
                                     . "\n\t10) Review your order and payment information, then click \"Submit Payment\"."
-                    ;
+                    ; // end paper_message
                 } // end if
 
                 // put the confirmation into the email body
