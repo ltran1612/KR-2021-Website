@@ -440,7 +440,7 @@
                                 <br>
                                 <div class="name">Paper Number<span id="paper_number_asterisk" class="required-field hide"></span></div>
                                 <div class="value">
-                                    <div class="input-group">
+                                    <div class="input-group col-2">
                                         <input class="input--style-5" type="text" name="paper_number" required>
                                         <label class="label--desc"></label>
                                     </div>
@@ -615,20 +615,29 @@
                         </div>
 
                         <!--VIDEO CONSENT-->
-                        <div class="form-row hidden">
-                            <label class="label label--block">I agree to let KR 2021 publish recorded videos<span class="required-field"></span></label>
+                        <div class="form-row">
+                            <label class="label label--block">Consent</label>
                             <div class="p-t-15">
-                                <label class="radio-container m-r-55">Yes
-                                    <input type="radio" name="video_consent" value="yes" required>
-                                    <span class="checkmark"></span>
+                                <!--CONSENT#1-->
+                                <label class="checkbox-container">
+                                    I agree to let KR 2021 publish recorded videos during the conference.<span class="required-field">
+                                    <input type="checkbox" name="video_consent" value="yes" required>
+                                    <span class="checkbox"></span>
                                 </label>
-                                <label class="radio-container m-r-55">No
-                                    <input type="radio" name="video_consent" value="no">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
+                                <!--CONSENT#2-->
+                                <div class="p-t-10">
+                                    <label class="label label--block">If you have any presentation that you don't want to be published after the conference, please enter it here:</label>
+                                    <div class="value">
+                                        <div class="input-group">
+                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_publish" required>
+                                            <label class="label--desc">Names separated by semi-colon(;)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
                         </div>
 
+                        
                         <div>
                             <button class="btn btn--radius-2 btn--kr" type="submit">Register</button>
                         </div>
