@@ -615,8 +615,8 @@
                         </div>
 
                         <!--VIDEO CONSENT-->
+                        <h3>Consent</h3>
                         <div class="form-row">
-                            <label class="label label--block">Consent</label>
                             <div class="p-t-15">
                                 <!--CONSENT#1-->
                                 <label class="checkbox-container">
@@ -625,11 +625,11 @@
                                     <span class="checkbox"></span>
                                 </label>
                                 <!--CONSENT#2-->
-                                <div class="p-t-10">
+                                <div class="p-t-20">
                                     <label class="label label--block">If you have any presentation that you don't want to be published after the conference, please enter it here:</label>
                                     <div class="value">
                                         <div class="input-group">
-                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_publish" required>
+                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish">
                                             <label class="label--desc">Names separated by semi-colon(;)</label>
                                         </div>
                                     </div>
