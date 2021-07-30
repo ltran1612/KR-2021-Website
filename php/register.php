@@ -174,7 +174,7 @@
 // START
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
     // get account
-    $account = json_decode(file_get_contents('../db_account.json'));
+    $account = json_decode(file_get_contents('../odjfka/1929/vvv/db_account.json'));
     if ($account == null)
         die("DB account file not found");
     // variables
