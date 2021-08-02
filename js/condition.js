@@ -1,62 +1,55 @@
 // get the components
 const paperNumberSection = document.getElementById("paper_number_section");
-const paperNumberAsterisk = document.getElementById("paper_number_asterisk");
-const paperNumber = document.getElementsByName("paper_number")[0];
 const registerPaper = document.getElementsByName("register_paper");
+const inputs = paperNumberSection.getElementsByClassName("required-input");
 
-// old display option
-const displayOption = paperNumberSection.style.display;
 // this will only be run if javascript is enabled; 
 // that is, if the browser doesn't have javascript enabled, the asterisk will not be displayed, but the field will still be required.
-paperNumberAsterisk.classList.remove("hide");
 
+
+// initialization
+todoNo(inputs, paperNumberSection);
 // initialize the display
-paperNumber.required = false;
-paperNumberSection.style.display = "none";
-let date = new Date();
 for (let i = 0; i < registerPaper.length; ++i) {
-    //console.log(date.getHours() + " " + date.getSeconds());
-    let input = registerPaper[i];
-    let value = input.value;
-    if (input.checked) {
+    let radioButt = registerPaper[i];
+    let value = radioButt.value;
+
+    // initialization
+    if (radioButt.checked) {
         if (value == "yes") {
-            console.log("checked yes");
-            paperNumberSection.style.display = displayOption;
-            paperNumber.required = true;
+            //console.log("checked yes");
+            todoYes(inputs, paperNumberSection);
         } else if (value == "no") {
-            console.log("no");
-            paperNumber.required = false;
-            paperNumberSection.style.display = "none";
+            //console.log("no");
+            todoNo(inputs, paperNumberSection);
         } else {
             console.log("Something is wrong");
         } // end else
-    } 
-} // end for i
+    }  // end if
 
-
-
-console.log(registerPaper[0].value + " " + registerPaper[0].checked);
-console.log(registerPaper[1].value + " " + registerPaper[1].checked);
-for (let i = 0; i < registerPaper.length; ++i) {
-    let value = registerPaper[i].value;
     if (value == "yes") {
-        //console.log("yes");
-        registerPaper[i].onclick = () => {
-            paperNumberSection.style.display = displayOption;
-            paperNumber.required = true;
-            console.log(registerPaper[0].value + " " + registerPaper[0].checked);
-            console.log(registerPaper[1].value + " " + registerPaper[1].checked);
-        };
+        radioButt.onclick = () => {
+            todoYes(inputs, paperNumberSection);
+        }; // end onclick
     } else if (value == "no") {
-        //console.log("no");
-        registerPaper[i].onclick = () => {
-            paperNumber.required = false;
-            paperNumberSection.style.display = "none";
-            console.log(registerPaper[0].value + " " + registerPaper[0].checked);
-            console.log(registerPaper[1].value + " " + registerPaper[1].checked);
-        };
+        radioButt.onclick = () => {
+            todoNo(inputs, paperNumberSection);
+        }; // end onclick
     } else {
         console.log("Something is wrong");
-    }
-
+    } // end else
 } // end for i
+
+function todoYes(inputs, paperNumberSection) {
+    for (let i = 0; i < inputs.length; ++i) {
+        inputs[i].required = true;
+    } // end for
+    paperNumberSection.classList.remove("hide");
+} // end todoYes
+
+function todoNo(inputs, paperNumberSection) {
+    for (let i = 0; i < inputs.length; ++i) {
+        inputs[i].required = false;
+    } // end for
+    paperNumberSection.classList.add("hide");
+} // end todoNo

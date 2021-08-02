@@ -433,15 +433,21 @@
                         </div>
                         
                         <!--PAPER NUMBER-->
-                        <div id="paper_number_section">
+                        <div id="paper_number_section" class="">
+                            <!--NUMBER OF PAPER-->
                             <h4>If you chose yes, please fill out these information:</h4>
                             <div class="form-row">
-                                
-                                <br>
-                                <div class="name">Paper Number<span id="paper_number_asterisk" class="required-field hide"></span></div>
+                                <div class="name">Number of Paper<span class="required-field"></span></div>
                                 <div class="value">
                                     <div class="input-group col-2">
-                                        <input class="input--style-5" type="text" name="paper_number" required>
+                                        <input class="input--style-5 required-input" type="text" name="number_paper" required>
+                                        <label class="label--desc"></label>
+                                    </div>
+                                </div>
+                                <div class="name">Paper Number<span class="required-field"></span></div>
+                                <div class="value p-t-10">
+                                    <div class="input-group col-2">
+                                        <input class="input--style-5 required-input" type="text" name="paper_number" required>
                                         <label class="label--desc"></label>
                                     </div>
                                 </div>
