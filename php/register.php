@@ -228,10 +228,41 @@
         ];
         $context = stream_context_create($context_options);
         $result = file_get_contents($url, false, $context);
-        $result = new SimpleXMLElement( $result );
         if ($result == false) {
-            die()
+            echo ("Error: Cannot add product to cart <br>");
+            return;
         } // end if
+
+        // update personal information
+        // /service/[shopid]/orders/[orderid]/add/[productid]
+        $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/add/' . $product_id . '?key=' . $store_key;
+        $number_paper = $data['number_paper'];
+        if ($number_paper == '0') {
+            die("Error: Paper Registration with 0 paper amount registered");
+        } // end if
+        
+        $number_paper = intval($number_paper);
+        if ($number_paper == 0) {
+            die("Error: The number format is not integer");
+        } // end if
+
+        $content = ['amount' => $number_paper];
+        $content = http_build_query($content);
+
+        $context_options = [
+            'http' => [
+                'method' => 'POST',
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n". "Content-Length: " . strlen($content) . "\r\n",
+                'content' => $content
+            ]
+        ];
+        $context = stream_context_create($context_options);
+        $result = file_get_contents($url, false, $context);
+        if ($result == false) {
+            echo ("Error: Cannot update personal information<br>");
+            return;
+        } // end if
+
     } // end updateOrder
 
     function showOrders($service_url, $store_key, $store_id) {
