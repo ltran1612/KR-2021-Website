@@ -1,6 +1,10 @@
 <?php
     require_once '../vendor/autoload.php';
     //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
+
+    $service_url = 'https://shopcart.nmsu.edu/service/';
+    $store_key = '01c035f6b7da73a6236d34ae3bf2df5d';
+    $store_id = 97;
     
     function validEmail($email) {
         // check for email address rfc format
@@ -178,6 +182,10 @@
     function getEmailGenericBody() {
         return file_get_contents('../mail_content/mail_content.txt');
     } // end getEmailGenericBody
+
+    function createOrder($service_url, $store_key, $store_id) {
+
+    } // end createOrder
 
 // START
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
