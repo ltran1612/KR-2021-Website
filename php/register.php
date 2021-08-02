@@ -2,9 +2,10 @@
     require_once '../vendor/autoload.php';
     //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
-    $service_url = 'https://shopcart.nmsu.edu/service/';
+    $service_url = 'https://shopcart.nmsu.edu/service';
     $store_key = '01c035f6b7da73a6236d34ae3bf2df5d';
     $store_id = 97;
+    $product_id = 2097;
     
     function validEmail($email) {
         // check for email address rfc format
@@ -184,8 +185,61 @@
     } // end getEmailGenericBody
 
     function createOrder($service_url, $store_key, $store_id) {
+        $url = $service_url . '/' . $store_id . '/orders/create' . '?key=' . $store_key;
+        $result = file_get_contents($url);
+        $result = new SimpleXMLElement( $result );
 
+        $order_id = (string) ($result->xpath('/result/order/id')[0]);
+        //echo "Created " . $order_id . "<br>";
+
+        return $order_id;
     } // end createOrder
+
+    function deleteOrder($service_url, $store_key, $store_id, $order_id) {
+        // /service/[shopid]/orders/[orderid]/abandon
+        $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/abandon' . '?key=' . $store_key;
+        $result = file_get_contents($url);
+        print_r("delete: " . $result);
+    } // end deleteOrder
+
+    function updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $data) {
+        // add items
+        // /service/[shopid]/orders/[orderid]/add/[productid]
+        $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/add/' . $product_id . '?key=' . $store_key;
+        $number_paper = $data['number_paper'];
+        if ($number_paper == '0') {
+            die("Error: Paper Registration with 0 paper amount registered");
+        } // end if
+        
+        $number_paper = intval($number_paper);
+        if ($number_paper == 0) {
+            die("Error: The number format is not integer");
+        } // end if
+
+        $content = ['amount' => $number_paper];
+        $content = http_build_query($content);
+
+        $context_options = [
+            'http' => [
+                'method' => 'POST',
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n". "Content-Length: " . strlen($content) . "\r\n",
+                'content' => $content
+            ]
+        ];
+        $context = stream_context_create($context_options);
+        $result = file_get_contents($url, false, $context);
+        $result = new SimpleXMLElement( $result );
+        if ($result == false) {
+            die()
+        } // end if
+    } // end updateOrder
+
+    function showOrders($service_url, $store_key, $store_id) {
+        // /service/[shopid]/orders
+        $url = $service_url . '/' . $store_id . '/orders' . '?key=' . $store_key;
+        $result = file_get_contents($url);
+        print_r($result);
+    } // end showOrders
 
 // START
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -215,8 +269,6 @@
     
             // check unique email
             if (uniqueEmail($email, $account)) {
-                // save to database
-                saveToDatabase($_POST, $account);
                 // send email
                 try {
                     $email_body = getEmailGenericBody();
@@ -233,6 +285,11 @@
                     
                     $paper_message = "";
                     if ($_POST['register_paper'] == "yes") {
+                        //  // create order
+                        //  $order_id = createOrder($service_url, $store_key, $store_id);
+                        //  // add information
+
+                         // message for displaying
                         $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
                             <br>
                         1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>.
@@ -271,6 +328,8 @@
                                         . "\n\t9) Continue Checkout."
                                         . "\n\t10) Review your order and payment information, then click \"Submit Payment\"."
                         ; // end paper_message
+
+                       
                     } // end if
     
                     // put the confirmation into the email body
@@ -283,11 +342,19 @@
     
                     // get email result message
                     $email_result = $result == 0 ? $email_failure_message : $email_success_message;
+
+                    // save to database
+                    saveToDatabase($_POST, $account);
                 } catch(Swift_RfcComplianceException $e) {
                     $email_result = "Your email is invalid, please register with an another email address";
                 } // end catch
             } // end if
             else {
+                // create order
+                $order_id = createOrder($service_url, $store_key, $store_id);
+                // add information
+                updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $_POST);
+                deleteOrder($service_url, $store_key, $store_id, $order_id);
                 $message = "The email you entered has already been used. Please register with a unique email address";
                 $success = false;
             } // end else
