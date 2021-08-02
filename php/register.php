@@ -216,50 +216,41 @@
             die("Error: The number format is not integer");
         } // end if
 
-        $content = ['amount' => $number_paper];
-        $content = http_build_query($content);
-
-        $context_options = [
-            'http' => [
-                'method' => 'POST',
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n". "Content-Length: " . strlen($content) . "\r\n",
-                'content' => $content
-            ]
-        ];
-        $context = stream_context_create($context_options);
-        $result = file_get_contents($url, false, $context);
+        // add amount in the url
+        $url = $url . '&amount=' . $number_paper;
+        $result = file_get_contents($url);
         if ($result == false) {
             echo ("Error: Cannot add product to cart <br>");
             return;
         } // end if
+        print_r("Add products" . $result . "<br>");
 
         // update personal information
-        // /service/[shopid]/orders/[orderid]/add/[productid]
-        $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/add/' . $product_id . '?key=' . $store_key;
-        $number_paper = $data['number_paper'];
-        if ($number_paper == '0') {
-            die("Error: Paper Registration with 0 paper amount registered");
-        } // end if
+        // /service/[shopid]/orders/[orderid]/update_personal
+        $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/upddate_personal' . '?key=' . $store_key;
         
-        $number_paper = intval($number_paper);
-        if ($number_paper == 0) {
-            die("Error: The number format is not integer");
-        } // end if
+        // last name
+        $url = $url . "&lastname=";
 
-        $content = ['amount' => $number_paper];
-        $content = http_build_query($content);
+        // first name
+        $url = $url . "&firstname=";
 
-        $context_options = [
-            'http' => [
-                'method' => 'POST',
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n". "Content-Length: " . strlen($content) . "\r\n",
-                'content' => $content
-            ]
-        ];
-        $context = stream_context_create($context_options);
-        $result = file_get_contents($url, false, $context);
+        // email
+        $url = $url . "&email=";
+
+        // address
+
+        // city
+
+        // state
+
+        // zip
+
+        
+        // get the personal information
+        $result = file_get_contents($url);
         if ($result == false) {
-            echo ("Error: Cannot update personal information<br>");
+            echo ("Error: Cannot update personal information for the order<br>");
             return;
         } // end if
 
@@ -267,7 +258,7 @@
 
     function showOrders($service_url, $store_key, $store_id) {
         // /service/[shopid]/orders
-        $url = $service_url . '/' . $store_id . '/orders' . '?key=' . $store_key;
+        $url = $service_url . '/' . $store_id . '/orders' . '?key=' . $store_key . '&verbose=1';
         $result = file_get_contents($url);
         print_r($result);
     } // end showOrders
@@ -385,6 +376,7 @@
                 $order_id = createOrder($service_url, $store_key, $store_id);
                 // add information
                 updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $_POST);
+                //showOrders($service_url, $store_key, $store_id);
                 deleteOrder($service_url, $store_key, $store_id, $order_id);
                 $message = "The email you entered has already been used. Please register with a unique email address";
                 $success = false;
