@@ -91,8 +91,14 @@
         $isStudent = strtoupper($data['is_student']);
         $registerPaper = strtoupper($data['register_paper']);
         // paper number
-        $paperNumber = ($registerPaper != null && $registerPaper == "YES") ? $data['paper_number'] : null;
-
+        if ($registerPaper != null && $registerPaper == "YES") {
+            $paperNumber = $data['paper_number'];
+            $numberPaper = $data['number_paper'];
+        } else {
+            $paperNumber = null;
+            $numberPaper = null;
+        } // end else
+        
         // workshops
         $workshops = [];
         for ($i = 0; $i < 6; ++$i) {
@@ -115,8 +121,8 @@
         $videosNotToPublish = $data['videos_not_to_publish'];
 
         // prepare and bind
-        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssssssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
+        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssisssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
 
         // execute
         try {
