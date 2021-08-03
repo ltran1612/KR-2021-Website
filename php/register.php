@@ -6,7 +6,14 @@
     $store_key = '01c035f6b7da73a6236d34ae3bf2df5d';
     $store_id = 97;
     $product_id = 2097;
-    
+    function safeEcho($value) {
+        echo htmlentities($value);
+    } // end myEcho
+
+    function safeString($value) {
+        return htmlentities($value);
+    } // end safeString
+
     function validEmail($email) {
         // check for email address rfc format
         try {
@@ -198,6 +205,9 @@
 
         $order_id = (string) ($result->xpath('/result/order/id')[0]);
         //echo "Created " . $order_id . "<br>";
+        $error = (string) ($result->xpath('/result/error')[0]);
+        if ($error != "0")
+            return "";
 
         return $order_id;
     } // end createOrder
@@ -230,7 +240,7 @@
             echo ("Error: Cannot add product to cart <br>");
             return;
         } // end if
-        print_r("Add products" . $result . "<br>");
+        //print_r("Add products" . $result . "<br>");
 
         // update personal information
         // /service/[shopid]/orders/[orderid]/update_personal
@@ -263,8 +273,8 @@
 
         // create string
         $format = "&lastname=%s&firstname=%s&email=%s&address=%s&city=%s&state=%s&zip=%s";
-        $url = $url . sprintf($format, $lastName, $firstName, $email, $address, $city, $state, $zip);
-        echo $url;
+        $url = $url . sprintf($format, safeString($lastName), safeString($firstName), safeString($email), safeString($address), safeString($city), safeString($state), safeString($zip));
+        //echo $url;
         // get the personal information
         $result = file_get_contents($url);
         if ($result == false) {
@@ -277,7 +287,14 @@
         // /service/[shopid]/orders/[orderid]/checkout
         $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/checkout' . '?key=' . $store_key;
         $result = file_get_contents($url);
-        print_r("checkout: " . $result);
+        $result = new SimpleXMLElement($result);
+
+
+        $error = (string) ($result->xpath('/result/error')[0]);
+        if ($error != "0")
+            return "";
+        $result_url = (string) ($result->xpath('/result/url')[0]);
+        return $result_url;
     } // end checkoutOrder
 
     function showOrders($service_url, $store_key, $store_id) {
@@ -321,29 +338,36 @@
             if (uniqueEmail($email, $account)) {
                 // send email
                 try {
+
                     $email_body = getEmailGenericBody();
                     // add name
                     $email_body = str_replace("{user}", ucwords($_POST['name']), $email_body);
                     // add confirmation
                     $confirmation = "CONFIRMATION:".
-                    "\n\t+ Name: " . $_POST['name'] .
-                    "\n\t+ Affiliation: " . $_POST['affiliation'] .
-                    "\n\t+ Email: " . $_POST['email_address'] .
-                    "\n\t+ Is a Student?: " . $_POST['is_student'] .
-                    "\n\t+ Will Register a Paper?: " . $_POST['register_paper']
+                    "\n\t+ Name: " . safeString($_POST['name']).
+                    "\n\t+ Affiliation: " . safeString($_POST['affiliation']).
+                    "\n\t+ Email: " . safeString($_POST['email_address']).
+                    "\n\t+ Is a Student?: " . safeString($_POST['is_student']).
+                    "\n\t+ Will Register a Paper?: " . safeString($_POST['register_paper'])
                         ;
                     
                     $paper_message = "";
                     if ($_POST['register_paper'] == "yes") {
-                        //  // create order
-                        //  $order_id = createOrder($service_url, $store_key, $store_id);
-                        //  // add information
+                        $checkout_url = "";
+                        // create order
+                        $order_id = createOrder($service_url, $store_key, $store_id);
+                        if ($order_id != "") {
+                            // add information
+                            updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $_POST);
+                            // checkout order
+                            $checkout_url = checkoutOrder($service_url, $store_key, $store_id, $order_id);
+                        } // end if
 
                          // message for displaying
-                        $message = "<b class=\"important\">The payment for the Paper Registration is separate</b> and has to be done by following these steps:
+                        $message = "<b class=\"important\">The payment for the Paper Registration (100$/paper registration) is separate</b> and has to be done by following these steps:
                             <br>
-                        1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>.
-                        <br>
+                        1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>" . ($checkout_url == "" ? "" : " or <a href=$checkout_url target=\"_blank\">Checkout Link</a> to skip to step 8") . "." .
+                        "<br>
                         2) Click on \"Paper Registration\" under Featured Products.
                         <br>
                         3) Click \"Add to cart\".
@@ -366,8 +390,8 @@
                         // add paper number
                         $confirmation = $confirmation . "\n        +Paper Number: " . $_POST['paper_number'];
                         // add paper registration
-                        $paper_message = "\nPlease note that you have to pay for the Paper Registration separately by: "
-                                        . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021."
+                        $paper_message = "\nPlease note that you have to pay for the Paper Registration (100$/paper registration) separately by: "
+                                        . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021" . ($checkout_url == "" ? "" : " or $checkout_url to skip to step 8")
                                         . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
                                         . "\n\t3) Click \"Add to cart\"."
                                         . "\n\t4) Make sure the quantity is correct, you can adjust and update it with Update Quantities."
@@ -400,15 +424,6 @@
                 } // end catch
             } // end if
             else {
-                echo "Herer";
-                // create order
-                $order_id = createOrder($service_url, $store_key, $store_id);
-                // add information
-                updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $_POST);
-                //showOrders($service_url, $store_key, $store_id);
-                // checkout order
-                checkoutOrder($service_url, $store_key, $store_id, $order_id);
-                //deleteOrder($service_url, $store_key, $store_id, $order_id);
                 $message = "The email you entered has already been used. Please register with a unique email address";
                 $success = false;
             } // end else
@@ -481,18 +496,18 @@
                     <h2 class="title">CONFIRMATION INFORMATION</h2>
                 </div>
                 <div class="card-body">
-                    Name: <?php echo $_POST['name'] ?>
+                    Name: <?php echo safeEcho($_POST['name'])?>
                     <br>
-                    Affiliation: <?php echo $_POST['affiliation'] ?>
+                    Affiliation: <?php safeEcho($_POST['affiliation'])?>
                     <br>
-                    Email: <?php echo $_POST['email_address'] ?>
+                    Email: <?php safeEcho($_POST['email_address'])?>
                     <br>
-                    Is a Student?: <?php echo $_POST['is_student'] ?>
+                    Is a Student?: <?php safeEcho($_POST['is_student'])?>
                     <br>
-                    Will Register a Paper?: <?php echo $_POST['register_paper'] ?>
+                    Will Register a Paper?: <?php safeEcho($_POST['register_paper'])?>
                     <br>
                     <?php 
-                        if($_POST['register_paper'] == "yes") echo "Paper Number: ".$_POST['paper_number']
+                        if($_POST['register_paper'] == "yes") safeEcho("Paper Number: ".$_POST['paper_number'])
                     ?>
                     <br>
                     <!---->
