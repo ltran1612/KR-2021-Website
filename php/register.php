@@ -1,5 +1,6 @@
 <?php
     require_once '../vendor/autoload.php';
+    require './misc_funcs.php';
     require './email_funcs.php';
     //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
@@ -7,25 +8,9 @@
     $store_key = '01c035f6b7da73a6236d34ae3bf2df5d';
     $store_id = 97;
     $product_id = 2097;
-    function safeEcho($value) {
-        echo htmlentities($value);
-    } // end myEcho
-
-    function safeString($value) {
-        return htmlentities($value);
-    } // end safeString
-
-    function safeUrlEncodeValue($value) {
-        return urlencode(safeString($value));
-    } // end safeEncodeValue
 
 
-    function prepareData($data) {
-        // trim the values
-        foreach ($data as $key => $value) {
-            $data[$key] = trim($value);
-        } // end foreach   
-    } // end prepareData
+
 
     function determineValue($value) {
         return $value == null || $value == "" ? "placeholder" : $value;
