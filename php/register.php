@@ -22,6 +22,17 @@
         return true;
     } // end function
 
+    function prepareData($data) {
+        // trim the values
+        foreach ($data as $key => $value) {
+            $data[$key] = trim($value);
+        } // end foreach   
+    } // end prepareData
+
+    function determineValue(&$value) {
+        return $value == null || $value == "" ? "placeholder" : $value;
+    } // end determineValue
+
     function uniqueEmail($email, $account) {
         $conn = createConn($account);
         $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
@@ -66,10 +77,6 @@
         }
         
         // set parameters and execute
-        // trim the values
-        foreach ($data as $key => $value) {
-            $data[$key] = trim($value);
-        } // end foreach
 
         $name = $data['name'];
         $affiliation = $data['affiliation'];
@@ -227,34 +234,51 @@
 
         // update personal information
         // /service/[shopid]/orders/[orderid]/update_personal
-        $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/upddate_personal' . '?key=' . $store_key;
+        $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/update_personal' . '?key=' . $store_key;
         
         // last name
-        $url = $url . "&lastname=";
+        $lastName = "placeholder";
 
         // first name
-        $url = $url . "&firstname=";
+        $firstName = "placeholder";
 
         // email
-        $url = $url . "&email=";
+        $email = $data['email_address'];
 
         // address
+        $address = $data['address_line'];
 
         // city
+        $city = $data['city_address'];
+        $city = determineValue($city);
+        
 
         // state
+        $state = $data['state_address'];
+        $state = determineValue($state);
 
         // zip
+        $zip = $data['zip_address'];
+        $zip = determineValue($zip);
 
-        
+        // create string
+        $format = "&lastname=%s&firstname=%s&email=%s&address=%s&city=%s&state=%s&zip=%s";
+        $url = $url . sprintf($format, $lastName, $firstName, $email, $address, $city, $state, $zip);
+        echo $url;
         // get the personal information
         $result = file_get_contents($url);
         if ($result == false) {
             echo ("Error: Cannot update personal information for the order<br>");
             return;
         } // end if
-
     } // end updateOrder
+
+    function checkoutOrder($service_url, $store_key, $store_id, $order_id) {
+        // /service/[shopid]/orders/[orderid]/checkout
+        $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/checkout' . '?key=' . $store_key;
+        $result = file_get_contents($url);
+        print_r("checkout: " . $result);
+    } // end checkoutOrder
 
     function showOrders($service_url, $store_key, $store_id) {
         // /service/[shopid]/orders
@@ -269,6 +293,10 @@
     $account = json_decode(file_get_contents('../odjfka/1929/vvv/db_account.json'));
     if ($account == null)
         die("DB account file not found");
+
+    // process data
+    prepareData($_POST);
+
     // variables
     $message = "";
     $email_result = "";
@@ -372,12 +400,15 @@
                 } // end catch
             } // end if
             else {
+                echo "Herer";
                 // create order
                 $order_id = createOrder($service_url, $store_key, $store_id);
                 // add information
                 updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $_POST);
                 //showOrders($service_url, $store_key, $store_id);
-                deleteOrder($service_url, $store_key, $store_id, $order_id);
+                // checkout order
+                checkoutOrder($service_url, $store_key, $store_id, $order_id);
+                //deleteOrder($service_url, $store_key, $store_id, $order_id);
                 $message = "The email you entered has already been used. Please register with a unique email address";
                 $success = false;
             } // end else
@@ -387,7 +418,7 @@
         } // end else
     } catch(Exception $e) {
         die($e);
-    }
+    } // end catch
     
 ?>
 
