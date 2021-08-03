@@ -17,4 +17,8 @@
             $data[$key] = trim($value);
         } // end foreach   
     } // end prepareData
+
+    function determineValue($value, $placeholder) {
+        return $value == null || $value == "" ? $placeholder : $value;
+    } // end determineValue
 ?>

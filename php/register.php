@@ -10,12 +10,6 @@
     $product_id = 2097;
 
 
-
-
-    function determineValue($value) {
-        return $value == null || $value == "" ? "placeholder" : $value;
-    } // end determineValue
-
     function createConn($account) {
         $servername = $account->serverName;
         $username = $account->userName;
@@ -123,7 +117,6 @@
         } // end finally
     } // end saveToDatabase
 
-    
     function createOrder($service_url, $store_key, $store_id) {
         $url = $service_url . '/' . $store_id . '/orders/create' . '?key=' . $store_key;
         $result = file_get_contents($url);
@@ -186,16 +179,16 @@
 
         // city
         $city = $data['city_address'];
-        $city = determineValue($city);
+        $city = determineValue($city, "placeholder");
         
 
         // state
         $state = $data['state_address'];
-        $state = determineValue($state);
+        $state = determineValue($state, "placeholder");
 
         // zip
         $zip = $data['zip_address'];
-        $zip = determineValue($zip);
+        $zip = determineValue($zip, "placeholder");
 
         // create string
         $format = "&lastname=%s&firstname=%s&email=%s&address=%s&city=%s&state=%s&zip=%s";
