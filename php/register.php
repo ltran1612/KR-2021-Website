@@ -36,7 +36,7 @@
         } // end foreach   
     } // end prepareData
 
-    function determineValue(&$value) {
+    function determineValue($value) {
         return $value == null || $value == "" ? "placeholder" : $value;
     } // end determineValue
 
