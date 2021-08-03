@@ -14,23 +14,6 @@ function validEmail($email) {
     return true;
 } // end function
 
-function uniqueEmail($email, $account) {
-    $conn = createConn($account);
-    $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
-    $stmt->bind_param("s", $email);
-
-    try {
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->num_rows == 0;
-    } catch(mysqli_sql_exception $ex) {
-        die("Something is wrong when checking the email with the database");
-    } finally {
-        $stmt->close();
-        $conn->close();
-    } // end finally
-} // end uniqueEmail
-
 function sendEmail($email, $header, $body) {
     // create the Transport
     $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, "ssl"))

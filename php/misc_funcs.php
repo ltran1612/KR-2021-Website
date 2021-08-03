@@ -21,4 +21,8 @@
     function determineValue($value, $placeholder) {
         return $value == null || $value == "" ? $placeholder : $value;
     } // end determineValue
+
+    function getDBAccount() {
+        return json_decode(file_get_contents('../odjfka/1929/vvv/db_account.json'));
+    } // end getDBAccount
 ?>

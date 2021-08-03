@@ -2,120 +2,14 @@
     require_once '../vendor/autoload.php';
     require './misc_funcs.php';
     require './email_funcs.php';
+    require './DatabaseAdapter.php';
     //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
+    // use safeEcho when we output to screen.
     $service_url = 'https://shopcart.nmsu.edu/service';
     $store_key = '01c035f6b7da73a6236d34ae3bf2df5d';
     $store_id = 97;
     $product_id = 2097;
-
-
-    function createConn($account) {
-        $servername = $account->serverName;
-        $username = $account->userName;
-        $password = $account->passWord;
-        $dbname = $account->dbName;
-        
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        
-        // Check connection
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        } // end if
-
-        return $conn;
-    } // end createConn
-
-    function saveToDatabase($data, $account) { 
-        // Create connection
-        $conn = createConn($account);
-        
-        // Check connection
-        if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-        }
-        
-        // set parameters and execute
-
-        $name = $data['name'];
-        $affiliation = $data['affiliation'];
-
-        //address
-        $address_line = $data['address_line'];
-        $city_address = $data['city_address'];
-        $state_address = $data['state_address'];
-        $country_address = $data['country_address'];
-        $zip_address = $data['zip_address'];
-
-        $address = $address_line . ", " 
-                    .($city_address == "" || $city_address == null ? "" : "City: " . $city_address . ', ') 
-                    .($state_address == "" || $state_address == null ? "" : "State: " . $state_address . ', ')
-                    .$country_address
-                    .($zip_address == "" || $zip_address == null ? "" : ", " . "Zip code: ". $zip_address) ;
-
-        // other
-        $email = $data['email_address'];
-        // remove all spaces in phone number
-        $phone = str_replace(" ", "", $data['phone_number']);
-
-        // change them to uppercase
-        $isStudent = strtoupper($data['is_student']);
-        $registerPaper = strtoupper($data['register_paper']);
-        // paper number
-        if ($registerPaper != null && $registerPaper == "YES") {
-            $paperNumber = $data['paper_number'];
-            $numberPaper = $data['number_paper'];
-        } else {
-            $paperNumber = null;
-            $numberPaper = null;
-        } // end else
-        
-        // workshops
-        $workshops = [];
-        for ($i = 0; $i < 6; ++$i) {
-            $workshops[$i] = $data["workshop".($i+1)];
-        } // end for i
-        $workshops = json_encode($workshops);
-
-        // tutorials
-        $tutorials = [];
-        for ($i = 0; $i < 8; ++$i) {
-            $tutorials[$i] = $data["tutorial".($i+1)];
-        } // end for i
-        $tutorials = json_encode($tutorials);
-
-        // others
-        $goNMR = strtoupper($data['participate_nmr']);
-        $gender = strtoupper($data['gender']);
-        // consent
-        $videoConsent = strtoupper($data['video_consent']);
-        $videosNotToPublish = $data['videos_not_to_publish'];
-
-        // prepare and bind
-        $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssisssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
-
-        // execute
-        try {
-            $stmt->execute();
-        } catch (mysqli_sql_exception $exception) {
-            $state = $conn->sqlstate;
-            if ($state == "23000") {
-                die("Someone has already registered with this email address: " . $_POST['email_address']. ". Please register with a different email address");
-            } else {
-                // for debug
-                die("$exception");
-
-                // for production
-                die("Something is wrong, please try again");
-            } // end else
-        } finally {
-            // closing connection
-            $stmt->close();
-            $conn->close();
-        } // end finally
-    } // end saveToDatabase
 
     function createOrder($service_url, $store_key, $store_id) {
         $url = $service_url . '/' . $store_id . '/orders/create' . '?key=' . $store_key;
@@ -222,27 +116,27 @@
         $result = file_get_contents($url);
         print_r($result);
     } // end showOrders
-
 // START
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-    // get account
-    $account = json_decode(file_get_contents('../odjfka/1929/vvv/db_account.json'));
-    if ($account == null)
-        die("DB account file not found");
+    // get db account
+    $dbAccount = getDBAccount();
+    if ($dbAccount == null)
+        die("Cannot connect to database: account file not found");
 
     // process data
     prepareData($_POST);
 
-    // variables
+    // default messages;
     $message = "";
     $email_result = "";
-    // check if the information already exists. 
     $success = true;
+    // messages
     $email_failure_message = "Something is wrong, we werent' able to send you a confirmation email";
     $email_success_message = "You should be <b>receiving a confirmation email</b> in your mailbox at: "
     . "<b>" . $_POST['email_address']."</b>"
     . "<br><br>";
 
+    // check if the information already exists. 
     try {
         if ($_POST['register_paper'] == "yes" || $_POST['register_paper'] == "no") {    
             // get the email
@@ -252,12 +146,14 @@
             if (!validEmail($email)) {
                 die("Your email is invalid, please go back and update your email address");
             } // end if
+
+            // database adapter
+            $dbAdapter = new DatabaseAdapter($dbAccount);
     
             // check unique email
-            if (uniqueEmail($email, $account)) {
+            if ($dbAdapter->isUniqueEmail($email)) {
                 // send email
                 try {
-
                     $email_body = getEmailGenericBody();
                     // add name
                     $email_body = str_replace("{user}", ucwords($_POST['name']), $email_body);
@@ -340,7 +236,7 @@
                     $email_result = $result == 0 ? $email_failure_message : $email_success_message;
 
                     // save to database
-                    saveToDatabase($_POST, $account);
+                    $dbAdapter->saveToDatabase($_POST);
                 } catch(Swift_RfcComplianceException $e) {
                     $email_result = "Your email is invalid, please register with an another email address";
                 } // end catch
