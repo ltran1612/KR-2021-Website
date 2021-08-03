@@ -1,5 +1,6 @@
 <?php
     require_once '../vendor/autoload.php';
+    require './email_funcs.php';
     //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
     $service_url = 'https://shopcart.nmsu.edu/service';
@@ -14,20 +15,10 @@
         return htmlentities($value);
     } // end safeString
 
-    function validEmail($email) {
-        // check for email address rfc format
-        try {
-            $message = (new Swift_Message('Wonderful Subject'))
-            ->setTo(["$email"]);
-            ;
-        } catch(Swift_RfcComplianceException $e) {
-            return false;
-        } // end catch
+    function safeUrlEncodeValue($value) {
+        return urlencode(safeString($value));
+    } // end safeEncodeValue
 
-        // check for dns availability
-
-        return true;
-    } // end function
 
     function prepareData($data) {
         // trim the values
@@ -39,23 +30,6 @@
     function determineValue($value) {
         return $value == null || $value == "" ? "placeholder" : $value;
     } // end determineValue
-
-    function uniqueEmail($email, $account) {
-        $conn = createConn($account);
-        $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
-        $stmt->bind_param("s", $email);
-
-        try {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->num_rows == 0;
-        } catch(mysqli_sql_exception $ex) {
-            die("Something is wrong when checking the email with the database");
-        } finally {
-            $stmt->close();
-            $conn->close();
-        } // end finally
-    } // end uniqueEmail
 
     function createConn($account) {
         $servername = $account->serverName;
@@ -164,40 +138,7 @@
         } // end finally
     } // end saveToDatabase
 
-    function sendEmail($email, $header, $body) {
-        // create the Transport
-        $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, "ssl"))
-        ->setUsername("kr2021reg@gmail.com")
-        -> setPassword("hoinghikr#2021");
-
-        // create a mailer
-        $mailer = new Swift_Mailer($transport);
-
-        try {
-            $message = (new Swift_Message($header))
-            ->setFrom(['kr2021reg@gmail.com' => "KR-2021"])
-            ->setTo(["$email"])
-            ->setBody($body)
-            ;
-        } catch(Swift_RfcComplianceException $e) {
-            throw $e;
-        } // end catch
-        
-        
-        $result = $mailer->send($message);
-        //$result = 0;
-
-        return $result;
-    } // end sendEmail
-
-    function getEmail($data) {
-        return trim($data['email_address']);
-    } // end getEmail
-
-    function getEmailGenericBody() {
-        return file_get_contents('../mail_content/mail_content.txt');
-    } // end getEmailGenericBody
-
+    
     function createOrder($service_url, $store_key, $store_id) {
         $url = $service_url . '/' . $store_id . '/orders/create' . '?key=' . $store_key;
         $result = file_get_contents($url);
@@ -273,7 +214,7 @@
 
         // create string
         $format = "&lastname=%s&firstname=%s&email=%s&address=%s&city=%s&state=%s&zip=%s";
-        $url = $url . sprintf($format, safeString($lastName), safeString($firstName), safeString($email), safeString($address), safeString($city), safeString($state), safeString($zip));
+        $url = $url . sprintf($format, safeUrlEncodeValue($lastName), safeUrlEncodeValue($firstName), safeUrlEncodeValue($email), safeUrlEncodeValue($address), safeUrlEncodeValue($city), safeUrlEncodeValue($state), safeUrlEncodeValue($zip));
         //echo $url;
         // get the personal information
         $result = file_get_contents($url);
@@ -382,6 +323,8 @@
                         <br>
                         8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required). 
                         <br>
+                        <i><b>Note: No spaces in card number</b></i>
+                        <br>
                         9) Continue Checkout.
                         <br>
                         10) Review your order and payment information, then click \"Submit Payment\".
@@ -399,6 +342,7 @@
                                         . "\n\t6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later)."
                                         . "\n\t7) Proceed to checkout."
                                         . "\n\t8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required)."
+                                        . "\n\tNote: No spaces in card number"
                                         . "\n\t9) Continue Checkout."
                                         . "\n\t10) Review your order and payment information, then click \"Submit Payment\"."
                         ; // end paper_message
