@@ -112,12 +112,6 @@
                                             <label class="label--desc">Zip Code</label>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-2">
-                                        <div class="input-group-desc">
-                                            <input class="input--style-5" type="text" name="country_address" required>
-                                            <label class="label--desc">Country</label>
-                                        </div>
-                                    </div> -->
                                     <div class="col-2">
                                         <div class="input-group">
                                             <div class="rs-select2 js-select-simple">

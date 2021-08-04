@@ -9,13 +9,14 @@
     // database
     $account = getDBAccount();
     if ($account == null)
-        die("Cannot connect to database: account file not found");
+        dieBig("Cannot connect to database: account file not found");
     $dbAdapter = new DatabaseAdapter($account);
 
     // process data
     prepareData($_POST);
     $email = $_POST['email_address'];
 
+    // update database
     $success = $dbAdapter->updateDatabase($email, $_POST);
 
     // default messages;

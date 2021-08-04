@@ -1,22 +1,41 @@
 <?php
     require_once '../vendor/autoload.php';
+    require_once './misc_funcs.php';
 
+    /**
+     * A class for operations with the database
+     */
     class DatabaseAdapter {
         private $serverName;
         private $userName;
         private $passWord;
         private $dbName;
 
+        /**
+         * Construct an adapter object
+         * 
+         * Account object fields:
+         * + serverName
+         * + userName
+         * + passWord
+         * + dbName
+         */
         function __construct($account) {
+            //
             if ($account == null)
-                die("No account");
-
+                dieBig("Error: The account object to connect to the database is not found");
+                
             $this->serverName = $account->serverName;
             $this->userName = $account->userName;
             $this->passWord = $account->passWord;
             $this->dbName = $account->dbName;
         } // end __construct
 
+        /**
+         * Create a connection to the database with the account given during the construction
+         * 
+         * @return mysqli A connection to the database with the account given during construction
+         */
         private function createConn() {            
             // Create connection
             $conn = new mysqli($this->serverName, $this->userName, $this->passWord, $this->dbName);
@@ -24,6 +43,33 @@
             return $conn;
         } // end createConn
 
+        /**
+         * Save the data to the database
+         * 
+         * $data object fields:
+         * + first_name
+         * + last_name
+         * + affiliation
+         * + address_line
+         * + city_address
+         * + state_address
+         * + zip_address
+         * + country_address
+         * + email_address
+         * + phone_number
+         * + is_student
+         * + register_paper
+         * + number_paper
+         * + paper_number
+         * + workshop1 to workshop6
+         * + tutorial1 to tutorial8
+         * + participate_nmr
+         * + gender
+         * + video_consent
+         * + videos_not_to_publish
+         * 
+         * @return bool if the database is saved successfully
+         */
         public function saveToDatabase($data) { 
             // Create connection
             $conn = $this->createConn();
@@ -33,8 +79,9 @@
               die("Connection failed: " . $conn->connect_error);
             } // end if
             
-            // set parameters and execute
+            // name
             $name = $data['name'];
+            // affiliation
             $affiliation = $data['affiliation'];
     
             //address
@@ -90,21 +137,24 @@
     
             // prepare and bind
             $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssssssisssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
-    
+            if ($stmt == false) {
+                dieBig("prepare() for insertion failed: $conn->error");
+            } // end if
+            $temp = $stmt->bind_param("sssssssisssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
+            if ($temp == false) {
+                dieBig("bind_param() for insertion failed: $stmt->error");
+            } // end if
+
             // execute
             try {
                 return $stmt->execute();
             } catch (mysqli_sql_exception $exception) {
                 $state = $conn->sqlstate;
                 if ($state == "23000") {
-                    die("Someone has already registered with this email address: " . $email . ". Please register with a different email address");
+                    dieBig("Someone has already registered with this email address: " . $email . ". Please register with a different email address");
                 } else {
                     // for debug
-                    die("$exception");
-    
-                    // for production
-                    die("Something is wrong, please try again");
+                    dieBig($exception);
                 } // end else
             } finally {
                 // closing connection
@@ -113,63 +163,114 @@
             } // end finally
         } // end saveToDatabase
 
+        /**
+         * Check if the email has been registered in the database
+         * 
+         * @return bool true if the email is unique
+         */
         public function isUniqueEmail($email) {
+            // create a connection
             $conn = $this->createConn();
             // Check connection
             if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-              } // end if
+                dieBig("Connection failed: " . $conn->connect_error);
+            } // end if
+
             $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
-            $stmt->bind_param("s", $email);
+            if ($stmt == false) {
+                dieBig("prepare() for select (check unique email) failed: $conn->error");
+            } // end if
+
+            $temp = $stmt->bind_param("s", $email);
+            if ($temp == false) {
+                dieBig("bind_param for select (check unique email) failed: $stmt->error");
+            } // end if
 
             try {
-                $stmt->execute();
+                $temp = $stmt->execute();
+                if ($temp == false) {
+                    dieBig("execute() for select (check unique email) failed: $stmt->error");
+                } // end if
+                
+                // get the result
                 $result = $stmt->get_result();
                 if ($result == false) {
-                    die("Something is wrong with the database");
+                    dieBig("get_result() for select (check unique email) failed: $stmt->error");
                 } // end if
+
+                // if there is no row, then the email is not registered, then it's unique.
                 return $result->num_rows == 0;
             } catch(mysqli_sql_exception $ex) {
-                die("Something is wrong when checking the email with the database");
+                dieBig($ex);
             } finally {
+                // closing connection
                 $stmt->close();
                 $conn->close();
             } // end finally
         } // end uniqueEmail
 
+        /**
+         * Get the result from the database
+         * 
+         * @return object The result object from the statement
+         */
         public function getDataFromDatabase($email) {
             $conn = $this->createConn();
             // Check connection
             if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
+                dieBig("Connection failed: " . $conn->connect_error);
              } // end if
-            $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
-            $stmt->bind_param("s", $email);
 
+            $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
+            if ($stmt == false) {
+                dieBig("prepare() for select (get data) failed: $conn->error");
+            } // end if
+
+            $temp = $stmt->bind_param("s", $email);
+            if ($temp == false) {
+                dieBig("bind_param() for select (get data) failed: $stmt->error");
+            } // end if
+
+            // execute
             try {
                 $result = $stmt->execute();
                 if ($result == false) {
-                    return null;
+                    dieBig("execute() for select (get data) failed: $stmt->error");
                 } // end if
 
                 $result = $stmt->get_result();
+                if ($result == false) {
+                    dieBig("get_result() for select (get data) failed: $stmt->error");
+                } // end if
+                
                 $result = $result->fetch_assoc();
+                if ($result == false) {
+                    dieBig("fetch_assoc() for select (get data) failed: $stmt->error");
+                } // end if
+
+                // return the data
                 return $result;
             } catch(mysqli_sql_exception $ex) {
-                die("Something is wrong when getting the information from the database");
+                dieBig($ex);
             } finally {
+                // close connections
                 $stmt->close();
                 $conn->close();
             } // end finally
         } // end getDataFromDatabase
 
+        /**
+         * update the database
+         * 
+         * @return bool if the update is done successfully
+         */
         public function updateDatabase($email, $data) {
             // Create connection
             $conn = $this->createConn();
             
             // Check connection
             if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
+              dieBig("Connection failed: " . $conn->connect_error);
             } // end if
             
             // workshops
@@ -194,14 +295,20 @@
     
             // prepare and bind
             $stmt = $conn->prepare("UPDATE Participants SET Workshops=?, Tutorials=?, GoNMR=?, VideosNotToPub=? WHERE Email=?");
-            $stmt->bind_param("sssss", $workshops, $tutorials, $goNMR, $videosNotToPublish, $email);
+            if ($stmt === false) {
+                dieBig("prepare() for update failed: $conn->error");
+            } // end if
+            $temp = $stmt->bind_param("sssss", $workshops, $tutorials, $goNMR, $videosNotToPublish, $email);
+            if ($temp === false) {
+                dieBig("bind_param() for update failed: $stmt->error");
+            } // end if
     
             // execute
             try {
                 $result = $stmt->execute();
-                return $result;
+                return $result && $stmt->affected_rows >= 1;
             } catch (mysqli_sql_exception $exception) {
-                die("Something is wrong when udating submission");
+                dieBig($exception);
             } finally {
                 // closing connection
                 $stmt->close();
