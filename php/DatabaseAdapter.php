@@ -131,7 +131,25 @@
         } // end uniqueEmail
 
         public function getDataFromDatabase($email) {
+            $conn = $this->createConn();
+            $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
+            $stmt->bind_param("s", $email);
 
+            try {
+                $result = $stmt->execute();
+                if ($result == false) {
+                    return null;
+                } // end if
+                
+                $result = $stmt->get_result();
+                $result = $result->fetch_assoc();
+                return $result;
+            } catch(mysqli_sql_exception $ex) {
+                die("Something is wrong when getting the information from the database");
+            } finally {
+                $stmt->close();
+                $conn->close();
+            } // end finally
         } // end getDataFromDatabase
 
         public function updateDatabase($email, $data) {

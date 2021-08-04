@@ -25,4 +25,8 @@
     function getDBAccount() {
         return json_decode(file_get_contents('../odjfka/1929/vvv/db_account.json'));
     } // end getDBAccount
+
+    function dieBig($message) {
+        die("<h4>".$message."</h4>");
+    } // end dieBig
 ?>

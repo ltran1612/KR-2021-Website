@@ -242,7 +242,7 @@
                 } // end catch
             } // end if
             else {
-                $message = "The email you entered has already been used. Please register with a unique email address";
+                $message = "The email you entered has already been used. Please register with a unique email address.<br>";
                 $success = false;
             } // end else
         } else {
@@ -298,7 +298,7 @@
                     <?php
                         if ($success) {
                             echo "<b>THANK YOU FOR REGISTERING FOR KR-2021!</b>";
-                            echo " ";
+                            echo " You can edit your participation answer and edit the papers you don't want to be published after the conference with the email address.<br>";
                         } // END IF
                              
                         echo $email_result;
