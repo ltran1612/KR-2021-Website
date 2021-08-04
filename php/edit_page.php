@@ -65,7 +65,7 @@
             <div class="card card-5 m-t-30-pc">
                 <div class="card-heading bg-kr-color">
                     <div class="kr-icon">
-                        <a href="https://kr2021.kbsg.rwth-aachen.de/" class="kr-icon"><img src="images/krlogo-small.png"/></a> 
+                        <a href="https://kr2021.kbsg.rwth-aachen.de/" class="kr-icon"><img src="../images/krlogo-small.png"/></a> 
                     </div>
                     <h2 class="title">
                         EDIT SUBMISSION
