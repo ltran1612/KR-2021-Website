@@ -60,10 +60,10 @@
         $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/update_personal' . '?key=' . $store_key;
         
         // last name
-        $lastName = "placeholder";
+        $lastName = $data['name'];
 
         // first name
-        $firstName = "placeholder";
+        $firstName = $data['name'];
 
         // email
         $email = $data['email_address'];
