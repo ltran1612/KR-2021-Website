@@ -236,7 +236,9 @@
                     $email_result = $result == 0 ? $email_failure_message : $email_success_message;
 
                     // save to database
-                    $dbAdapter->saveToDatabase($_POST);
+                    $success = $dbAdapter->saveToDatabase($_POST);
+                    if (!$success)
+                        $messsage = "Cannot save to database, please try again.";
                 } catch(Swift_RfcComplianceException $e) {
                     $email_result = "Your email is invalid, please register with an another email address";
                 } // end catch
@@ -250,7 +252,7 @@
             $success = false;
         } // end else
     } catch(Exception $e) {
-        die("<h4>$e</h4>");
+        dieBig($e);
     } // end catch
     
 ?>
@@ -298,7 +300,7 @@
                     <?php
                         if ($success) {
                             echo "<b>THANK YOU FOR REGISTERING FOR KR-2021!</b>";
-                            echo " You can edit your participation answer and edit the papers you don't want to be published after the conference with the email address.<br>";
+                            echo " You can edit your participation answer and videos to not publish after conference using the registered email address <a href=\"/php/edit_login.php\">here</a>.<br>";
                         } // END IF
                              
                         echo $email_result;

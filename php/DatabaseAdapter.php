@@ -94,7 +94,7 @@
     
             // execute
             try {
-                $stmt->execute();
+                return $stmt->execute();
             } catch (mysqli_sql_exception $exception) {
                 $state = $conn->sqlstate;
                 if ($state == "23000") {
@@ -115,12 +115,19 @@
 
         public function isUniqueEmail($email) {
             $conn = $this->createConn();
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+              } // end if
             $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
             $stmt->bind_param("s", $email);
 
             try {
                 $stmt->execute();
                 $result = $stmt->get_result();
+                if ($result == false) {
+                    die("Something is wrong with the database");
+                } // end if
                 return $result->num_rows == 0;
             } catch(mysqli_sql_exception $ex) {
                 die("Something is wrong when checking the email with the database");
@@ -132,6 +139,10 @@
 
         public function getDataFromDatabase($email) {
             $conn = $this->createConn();
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+             } // end if
             $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
             $stmt->bind_param("s", $email);
 
@@ -140,7 +151,7 @@
                 if ($result == false) {
                     return null;
                 } // end if
-                
+
                 $result = $stmt->get_result();
                 $result = $result->fetch_assoc();
                 return $result;
@@ -153,7 +164,49 @@
         } // end getDataFromDatabase
 
         public function updateDatabase($email, $data) {
+            // Create connection
+            $conn = $this->createConn();
+            
+            // Check connection
+            if ($conn->connect_error) {
+              die("Connection failed: " . $conn->connect_error);
+            } // end if
+            
+            // workshops
+            $workshops = [];
+            for ($i = 0; $i < 6; ++$i) {
+                $workshops[$i] = $data["workshop".($i+1)];
+            } // end for i
+            $workshops = json_encode($workshops);
+    
+            // tutorials
+            $tutorials = [];
+            for ($i = 0; $i < 8; ++$i) {
+                $tutorials[$i] = $data["tutorial".($i+1)];
+            } // end for i
+            $tutorials = json_encode($tutorials);
+    
+            // others
+            $goNMR = strtoupper($data['participate_nmr']);
 
+            // consent
+            $videosNotToPublish = $data['videos_not_to_publish'];
+    
+            // prepare and bind
+            $stmt = $conn->prepare("UPDATE Participants SET Workshops=?, Tutorials=?, GoNMR=?, VideosNotToPub=? WHERE Email=?");
+            $stmt->bind_param("sssss", $workshops, $tutorials, $goNMR, $videosNotToPublish, $email);
+    
+            // execute
+            try {
+                $result = $stmt->execute();
+                return $result;
+            } catch (mysqli_sql_exception $exception) {
+                die("Something is wrong when udating submission");
+            } finally {
+                // closing connection
+                $stmt->close();
+                $conn->close();
+            } // end finally
         } // end updateDatabase
     } // end DatabaseAdapter
 ?>

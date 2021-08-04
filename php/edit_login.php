@@ -32,7 +32,7 @@
                     </h2>
                 </div>
                 <div class="card-body">
-                    <form action="./edit_submission.php" method="POST">
+                    <form action="./edit_page.php" method="POST">
                         <h4>Please enter the email that you used in the registration you want to update:</h4>
                         <!--EMAIL-->
                         <div class="form-row">

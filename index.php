@@ -27,11 +27,12 @@
 
     <!-- Main CSS-->
     <link href="css/main.css" rel="stylesheet" media="all">
+
+    <a class="kr-icon" href="/php/edit_login.php">Edit Submission</a>
 </head>
 
 <body>
     <div class="page-wrapper bg-kr p-t-45 p-b-50">
-
         <div class="wrapper wrapper--w790">
             <div class="card card-5 m-t-30-pc">
                 <div class="card-heading bg-kr-color">
