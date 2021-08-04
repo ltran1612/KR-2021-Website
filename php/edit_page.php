@@ -42,7 +42,7 @@
     <meta name="keywords" content="KR-2021 Registration">
 
     <!-- Title Page-->
-    <title>EDIT SUBMISSION</title>
+    <title>EDIT PAGE</title>
 
     <!-- Icons font CSS-->
     <link href="../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -68,7 +68,7 @@
                         <a href="https://kr2021.kbsg.rwth-aachen.de/" class="kr-icon"><img src="../images/krlogo-small.png"/></a> 
                     </div>
                     <h2 class="title">
-                        EDIT SUBMISSION
+                        EDIT PAGE
                     </h2>
                 </div>
                 <div class="card-body">

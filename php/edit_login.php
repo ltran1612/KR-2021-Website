@@ -6,7 +6,7 @@
     <script src="../vendor/jquery/jquery.min.js"></script>
 
     <!-- Title Page-->
-    <title>EDIT</title>
+    <title>EDIT LOGIN</title>
 
     <!-- Icons font CSS-->
     <link href="../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
