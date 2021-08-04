@@ -28,7 +28,7 @@
     <!-- Main CSS-->
     <link href="css/main.css" rel="stylesheet" media="all">
 
-    <a class="kr-icon" href="/php/edit_login.php">Edit Submission</a>
+    <a class="kr-icon" href="php/edit_login.php">Edit Submission</a>
 </head>
 
 <body>
