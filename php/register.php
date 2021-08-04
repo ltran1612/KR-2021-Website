@@ -250,7 +250,7 @@
             $success = false;
         } // end else
     } catch(Exception $e) {
-        die($e);
+        die("<h4>$e</h4>");
     } // end catch
     
 ?>

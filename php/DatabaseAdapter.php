@@ -113,7 +113,6 @@
             } // end finally
         } // end saveToDatabase
 
-
         public function isUniqueEmail($email) {
             $conn = $this->createConn();
             $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
@@ -130,5 +129,13 @@
                 $conn->close();
             } // end finally
         } // end uniqueEmail
+
+        public function getDataFromDatabase($email) {
+
+        } // end getDataFromDatabase
+
+        public function updateDatabase($email, $data) {
+
+        } // end updateDatabase
     } // end DatabaseAdapter
 ?>
