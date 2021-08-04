@@ -5,25 +5,34 @@
     // database
     $account = getDBAccount();
     if ($account == null)
-        die("Cannot connect to database: account file not found");
+        dieBig("Cannot connect to database: account file not found");
     $dbAdapter = new DatabaseAdapter($account);
 
+    // prepare data
     prepareData($_POST);
+    // get email
     $email = $_POST['email_address'];
+
+    // check if the email is unique
     if ($dbAdapter->isUniqueEmail($email)) {
-        die("There is no account associated with this email address: ".$email);
+        dieBig("There is no account associated with this email address: ".$email);
     } // end if
 
+    // get data from the database
     $data = $dbAdapter->getDataFromDatabase($email);
-    if ($data == null) {
+    if ($data === null) {
         dieBig("Cannot get data from the database");
     } // end if
 
+    /**
+     * get the data into variables
+     */
     $workshops = json_decode($data["Workshops"]);
     $tutorials = json_decode($data["Tutorials"]);
     $goNMR = $data['GoNMR'];
     $videosNotToPublish = $data['VideosNotToPub'];
 
+    // counters
     $workshopCounter = 0;
     $tutorialCounter = 0;
 ?>
@@ -33,13 +42,6 @@
 <head>
     <!-- Jquery JS-->
     <script src="../vendor/jquery/jquery.min.js"></script>
-
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="KR-2021 Registration Based On Colorlib Template">
-    <meta name="author" content="">
-    <meta name="keywords" content="KR-2021 Registration">
 
     <!-- Title Page-->
     <title>EDIT PAGE</title>
@@ -60,7 +62,6 @@
 
 <body>
     <div class="page-wrapper bg-kr p-t-45 p-b-50">
-
         <div class="wrapper wrapper--w790">
             <div class="card card-5 m-t-30-pc">
                 <div class="card-heading bg-kr-color">
@@ -75,12 +76,12 @@
                         <!--STARTING THE FORM-->
                         <form action="./edit_submission.php" method="POST">
 
-                        <!--EMAIL-->
+                        <!--EMAIL HIDDEN-->
                         <div class="form-row hide">
                             <div class="name">Email<span class="required-field"></span></div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="email" name="email_address" <?php echo "value=".safeString($email)?>>
+                                    <input class="input--style-5" type="email" name="email_address" <?php safeEcho("value=".$email)?>>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +96,7 @@
                                 <!--WORKSHOP 1-->
                                 <label class="checkbox-container">
                                     <a href="http://semantics-powered.org/" target="_blank">The 6th International Workshop on Semantics-Powered Health Data Analytics (SEPDA 2021)</a>
-                                    <input type="checkbox" name="workshop1" value="The 6th International Workshop on Semantics-Powered Health Data Analytics (SEPDA 2021)" <?php echo $workshops[$workshopCounter++] != null ? "checked" : ""?>>
+                                    <input type="checkbox" name="workshop1" value="The 6th International Workshop on Semantics-Powered Health Data Analytics (SEPDA 2021)" <?php echo ($workshops[$workshopCounter++] != null ? "checked" : "")?>>
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="checkbox-caption-container m-b-10">Zhe He, Jiang Bian, Rui Zhang and Cui Tao</label>
@@ -103,7 +104,7 @@
                                 <!--WORKSHOP 2-->
                                 <label class="checkbox-container">
                                     <a href="https://xlokr21.ai.vub.ac.be/" target="_blank">Explainable Logic-Based Knowledge Representation (XLoKR 2021)</a>
-                                    <input type="checkbox" name="workshop2" value="Explainable Logic-Based Knowledge Representation (XLoKR 2021)" <?php echo $workshops[$workshopCounter++] != null ? "checked" : ""?>>
+                                    <input type="checkbox" name="workshop2" value="Explainable Logic-Based Knowledge Representation (XLoKR 2021)" <?php echo ($workshops[$workshopCounter++] != null ? "checked" : "")?>>
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="checkbox-caption-container m-b-10">Bart Bogaerts</label>
@@ -111,7 +112,7 @@
                                 <!--WORKSHOP 3-->
                                 <label class="checkbox-container">
                                     <a href="https://sites.google.com/view/onucai-kr2021/home" target="_blank">Ontology Uses and Contribution to Artificial Intelligence</a>
-                                    <input type="checkbox" name="workshop3" value="Ontology Uses and Contribution to Artificial Intelligence" <?php echo $workshops[$workshopCounter++] != null ? "checked" : ""?>>
+                                    <input type="checkbox" name="workshop3" value="Ontology Uses and Contribution to Artificial Intelligence" <?php echo ($workshops[$workshopCounter++] != null ? "checked" : "")?>>
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="checkbox-caption-container m-b-10">Sarra Ben Abbes, Lynda Temal, Nada Mimouni, Philippe Calvez and Ahmed Mabrouk</label>
@@ -119,7 +120,7 @@
                                 <!--WORKSHOP 4-->
                                 <label class="checkbox-container">
                                     <a href="https://krhcai.github.io/" target="_blank">Knowledge Representation for Hybrid and Compositional AI (KRHCAI)</a>
-                                    <input type="checkbox" name="workshop4" value="Knowledge Representation for Hybrid and Compositional AI (KRHCAI)" <?php echo $workshops[$workshopCounter++] != null ? "checked" : ""?>>
+                                    <input type="checkbox" name="workshop4" value="Knowledge Representation for Hybrid and Compositional AI (KRHCAI)" <?php echo ($workshops[$workshopCounter++] != null ? "checked" : "")?>>
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="checkbox-caption-container m-b-10">Kwabena Nuamah, Jeff Z. Pan, Pavan Kapanipathi and Efi Tsamoura</label>
@@ -127,7 +128,7 @@
                                 <!--WORKSHOP 5-->
                                 <label class="checkbox-container">
                                     <a href="http://2021.soqe.org/" target="_blank">The 2nd International Workshop on Second-Order Quantifier Elimination and Related Topics</a>
-                                    <input type="checkbox" name="workshop5" value="The 2nd International Workshop on Second-Order Quantifier Elimination and Related Topics" <?php echo $workshops[$workshopCounter++] != null ? "checked" : ""?>>
+                                    <input type="checkbox" name="workshop5" value="The 2nd International Workshop on Second-Order Quantifier Elimination and Related Topics" <?php echo ($workshops[$workshopCounter++] != null ? "checked" : "")?>>
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="checkbox-caption-container m-b-10">Renate A. Schmidt, Christoph Wernhard and Yizheng Zhao</label>
@@ -135,7 +136,7 @@
                                 <!--WORKSHOP 6-->
                                 <label class="checkbox-container">
                                     <a href="http://www.cse.unsw.edu.au/~cme2021/" target="_blank">CME: the 1st International Workshop on Computational Machine Ethics</a>
-                                    <input type="checkbox" name="workshop6" value="CME: the 1st International Workshop on Computational Machine Ethics" <?php echo $workshops[$workshopCounter++] != null ? "checked" : ""?>>
+                                    <input type="checkbox" name="workshop6" value="CME: the 1st International Workshop on Computational Machine Ethics" <?php echo ($workshops[$workshopCounter++] != null ? "checked" : "")?>>
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="checkbox-caption-container">Maurice Pagnucco and Yang Song</label>
@@ -149,7 +150,7 @@
                                 <!--TUTORIAL 1-->
                                 <label class="checkbox-container">
                                     <a href="https://homepage.ruhr-uni-bochum.de/defeasible-reasoning/KR-2021/KR-Logical-Argumentation.html" target="_blank"> Proof-Theoretic Approaches to Logical Argumentation</a>
-                                    <input type="checkbox" name="tutorial1" value="Proof-Theoretic Approaches to Logical Argumentation" <?php echo $tutorials[$tutorialCounter++] != null ? "checked" : ""?>>
+                                    <input type="checkbox" name="tutorial1" value="Proof-Theoretic Approaches to Logical Argumentation" <?php echo ($tutorials[$tutorialCounter++] != null ? "checked" : "")?>>
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="checkbox-caption-container m-b-10">Ofer Arieli and Christian Strasser</label>
@@ -235,7 +236,7 @@
                                     <label class="label label--block">If you have any presentation that you don't want to be published after the conference, please enter it here:</label>
                                     <div class="value">
                                         <div class="input-group">
-                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish" value=<?php echo $videosNotToPublish;?>>
+                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish" value=<?php safeEcho($videosNotToPublish);?>>
                                             <label class="label--desc">Names separated by semi-colon(;)</label>
                                         </div>
                                     </div>
