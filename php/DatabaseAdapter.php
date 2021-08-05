@@ -71,82 +71,82 @@
          * @return bool if the database is saved successfully
          */
         public function saveToDatabase($data) { 
-            // Create connection
-            $conn = $this->createConn();
-            
-            // Check connection
-            if ($conn->connect_error) {
-              die("Connection failed: " . $conn->connect_error);
-            } // end if
-            
-            // name
-            $name = $data['name'];
-            // affiliation
-            $affiliation = $data['affiliation'];
-    
-            //address
-            $address_line = $data['address_line'];
-            $city_address = $data['city_address'];
-            $state_address = $data['state_address'];
-            $country_address = $data['country_address'];
-            $zip_address = $data['zip_address'];
-    
-            $address = $address_line . ", " 
-                        .($city_address == "" || $city_address == null ? "" : "City: " . $city_address . ', ') 
-                        .($state_address == "" || $state_address == null ? "" : "State: " . $state_address . ', ')
-                        .$country_address
-                        .($zip_address == "" || $zip_address == null ? "" : ", " . "Zip code: ". $zip_address) ;
-    
-            // other
-            $email = $data['email_address'];
-            // remove all spaces in phone number
-            $phone = str_replace(" ", "", $data['phone_number']);
-    
-            // change them to uppercase
-            $isStudent = strtoupper($data['is_student']);
-            $registerPaper = strtoupper($data['register_paper']);
-            // paper number
-            if ($registerPaper != null && $registerPaper == "YES") {
-                $paperNumber = $data['paper_number'];
-                $numberPaper = $data['number_paper'];
-            } else {
-                $paperNumber = null;
-                $numberPaper = null;
-            } // end else
-            
-            // workshops
-            $workshops = [];
-            for ($i = 0; $i < 6; ++$i) {
-                $workshops[$i] = $data["workshop".($i+1)];
-            } // end for i
-            $workshops = json_encode($workshops);
-    
-            // tutorials
-            $tutorials = [];
-            for ($i = 0; $i < 8; ++$i) {
-                $tutorials[$i] = $data["tutorial".($i+1)];
-            } // end for i
-            $tutorials = json_encode($tutorials);
-    
-            // others
-            $goNMR = strtoupper($data['participate_nmr']);
-            $gender = strtoupper($data['gender']);
-            // consent
-            $videoConsent = strtoupper($data['video_consent']);
-            $videosNotToPublish = $data['videos_not_to_publish'];
-    
-            // prepare and bind
-            $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            if ($stmt == false) {
-                dieBig("prepare() for insertion failed: $conn->error");
-            } // end if
-            $temp = $stmt->bind_param("sssssssisssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
-            if ($temp == false) {
-                dieBig("bind_param() for insertion failed: $stmt->error");
-            } // end if
-
-            // execute
             try {
+                // Create connection
+                $conn = $this->createConn();
+                
+                // Check connection
+                if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+                } // end if
+                
+                // name
+                $name = $data['name'];
+                // affiliation
+                $affiliation = $data['affiliation'];
+        
+                //address
+                $address_line = $data['address_line'];
+                $city_address = $data['city_address'];
+                $state_address = $data['state_address'];
+                $country_address = $data['country_address'];
+                $zip_address = $data['zip_address'];
+        
+                $address = $address_line . ", " 
+                            .($city_address == "" || $city_address == null ? "" : "City: " . $city_address . ', ') 
+                            .($state_address == "" || $state_address == null ? "" : "State: " . $state_address . ', ')
+                            .$country_address
+                            .($zip_address == "" || $zip_address == null ? "" : ", " . "Zip code: ". $zip_address) ;
+        
+                // other
+                $email = $data['email_address'];
+                // remove all spaces in phone number
+                $phone = str_replace(" ", "", $data['phone_number']);
+        
+                // change them to uppercase
+                $isStudent = strtoupper($data['is_student']);
+                $registerPaper = strtoupper($data['register_paper']);
+                // paper number
+                if ($registerPaper != null && $registerPaper == "YES") {
+                    $paperNumber = $data['paper_number'];
+                    $numberPaper = $data['number_paper'];
+                } else {
+                    $paperNumber = null;
+                    $numberPaper = null;
+                } // end else
+                
+                // workshops
+                $workshops = [];
+                for ($i = 0; $i < 6; ++$i) {
+                    $workshops[$i] = $data["workshop".($i+1)];
+                } // end for i
+                $workshops = json_encode($workshops);
+        
+                // tutorials
+                $tutorials = [];
+                for ($i = 0; $i < 8; ++$i) {
+                    $tutorials[$i] = $data["tutorial".($i+1)];
+                } // end for i
+                $tutorials = json_encode($tutorials);
+        
+                // others
+                $goNMR = strtoupper($data['participate_nmr']);
+                $gender = strtoupper($data['gender']);
+                // consent
+                $videoConsent = strtoupper($data['video_consent']);
+                $videosNotToPublish = $data['videos_not_to_publish'];
+        
+                // prepare and bind
+                $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                if ($stmt == false) {
+                    dieBig("prepare() for insertion failed: $conn->error");
+                } // end if
+                $temp = $stmt->bind_param("sssssssisssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
+                if ($temp == false) {
+                    dieBig("bind_param() for insertion failed: $stmt->error");
+                } // end if
+
+                // execute
                 return $stmt->execute();
             } catch (mysqli_sql_exception $exception) {
                 $state = $conn->sqlstate;
@@ -158,8 +158,10 @@
                 } // end else
             } finally {
                 // closing connection
-                $stmt->close();
-                $conn->close();
+                if ($stmt != null)
+                    $stmt->close();
+                if ($conn != null)
+                    $conn->close();
             } // end finally
         } // end saveToDatabase
 
@@ -169,24 +171,24 @@
          * @return bool true if the email is unique
          */
         public function isUniqueEmail($email) {
-            // create a connection
-            $conn = $this->createConn();
-            // Check connection
-            if ($conn->connect_error) {
-                dieBig("Connection failed: " . $conn->connect_error);
-            } // end if
-
-            $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
-            if ($stmt == false) {
-                dieBig("prepare() for select (check unique email) failed: $conn->error");
-            } // end if
-
-            $temp = $stmt->bind_param("s", $email);
-            if ($temp == false) {
-                dieBig("bind_param for select (check unique email) failed: $stmt->error");
-            } // end if
-
             try {
+                // create a connection
+                $conn = $this->createConn();
+                // Check connection
+                if ($conn->connect_error) {
+                    dieBig("Connection failed: " . $conn->connect_error);
+                } // end if
+
+                $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
+                if ($stmt == false) {
+                    dieBig("prepare() for select (check unique email) failed: $conn->error");
+                } // end if
+
+                $temp = $stmt->bind_param("s", $email);
+                if ($temp == false) {
+                    dieBig("bind_param for select (check unique email) failed: $stmt->error");
+                } // end if
+
                 $temp = $stmt->execute();
                 if ($temp == false) {
                     dieBig("execute() for select (check unique email) failed: $stmt->error");
@@ -204,8 +206,10 @@
                 dieBig($ex);
             } finally {
                 // closing connection
-                $stmt->close();
-                $conn->close();
+                if ($stmt != null)
+                    $stmt->close();
+                if ($conn != null)
+                    $conn->close();
             } // end finally
         } // end uniqueEmail
 
@@ -215,24 +219,24 @@
          * @return object The result object from the statement
          */
         public function getDataFromDatabase($email) {
-            $conn = $this->createConn();
-            // Check connection
-            if ($conn->connect_error) {
-                dieBig("Connection failed: " . $conn->connect_error);
-             } // end if
-
-            $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
-            if ($stmt == false) {
-                dieBig("prepare() for select (get data) failed: $conn->error");
-            } // end if
-
-            $temp = $stmt->bind_param("s", $email);
-            if ($temp == false) {
-                dieBig("bind_param() for select (get data) failed: $stmt->error");
-            } // end if
-
-            // execute
             try {
+                $conn = $this->createConn();
+                // Check connection
+                if ($conn->connect_error) {
+                    dieBig("Connection failed: " . $conn->connect_error);
+                } // end if
+
+                $stmt = $conn->prepare("SELECT * FROM Participants WHERE email=?");
+                if ($stmt == false) {
+                    dieBig("prepare() for select (get data) failed: $conn->error");
+                } // end if
+
+                $temp = $stmt->bind_param("s", $email);
+                if ($temp == false) {
+                    dieBig("bind_param() for select (get data) failed: $stmt->error");
+                } // end if
+
+                // execute
                 $result = $stmt->execute();
                 if ($result == false) {
                     dieBig("execute() for select (get data) failed: $stmt->error");
@@ -253,9 +257,11 @@
             } catch(mysqli_sql_exception $ex) {
                 dieBig($ex);
             } finally {
-                // close connections
-                $stmt->close();
-                $conn->close();
+               // closing connection
+                if ($stmt != null)
+                    $stmt->close();
+                if ($conn != null)
+                    $conn->close();
             } // end finally
         } // end getDataFromDatabase
 
@@ -265,6 +271,7 @@
          * @return bool if the update is done successfully
          */
         public function updateDatabase($email, $data) {
+            try {
             // Create connection
             $conn = $this->createConn();
             
@@ -304,15 +311,16 @@
             } // end if
     
             // execute
-            try {
                 $result = $stmt->execute();
                 return $result && $stmt->affected_rows >= 1;
             } catch (mysqli_sql_exception $exception) {
                 dieBig($exception);
             } finally {
                 // closing connection
-                $stmt->close();
-                $conn->close();
+                if ($stmt != null)
+                    $stmt->close();
+                if ($conn != null)
+                    $conn->close();
             } // end finally
         } // end updateDatabase
     } // end DatabaseAdapter

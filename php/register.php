@@ -300,7 +300,7 @@
                     <?php
                         if ($success) {
                             echo "<b>THANK YOU FOR REGISTERING FOR KR-2021!</b>";
-                            echo " You can edit your participation answer and videos to not publish after conference using the registered email address <a href=\"php/edit_login.php\">here</a>.<br>";
+                            echo " You can edit your participation answer and videos to not publish after conference using the registered email address <a href=\"./edit_login.php\">here</a>.<br>";
                         } // END IF
                              
                         echo $email_result;
