@@ -28,7 +28,6 @@
     <!-- Main CSS-->
     <link href="css/main.css" rel="stylesheet" media="all">
 
-    <a class="kr-icon" href="php/edit_login.php">Edit Submission</a>
 </head>
 
 <body>
@@ -44,6 +43,9 @@
                     </h2>
                 </div>
                 <div class="card-body">
+                        <div class="kr-edit m-b-10">
+                            If you want to edit your old submission, please click <a href="php/edit_login.php" target="_blank">here</a>.
+                        </div>
                         <!--STARTING THE FORM-->
                         <form id="registration_form" action="php/register.php" method="POST">
                         <!--CONTACT INFORMATION-->
