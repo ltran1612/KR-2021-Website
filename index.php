@@ -101,7 +101,7 @@
                         </div>
 
                         <!--CITY, STATE/PROVINCE-->
-                        <div class="form-row" >
+                        <div class="form-row p-t-10" >
                             <div class="name"></div>
                             <div class="value">
                                 <div class="row row-space">
@@ -409,8 +409,8 @@
                             <div class="value">
                                 <div class="col-1">
                                     <div class="input-group-desc">
-                                        <input class="input--style-5" type="tel" placeholder="Ex: (1) 575 111" pattern="\([0-9]+\)[0-9 ]+" name="phone_number">
-                                        <label class="label--desc">(country code) phone number</label>
+                                        <input class="input--style-5" type="tel" placeholder="Ex: 1 575 111" pattern="[0-9]+[0-9 ]+" name="phone_number">
+                                        <label class="label--desc">country code phone number</label>
                                     </div>
                                 </div>
                             </div>
@@ -452,15 +452,16 @@
                             <!--NUMBER OF PAPER-->
                             <h4>If you chose yes, please fill out these information:</h4>
                             <div class="form-row">
-                                <div class="name">How many papers will you register?<span class="required-field"></span></div>
                                 <div class="value">
+                                    <div class="name">How many papers will you register?<span class="required-field"></span></div>
                                     <div class="input-group col-2">
                                         <input class="input--style-5 required-input" type="number" min="1" max="255" name="number_paper" required>
                                         <label class="label--desc">Number of paper</label>
                                     </div>
                                 </div>
-                                <div class="name">Paper Number<span class="required-field"></span></div>
+                               
                                 <div class="value p-t-30">
+                                    <div class="name">Paper Number<span class="required-field"></span></div>
                                     <div class="input-group col-1">
                                         <input class="input--style-5 required-input" type="text" name="paper_number" required>
                                         <label class="label--desc">Please enter the paper number of all papers separated by semi-colon(;)</label>
