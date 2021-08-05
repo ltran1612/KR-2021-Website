@@ -53,9 +53,27 @@
                         <div class="form-row">
                             <div class="name">Full Name<span class="required-field"></span></div>
                             <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-5" placeholder="First Middle Last" type="text" name="name" required>
+                                <div class="row row-space">
+                                    <div class="col-3-3">
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="first_name" required>
+                                            <label class="label--desc">First<span class="required-field"></span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3-3">
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="middle_name">
+                                            <label class="label--desc">Middle</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3-3">
+                                        <div class="input-group-desc">
+                                            <input class="input--style-5" type="text" name="last_name" required>
+                                            <label class="label--desc">Last<span class="required-field"></span></label>
+                                        </div>
+                                    </div>
                                 </div>
+                              
                             </div>
                         </div>
 

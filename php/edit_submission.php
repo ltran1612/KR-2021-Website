@@ -2,6 +2,7 @@
     require_once '../vendor/autoload.php';
     require_once './misc_funcs.php';
     require_once './DatabaseAdapter.php';
+    require_once './PostDataWrapper.php';
     //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
 // START
@@ -13,11 +14,12 @@
     $dbAdapter = new DatabaseAdapter($account);
 
     // process data
-    prepareData($_POST);
-    $email = $_POST['email_address'];
+    $postWrapper = new PostDataWrapper($_POST);
+
+    $email = $postWrapper->getEmail();
 
     // update database
-    $success = $dbAdapter->updateDatabase($email, $_POST);
+    $success = $dbAdapter->updateDatabase($email, $postWrapper);
 
     // default messages;
     $message = "";

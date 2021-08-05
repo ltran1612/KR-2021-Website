@@ -1,6 +1,7 @@
 <?php
     require_once '../vendor/autoload.php';
     require_once './misc_funcs.php';
+    require_once './PostDataWrapper.php';
 
     /**
      * A class for operations with the database
@@ -70,27 +71,30 @@
          * 
          * @return bool if the database is saved successfully
          */
-        public function saveToDatabase($data) { 
+        public function saveToDatabase(PostDataWrapper $data) { 
             try {
                 // Create connection
                 $conn = $this->createConn();
                 
                 // Check connection
                 if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
+                    dieBig("Connection failed: " . $conn->connect_error);
                 } // end if
                 
                 // name
-                $name = $data['name'];
+                $firstName = $data->getFirstName();
+                $middleName = $data->getMiddleName();
+                $lastName = $data->getLastName();
+
                 // affiliation
-                $affiliation = $data['affiliation'];
+                $affiliation = $data->getAffiliation();
         
                 //address
-                $address_line = $data['address_line'];
-                $city_address = $data['city_address'];
-                $state_address = $data['state_address'];
-                $country_address = $data['country_address'];
-                $zip_address = $data['zip_address'];
+                $address_line = $data->getAddressLine();
+                $city_address = $data->getCity();
+                $state_address = $data->getState();
+                $country_address = $data->getCountry();
+                $zip_address = $data->getZip();
                 
                 $address = [
                     "address_line" => $address_line,
@@ -103,17 +107,17 @@
 
         
                 // other
-                $email = $data['email_address'];
+                $email = $data->getEmail();
                 // remove all spaces in phone number
-                $phone = str_replace(" ", "", $data['phone_number']);
+                $phone = str_replace(" ", "", $data->getPhone());
         
                 // change them to uppercase
-                $isStudent = strtoupper($data['is_student']);
-                $registerPaper = strtoupper($data['register_paper']);
+                $isStudent = strtoupper($data->getIsStudent());
+                $registerPaper = strtoupper($data->getWillRegisterPaper());
                 // paper number
                 if ($registerPaper != null && $registerPaper == "YES") {
-                    $paperNumber = $data['paper_number'];
-                    $numberPaper = $data['number_paper'];
+                    $paperNumber = $data->getPaperNumber();
+                    $numberPaper = $data->getNumberPaper();
                 } else {
                     $paperNumber = null;
                     $numberPaper = null;
@@ -122,30 +126,30 @@
                 // workshops
                 $workshops = [];
                 for ($i = 0; $i < 6; ++$i) {
-                    $workshops[$i] = $data["workshop".($i+1)];
+                    $workshops[$i] = $data->getWorkshop($i+1);
                 } // end for i
                 $workshops = json_encode($workshops);
         
                 // tutorials
                 $tutorials = [];
                 for ($i = 0; $i < 8; ++$i) {
-                    $tutorials[$i] = $data["tutorial".($i+1)];
+                    $tutorials[$i] = $data->getTutorial($i+1);
                 } // end for i
                 $tutorials = json_encode($tutorials);
         
                 // others
-                $goNMR = strtoupper($data['participate_nmr']);
-                $gender = strtoupper($data['gender']);
+                $goNMR = strtoupper($data->getWillGoNMR());
+                $gender = strtoupper($data->getGender());
                 // consent
-                $videoConsent = strtoupper($data['video_consent']);
-                $videosNotToPublish = $data['videos_not_to_publish'];
+                $videoConsent = strtoupper($data->getVideoConsentDuringConference());
+                $videosNotToPublish = $data->getVideosNotToPublish();
         
                 // prepare and bind
-                $stmt = $conn->prepare("INSERT INTO Participants (Name, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO Participants (FirstName, MiddleName, LastName, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 if ($stmt == false) {
                     dieBig("prepare() for insertion failed: $conn->error");
                 } // end if
-                $temp = $stmt->bind_param("sssssssisssssss", $name, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
+                $temp = $stmt->bind_param("sssssssssisssssss", $firstName, $middleName, $lastName, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
                 if ($temp == false) {
                     dieBig("bind_param() for insertion failed: $stmt->error");
                 } // end if
@@ -274,7 +278,7 @@
          * 
          * @return bool if the update is done successfully
          */
-        public function updateDatabase($email, $data) {
+        public function updateDatabase($email, PostDataWrapper $data) {
             try {
             // Create connection
             $conn = $this->createConn();
@@ -287,22 +291,22 @@
             // workshops
             $workshops = [];
             for ($i = 0; $i < 6; ++$i) {
-                $workshops[$i] = $data["workshop".($i+1)];
+                $workshops[$i] = $data->getWorkshop($i+1);
             } // end for i
             $workshops = json_encode($workshops);
     
             // tutorials
             $tutorials = [];
             for ($i = 0; $i < 8; ++$i) {
-                $tutorials[$i] = $data["tutorial".($i+1)];
+                $tutorials[$i] = $data->getTutorial($i+1);
             } // end for i
             $tutorials = json_encode($tutorials);
     
             // others
-            $goNMR = strtoupper($data['participate_nmr']);
+            $goNMR = strtoupper($data->getWillGoNMR());
 
             // consent
-            $videosNotToPublish = $data['videos_not_to_publish'];
+            $videosNotToPublish = $data->getVideosNotToPublish();
     
             // prepare and bind
             $stmt = $conn->prepare("UPDATE Participants SET Workshops=?, Tutorials=?, GoNMR=?, VideosNotToPub=? WHERE Email=?");

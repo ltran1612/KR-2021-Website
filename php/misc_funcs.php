@@ -31,6 +31,8 @@
         foreach ($data as $key => $value) {
             $data[$key] = trim($value);
         } // end foreach   
+
+        return $data;
     } // end prepareData
 
     /**

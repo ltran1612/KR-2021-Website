@@ -1,8 +1,8 @@
 <?php
     require_once '../vendor/autoload.php';
-    require './misc_funcs.php';
-    require './email_funcs.php';
-    require './DatabaseAdapter.php';
+    require_once './misc_funcs.php';
+    require_once './email_funcs.php';
+    require_once './DatabaseAdapter.php';
     //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
     // use safeEcho when we output to screen.
@@ -32,11 +32,11 @@
         print_r("delete: " . $result);
     } // end deleteOrder
 
-    function updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $data) {
+    function updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, PostDataWrapper $data) {
         // add items
         // /service/[shopid]/orders/[orderid]/add/[productid]
         $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/add/' . $product_id . '?key=' . $store_key;
-        $number_paper = $data['number_paper'];
+        $number_paper = $data->getNumberPaper();
         if ($number_paper == '0') {
             die("Error: Paper Registration with 0 paper amount registered");
         } // end if
@@ -60,28 +60,28 @@
         $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/update_personal' . '?key=' . $store_key;
         
         // last name
-        $lastName = $data['name'];
+        $lastName = $data->getFirstName();
 
         // first name
-        $firstName = $data['name'];
+        $firstName = $data->getLastName();
 
         // email
-        $email = $data['email_address'];
+        $email = $data->getEmail();
 
         // address
-        $address = $data['address_line'];
+        $address = $data->getAddressLine();
 
         // city
-        $city = $data['city_address'];
+        $city = $data->getCity();
         $city = determineValue($city, "placeholder");
         
 
         // state
-        $state = $data['state_address'];
+        $state = $data->getState();
         $state = determineValue($state, "placeholder");
 
         // zip
-        $zip = $data['zip_address'];
+        $zip = $data->getZip();
         $zip = determineValue($zip, "placeholder");
 
         // create string
@@ -124,7 +124,7 @@
         die("Cannot connect to database: account file not found");
 
     // process data
-    prepareData($_POST);
+    $postWrapper = new PostDataWrapper($_POST);
 
     // default messages;
     $message = "";
@@ -133,14 +133,15 @@
     // messages
     $email_failure_message = "Something is wrong, we werent' able to send you a confirmation email";
     $email_success_message = "You should be <b>receiving a confirmation email</b> in your mailbox at: "
-    . "<b>" . $_POST['email_address']."</b>"
+    . "<b>" . $postWrapper->getEmail()."</b>"
     . "<br><br>";
 
     // check if the information already exists. 
     try {
-        if ($_POST['register_paper'] == "yes" || $_POST['register_paper'] == "no") {    
+        define ("willRegisterPaper", $postWrapper->getWillRegisterPaper());
+        if (willRegisterPaper == "yes" || willRegisterPaper == "no") {    
             // get the email
-            $email = getEmail($_POST);
+            $email = $postWrapper->getEmail();
             
             // check email
             if (!validEmail($email)) {
@@ -156,24 +157,24 @@
                 try {
                     $email_body = getEmailGenericBody();
                     // add name
-                    $email_body = str_replace("{user}", ucwords($_POST['name']), $email_body);
+                    $email_body = str_replace("{user}", ucwords($postWrapper->getFullName()), $email_body);
                     // add confirmation
                     $confirmation = "CONFIRMATION:".
-                    "\n\t+ Name: " . safeString($_POST['name']).
-                    "\n\t+ Affiliation: " . safeString($_POST['affiliation']).
-                    "\n\t+ Email: " . safeString($_POST['email_address']).
-                    "\n\t+ Is a Student?: " . safeString($_POST['is_student']).
-                    "\n\t+ Will Register a Paper?: " . safeString($_POST['register_paper'])
+                    "\n\t+ Name: " . safeString($postWrapper->getFullName()).
+                    "\n\t+ Affiliation: " . safeString($postWrapper->getAffiliation()).
+                    "\n\t+ Email: " . safeString($postWrapper->getEmail()).
+                    "\n\t+ Is a Student?: " . safeString($postWrapper->getIsStudent()).
+                    "\n\t+ Will Register a Paper?: " . safeString($postWrapper->getWillRegisterPaper())
                         ;
                     
                     $paper_message = "";
-                    if ($_POST['register_paper'] == "yes") {
+                    if (willRegisterPaper == "yes") {
                         $checkout_url = "";
                         // create order
                         $order_id = createOrder($service_url, $store_key, $store_id);
                         if ($order_id != "") {
                             // add information
-                            updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $_POST);
+                            updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $postWrapper);
                             // checkout order
                             $checkout_url = checkoutOrder($service_url, $store_key, $store_id, $order_id);
                         } // end if
@@ -205,7 +206,7 @@
                         ";
                         
                         // add paper number
-                        $confirmation = $confirmation . "\n        +Paper Number: " . $_POST['paper_number'];
+                        $confirmation = $confirmation . "\n        +Paper Number: " . $postWrapper->getPaperNumber();
                         // add paper registration
                         $paper_message = "\nPlease note that you have to pay for the Paper Registration (100$/paper registration) separately by: "
                                         . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021" . ($checkout_url == "" ? "" : " or $checkout_url to skip to step 8")
@@ -236,7 +237,7 @@
                     $email_result = $result == 0 ? $email_failure_message : $email_success_message;
 
                     // save to database
-                    $success = $dbAdapter->saveToDatabase($_POST);
+                    $success = $dbAdapter->saveToDatabase($postWrapper);
                     if (!$success)
                         $messsage = "Cannot save to database, please try again.";
                 } catch(Swift_RfcComplianceException $e) {
@@ -316,18 +317,18 @@
                     <h2 class="title">CONFIRMATION INFORMATION</h2>
                 </div>
                 <div class="card-body">
-                    Name: <?php echo safeEcho($_POST['name'])?>
+                    Name: <?php echo safeEcho($postWrapper->getFullName())?>
                     <br>
-                    Affiliation: <?php safeEcho($_POST['affiliation'])?>
+                    Affiliation: <?php safeEcho($postWrapper->getAffiliation())?>
                     <br>
-                    Email: <?php safeEcho($_POST['email_address'])?>
+                    Email: <?php safeEcho($postWrapper->getEmail())?>
                     <br>
-                    Is a Student?: <?php safeEcho($_POST['is_student'])?>
+                    Is a Student?: <?php safeEcho($postWrapper->getIsStudent())?>
                     <br>
-                    Will Register a Paper?: <?php safeEcho($_POST['register_paper'])?>
+                    Will Register a Paper?: <?php safeEcho($postWrapper->getWillRegisterPaper())?>
                     <br>
                     <?php 
-                        if($_POST['register_paper'] == "yes") safeEcho("Paper Number: ".$_POST['paper_number'])
+                        if(willRegisterPaper == "yes") safeEcho("Paper Number: ".$postWrapper->getPaperNumber())
                     ?>
                     <br>
                     <!---->

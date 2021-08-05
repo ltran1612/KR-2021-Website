@@ -1,6 +1,7 @@
 <?php
-    include "./misc_funcs.php";
-    include "./DatabaseAdapter.php";
+    require_once "./misc_funcs.php";
+    require_once "./DatabaseAdapter.php";
+    require_once './PostDataWrapper.php';
 
     // database
     $account = getDBAccount();
@@ -9,9 +10,9 @@
     $dbAdapter = new DatabaseAdapter($account);
 
     // prepare data
-    prepareData($_POST);
+    $postWrapper = new PostDataWrapper($_POST);
     // get email
-    $email = $_POST['email_address'];
+    $email = $postWrapper->getEmail();
 
     // check if the email is unique
     if ($dbAdapter->isUniqueEmail($email)) {
@@ -226,7 +227,7 @@
                                 </label>
                             </div>
                         </div>
-
+                        
                         <!--VIDEOS NOT TO PUBLISH-->
                         <h3>Consent</h3>
                         <div class="form-row">
@@ -236,7 +237,7 @@
                                     <label class="label label--block">If you have any presentation that you don't want to be published after the conference, please enter it here:</label>
                                     <div class="value">
                                         <div class="input-group">
-                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish" value=<?php safeEcho($videosNotToPublish);?>>
+                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish" value=<?php echo('"'.safeString($videosNotToPublish).'"');?>>
                                             <label class="label--desc">Names separated by semi-colon(;)</label>
                                         </div>
                                     </div>
