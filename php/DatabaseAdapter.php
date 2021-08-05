@@ -91,12 +91,16 @@
                 $state_address = $data['state_address'];
                 $country_address = $data['country_address'];
                 $zip_address = $data['zip_address'];
-        
-                $address = $address_line . ", " 
-                            .($city_address == "" || $city_address == null ? "" : "City: " . $city_address . ', ') 
-                            .($state_address == "" || $state_address == null ? "" : "State: " . $state_address . ', ')
-                            .$country_address
-                            .($zip_address == "" || $zip_address == null ? "" : ", " . "Zip code: ". $zip_address) ;
+                
+                $address = [
+                    "address_line" => $address_line,
+                    "city_address" => $city_address,
+                    "state_address" => $state_address,
+                    "country_address" => $country_address,
+                    "zip_address" => $zip_address
+                ];
+                $address = json_encode($address);
+
         
                 // other
                 $email = $data['email_address'];
