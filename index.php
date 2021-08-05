@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="KR-2021 Registration Based On Colorlib Template">
-    <meta name="author" content="">
+    <meta name="author" content="Long Tran">
     <meta name="keywords" content="KR-2021 Registration">
 
     <!-- Title Page-->
