@@ -160,11 +160,11 @@
                     $email_body = str_replace("{user}", ucwords($postWrapper->getFullName()), $email_body);
                     // add confirmation
                     $confirmation = "CONFIRMATION:".
-                    "\n\t+ Name: " . safeString($postWrapper->getFullName()).
-                    "\n\t+ Affiliation: " . safeString($postWrapper->getAffiliation()).
-                    "\n\t+ Email: " . safeString($postWrapper->getEmail()).
-                    "\n\t+ Is a Student?: " . safeString($postWrapper->getIsStudent()).
-                    "\n\t+ Will Register a Paper?: " . safeString($postWrapper->getWillRegisterPaper())
+                    "\n\t+ Name: " . $postWrapper->getFullName().
+                    "\n\t+ Affiliation: " . $postWrapper->getAffiliation().
+                    "\n\t+ Email: " . $postWrapper->getEmail().
+                    "\n\t+ Is a Student?: " . $postWrapper->getIsStudent().
+                    "\n\t+ Will Register a Paper?: " . $postWrapper->getWillRegisterPaper()
                         ;
                     
                     $paper_message = "";
