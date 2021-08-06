@@ -70,7 +70,7 @@
                             echo "Your edit has been saved!";
                         } // END IF
                         else {
-                            echo "Your edit has not been saved. Please try again.";
+                            echo "Your edit has not been saved. Please try again.<br><i>Note: Please note that updates with no changes will also result in this</i>.";
                         } // end else
                     ?>
                     <!---->
