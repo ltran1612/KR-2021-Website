@@ -409,7 +409,7 @@
                             <div class="value">
                                 <div class="col-1">
                                     <div class="input-group-desc">
-                                        <input class="input--style-5" type="tel" placeholder="Ex: 1 575 111" pattern="[0-9]+[0-9 ]+" name="phone_number">
+                                        <input class="input--style-5" type="tel" placeholder="Ex: 1 575 111" pattern="[0-9 ]+" name="phone_number">
                                         <label class="label--desc">country code phone number</label>
                                     </div>
                                 </div>
