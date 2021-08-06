@@ -92,7 +92,7 @@
 
                         <!--WORKSHOPS-->
                         <div class="form-row p-t-20">
-                            <label class="label label--block">Which workshops would you plan to participate in?</label>
+                            <label class="label label--block">Please indicate (by ticking) all workshops that you would be interested in attending:</label>
                             <div class="p-t-15">
                                 <!--WORKSHOP 1-->
                                 <label class="checkbox-container">
@@ -146,7 +146,7 @@
 
                         <!--TUTORIALS-->
                         <div class="form-row">
-                            <label class="label label--block">Which tutorials would you plan to participate in?</label>
+                            <label class="label label--block">Please indicate (by ticking) all tutorials that you would be interested in attending:</label>
                             <div class="p-t-15">
                                 <!--TUTORIAL 1-->
                                 <label class="checkbox-container">
@@ -231,10 +231,12 @@
                         <!--VIDEOS NOT TO PUBLISH-->
                         <h3>Consent</h3>
                         <div class="form-row">
-                            <div class="p-t-15">
+                            <div class="">
                                 <!--CONSENT#2-->
                                 <div class="p-t-20">
-                                    <label class="label label--block">If you have any presentation that you don't want to be published after the conference, please enter it here:</label>
+                                    <label class="label label--block"><i>Opt out</i></label><br>
+                                    <div class="">You may <b>opt out of public posting</b> of content <b>by indicating in the following textbox</b> the titles of those talks/tutorials for which you *do not* want the recording made publicly available.
+                                    <b>Alternatively, send an email to the PC chairs by November 12 at the latest.</b></div>
                                     <div class="value">
                                         <div class="input-group">
                                             <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish_publicly" value="<?php safeEcho($videosNotToPublish);?>">
