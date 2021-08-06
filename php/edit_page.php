@@ -2,6 +2,7 @@
     require_once "./misc_funcs.php";
     require_once "./DatabaseAdapter.php";
     require_once './PostDataWrapper.php';
+    require_once './DatabaseDataWrapper.php';
 
     // database
     $account = getDBAccount();
@@ -28,10 +29,12 @@
     /**
      * get the data into variables
      */
-    $workshops = json_decode($data["Workshops"]);
-    $tutorials = json_decode($data["Tutorials"]);
-    $goNMR = $data['GoNMR'];
-    $videosNotToPublish = $data['VideosNotToPublishPublicly'];
+    $data = new DatabaseDataWrapper($data);
+    
+    $workshops = json_decode($data->getWorkshops());
+    $tutorials = json_decode($data->getTutorials());
+    $goNMR = $data->getWillGoNMR();
+    $videosNotToPublish = $data->getVideosNotToPublishPublicly();
 
     // counters
     $workshopCounter = 0;

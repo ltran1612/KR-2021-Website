@@ -3,6 +3,8 @@
     require_once './misc_funcs.php';
     require_once './DatabaseAdapter.php';
     require_once './PostDataWrapper.php';
+    require_once './DatabaseDataWrapper.php';
+    require_once './email_funcs.php';
     //require_once '../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
 // START
@@ -17,12 +19,40 @@
     $postWrapper = new PostDataWrapper($_POST);
 
     $email = $postWrapper->getEmail();
+    if (!validEmail($email)) {
+        dieBig("The email is not valid!");
+    } // end if
 
     // update database
     $success = $dbAdapter->updateDatabase($email, $postWrapper);
 
     // default messages;
     $message = "";
+    $email_result_message = "";
+
+    if ($success) {
+        $data = $dbAdapter->getDataFromDatabase($email);
+        if ($data == null) {
+            dieBig("Cannot get data from the database to send email");
+        } // end if
+        $data = new DatabaseDataWrapper($data);
+
+        // get message constant;
+        $email_failure_message = "Failed to send an email confirmation to " . "<b>" . safeString($data->getEmail()) . "</b>";
+        $email_success_message = "You should receive an edit confirmation email at: " . "<b>" . safeString($data->getEmail()) . "</b>";
+
+        // get email body
+        $email_body = "Dear ".ucwords($data->getFullName())
+                    . "\n\tYour edits have been saved successfully!"
+                    . "\n"
+                    . "\n\tCONFIRMATION:"
+                    . "\n\t\t" 
+                    . "\nBest Regards,\nKR 2021";
+        
+        // send email
+        $email_result = sendEmail($email, "KR-2021 EDIT CONFIRMATION", $email_body);
+        $email_result_message = $email_result == 0 ? $email_failure_message : $email_success_message;
+    } //end if
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +87,7 @@
                     <h2 class="title">
                         <?php
                             if ($success)
-                                echo "YOUR EDIT HAS BEEN SAVED SUCCESSFULLY";
+                                echo "YOUR EDITS HAVE BEEN SAVED SUCCESSFULLY";
                             else
                                 echo "ERROR";
                         ?>
@@ -67,7 +97,9 @@
                     <!--STARTING THE RESULT-->
                     <?php
                         if ($success) {
-                            echo "Your edit has been saved!";
+                            echo "Your edits have been saved!" . " " . $email_result_message;
+                            echo "<br><br>";
+                            echo "<a href='https://kr2021.kbsg.rwth-aachen.de/'>Back to the conference website</a>";
                         } // END IF
                         else {
                             echo "Your edit has not been saved. Please try again.<br><i>Note: Please note that updates with no changes will also result in this</i>.";
