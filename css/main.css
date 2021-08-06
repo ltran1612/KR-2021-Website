@@ -703,7 +703,7 @@ input {
 
 .checkbox {
   position: absolute;
-  top: 50%;
+  top: 10px;
   -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);

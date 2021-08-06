@@ -640,18 +640,30 @@
                         <h3>Consent</h3>
                         <div class="form-row">
                             <div class="p-t-15">
-                                <!--CONSENT#1-->
+                                <!--PRIVATE CONSENT-->
+                                <div class="label">Private posting of recorded KR sessions</div>
                                 <label class="checkbox-container">
-                                    I agree to let KR 2021 publish recorded videos during the conference.<span class="required-field">
-                                    <input type="checkbox" name="video_consent" value="yes" required>
+                                <span class="required-field">I understand that all KR tutorials, invited talks, and technical sessions (including the Q&A) will be recorded and  made available to participants via a password-protected Zoom link, during the conference and for up to one month afterwards.
+                                    <input type="checkbox" name="private_video_consent" value="yes" required>
                                     <span class="checkbox"></span>
                                 </label>
-                                <!--CONSENT#2-->
+                                
+                                <div class="label">Public posting of content</div>
+                                <!--PUBLIC CONSENT-->
+                                <label class="checkbox-container">
+                                <span class="required-field">I understand that every talk and tutorial (*excluding* the Q&A) will subsequently be posted on a public Youtube channel of the conference, unless at least one of the authors of the content expressly requests that the recording not be made available.
+                                    <input type="checkbox" name="public_video_consent" value="yes" required>
+                                    <span class="checkbox"></span>
+                                </label>
+                                <!--Opt out-->
+                                
                                 <div class="p-t-20">
-                                    <label class="label label--block">If you have any presentation that you don't want to be published after the conference, please enter it here:</label>
+                                    <label class="label label--block"><i>Opt out</i></label><br>
+                                    <div class="">You may <b>opt out of public posting</b> of content <b>by indicating in the following textbox</b> the titles of those talks/tutorials for which you *do not* want the recording made publicly available.
+                                    <b>Alternatively, send an email to the PC chairs by November 12 at the latest.</b></div>
                                     <div class="value">
                                         <div class="input-group">
-                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish">
+                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish_publicly">
                                             <label class="label--desc">Names separated by semi-colon(;)</label>
                                         </div>
                                     </div>

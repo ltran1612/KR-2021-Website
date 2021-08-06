@@ -31,7 +31,7 @@
     $workshops = json_decode($data["Workshops"]);
     $tutorials = json_decode($data["Tutorials"]);
     $goNMR = $data['GoNMR'];
-    $videosNotToPublish = $data['VideosNotToPub'];
+    $videosNotToPublish = $data['VideosNotToPublishPublicly'];
 
     // counters
     $workshopCounter = 0;
@@ -237,7 +237,7 @@
                                     <label class="label label--block">If you have any presentation that you don't want to be published after the conference, please enter it here:</label>
                                     <div class="value">
                                         <div class="input-group">
-                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish" value="<?php safeEcho($videosNotToPublish);?>">
+                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish_publicly" value="<?php safeEcho($videosNotToPublish);?>">
                                             <label class="label--desc">Names separated by semi-colon(;)</label>
                                         </div>
                                     </div>

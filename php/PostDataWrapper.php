@@ -89,12 +89,16 @@ class PostDataWrapper {
         return $this->data['gender'];
     } // end getWorkshop
 
-    function getVideoConsentDuringConference() {
-        return $this->data['video_consent'];
+    function getPrivateVideoConsent() {
+        return $this->data['private_video_consent'];
     } // end getWorkshop
 
-    function getVideosNotToPublish() {
-        return $this->data['videos_not_to_publish'];
+    function getPublicVideoConsent() {
+        return $this->data['public_video_consent'];
+    } // end getWorkshop
+
+    function getVideosNotToPublishPublicly() {
+        return $this->data['videos_not_to_publish_publicly'];
     } // end getWorkshop
 } // end PostDatWrapper
 ?>

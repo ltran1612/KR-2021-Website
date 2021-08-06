@@ -141,15 +141,16 @@
                 $goNMR = strtoupper($data->getWillGoNMR());
                 $gender = strtoupper($data->getGender());
                 // consent
-                $videoConsent = strtoupper($data->getVideoConsentDuringConference());
-                $videosNotToPublish = $data->getVideosNotToPublish();
+                $privateVideoConsent = strtoupper($data->getPrivateVideoConsent());
+                $publicVideoConsent = strtoupper($data->getPublicVideoConsent());
+                $videosNotToPublish = $data->getVideosNotToPublishPublicly();
         
                 // prepare and bind
-                $stmt = $conn->prepare("INSERT INTO Participants (FirstName, MiddleName, LastName, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, VideoConsent, VideosNotToPub) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO Participants (FirstName, MiddleName, LastName, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, PrivateVideoConsent, PublicVideoConsent, VideosNotToPublishPublicly) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 if ($stmt == false) {
                     dieBig("prepare() for insertion failed: $conn->error");
                 } // end if
-                $temp = $stmt->bind_param("sssssssssisssssss", $firstName, $middleName, $lastName, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $videoConsent, $videosNotToPublish);
+                $temp = $stmt->bind_param("sssssssssissssssss", $firstName, $middleName, $lastName, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $privateVideoConsent, $publicVideoConsent, $videosNotToPublish);
                 if ($temp == false) {
                     dieBig("bind_param() for insertion failed: $stmt->error");
                 } // end if
@@ -306,10 +307,10 @@
             $goNMR = strtoupper($data->getWillGoNMR());
 
             // consent
-            $videosNotToPublish = $data->getVideosNotToPublish();
+            $videosNotToPublish = $data->getVideosNotToPublishPublicly();
     
             // prepare and bind
-            $stmt = $conn->prepare("UPDATE Participants SET Workshops=?, Tutorials=?, GoNMR=?, VideosNotToPub=? WHERE Email=?");
+            $stmt = $conn->prepare("UPDATE Participants SET Workshops=?, Tutorials=?, GoNMR=?, VideosNotToPublishPublicly=? WHERE Email=?");
             if ($stmt === false) {
                 dieBig("prepare() for update failed: $conn->error");
             } // end if
