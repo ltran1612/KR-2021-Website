@@ -82,7 +82,7 @@
                             <div class="name">Email<span class="required-field"></span></div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-5" type="email" name="email_address" <?php safeEcho("value=".$email)?>>
+                                    <input class="input--style-5" type="email" name="email_address" value="<?php safeEcho($email)?>">
                                 </div>
                             </div>
                         </div>
@@ -237,7 +237,7 @@
                                     <label class="label label--block">If you have any presentation that you don't want to be published after the conference, please enter it here:</label>
                                     <div class="value">
                                         <div class="input-group">
-                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish" value=<?php echo('"'.safeString($videosNotToPublish).'"');?>>
+                                            <input class="input--style-5" placeholder="Ex: representation1;representation2" type="text" name="videos_not_to_publish" value="<?php safeEcho($videosNotToPublish);?>">
                                             <label class="label--desc">Names separated by semi-colon(;)</label>
                                         </div>
                                     </div>
