@@ -317,7 +317,7 @@
                     <h2 class="title">CONFIRMATION INFORMATION</h2>
                 </div>
                 <div class="card-body">
-                    Name: <?php echo safeEcho($postWrapper->getFullName())?>
+                    Name: <?php safeEcho($postWrapper->getFullName())?>
                     <br>
                     Affiliation: <?php safeEcho($postWrapper->getAffiliation())?>
                     <br>
