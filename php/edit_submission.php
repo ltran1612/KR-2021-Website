@@ -44,19 +44,23 @@
         // make tutorials
         $tutorialsArray = json_decode($data->getTutorials());
         $tutorial = "";
+        $tutorialHTML = "";
         for ($i = 0; $i < count($tutorialsArray); ++$i) {
             if ($tutorialsArray[$i] === null)
                 continue;
             $tutorial .= "\t\t\t+" . $tutorialsArray[$i] . "\n";
+            $tutorialHTML .= "&emsp;+" . safeString($tutorialsArray[$i]) . "<br>";
         } // end for i
 
         // make workshops
         $workshopsArray = json_decode($data->getWorkshops());
         $workshop = "";
+        $workshopHTML = "";
         for ($i = 0; $i < count($workshopsArray); ++$i) {
             if ($workshopsArray[$i] === null)
                 continue;
             $workshop .= "\t\t\t+" . $workshopsArray[$i] . "\n";
+            $workshopHTML .= "&emsp;+" . safeString($workshopsArray[$i]) . "<br>";
         } // end for i
 
         // nmr
@@ -130,6 +134,10 @@
                             echo "<a href='https://kr2021.kbsg.rwth-aachen.de/'>Back to the conference website</a>";
 
                             echo "<br><br>CONFIRMATION:";
+                            echo "<br>&ensp;*You are interested in attending the following tutorials:<br>" . $tutorialHTML;
+                            echo "<br>&ensp;*You are interested in attending the following workshops:<br>" . $workshopHTML;
+                            echo "<br>&ensp;*You are interested in attending NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?: " . safeString($willGoNMR);
+                            echo "<br>&ensp;*You want to opt out from public posting for these events: " . safeString($optOutEvents);
                         } // END IF
                         else {
                             echo "Your edit has not been saved. Please try again.<br><i>Note: Please note that updates with no changes will also result in this</i>.";
