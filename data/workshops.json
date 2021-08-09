@@ -1,18 +1,8 @@
-[
-    {
-        "name": ""
-    },
-    {
-
-    },
-    {
-
-    },
-    {
-
-    },
-    {
-
-    },
-    
-]
+{
+    "workshop1": "The 6th International Workshop on Semantics-Powered Health Data Analytics (SEPDA 2021)",
+    "workshop2": "Explainable Logic-Based Knowledge Representation (XLoKR 2021)",
+    "workshop3": "Ontology Uses and Contribution to Artificial Intelligence",
+    "workshop4": "Knowledge Representation for Hybrid and Compositional AI (KRHCAI) ",
+    "workshop5": "The 2nd International Workshop on Second-Order Quantifier Elimination and Related Topics ",
+    "workshop6": "CME: the 1st International Workshop on Computational Machine Ethics"
+}
