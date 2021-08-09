@@ -41,13 +41,41 @@
         $email_failure_message = "Failed to send an email confirmation to " . "<b>" . safeString($data->getEmail()) . "</b>";
         $email_success_message = "You should receive an edit confirmation email at: " . "<b>" . safeString($data->getEmail()) . "</b>";
 
+        // make tutorials
+        $tutorialsArray = json_decode($data->getTutorials());
+        $tutorial = "";
+        for ($i = 0; $i < count($tutorialsArray); ++$i) {
+            if ($tutorialsArray[$i] === null)
+                continue;
+            $tutorial .= "\t\t\t+" . $tutorialsArray[$i] . "\n";
+        } // end for i
+
+        // make workshops
+        $workshopsArray = json_decode($data->getWorkshops());
+        $workshop = "";
+        for ($i = 0; $i < count($workshopsArray); ++$i) {
+            if ($workshopsArray[$i] === null)
+                continue;
+            $workshop .= "\t\t\t+" . $workshopsArray[$i] . "\n";
+        } // end for i
+
+        // nmr
+        $willGoNMR = $data->getWillGoNMR();
+
+        // opt-out events
+        $optOutEvents = $data->getVideosNotToPublishPublicly();
+        $optOutEvents = str_replace(";", ", ", $optOutEvents);
+
         // get email body
         $email_body = "Dear ".ucwords($data->getFullName())
                     . "\n\tYour edits have been saved successfully!"
                     . "\n"
                     . "\n\tCONFIRMATION:"
-                    . "\n\t\t" 
-                    . "\nBest Regards,\nKR 2021";
+                    . "\n\t\t*You are interested in attending the following tutorials:\n" . $tutorial
+                    . "\n\t\t*You are interested in attending the following workshops:\n" . $workshop
+                    . "\n\t\t*You are interested in attending NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?: " . $willGoNMR
+                    . "\n\t\t*You want to opt out from public posting for these events: " . $optOutEvents
+                    . "\n\nBest Regards,\nKR 2021";
         
         // send email
         $email_result = sendEmail($email, "KR-2021 EDIT CONFIRMATION", $email_body);
@@ -100,6 +128,8 @@
                             echo "Your edits have been saved!" . " " . $email_result_message;
                             echo "<br><br>";
                             echo "<a href='https://kr2021.kbsg.rwth-aachen.de/'>Back to the conference website</a>";
+
+                            echo "<br><br>CONFIRMATION:";
                         } // END IF
                         else {
                             echo "Your edit has not been saved. Please try again.<br><i>Note: Please note that updates with no changes will also result in this</i>.";
