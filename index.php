@@ -450,13 +450,13 @@
                         <!--PAPER NUMBER-->
                         <div id="paper_number_section" class="">
                             <!--NUMBER OF PAPER-->
-                            <h4>If you chose yes, please fill out these information:</h4>
+                            <h4>If you chose yes, please fill out this information:</h4>
                             <div class="form-row">
                                 <div class="value">
                                     <div class="name">How many papers will you register?<span class="required-field"></span></div>
                                     <div class="input-group col-2">
                                         <input class="input--style-5 required-input" type="number" min="1" max="255" name="number_paper" required>
-                                        <label class="label--desc">Number of paper</label>
+                                        <label class="label--desc">Number of papers</label>
                                     </div>
                                 </div>
                                
