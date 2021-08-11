@@ -431,7 +431,7 @@
                             </div>
                         </div>
 
-                        <h3>Paper Registration?</h3>
+                        <h3>Paper Registration</h3>
                         <!--PAPER REGISTRATION-->
                         <div class="form-row p-t-20">
                             <label class="label label--block">Will you register a paper?<span class="required-field"></span></label>
