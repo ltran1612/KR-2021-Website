@@ -23,7 +23,8 @@
         } // end getFirstName
     
         function getFullName() {
-            return $this->getFirstName() . ' ' . $this->getMiddleName() . ' ' . $this->getLastName();
+            $middleName = $this->getMiddleName();
+            return $this->getFirstName() . ($middleName === null || $middleName === "" ? '' : ' ' . $middleName) . ' ' . $this->getLastName();
         } // end getFullName
     
         function getAffiliation() {
