@@ -231,7 +231,7 @@
                     $email_body = str_replace("{paper_registration}", $paper_message, $email_body);
     
                     // send the email
-                    $result = sendEmail($email, "KR-2021 REGISTRATION CONFIRMATION", $email_body);
+                    $result = sendEmail($email, "KR 2021 REGISTRATION CONFIRMATION", $email_body);
     
                     // get email result message
                     $email_result = $result == 0 ? $email_failure_message : $email_success_message;
@@ -300,7 +300,7 @@
                     <!--STARTING THE RESULT-->
                     <?php
                         if ($success) {
-                            echo "<b>THANK YOU FOR REGISTERING FOR KR-2021!</b>";
+                            echo "<b>THANK YOU FOR REGISTERING FOR KR 2021!</b>";
                             echo " You can edit your participation and videos not to be published publicly answer using the registered email address <a href=\"./edit_login.php\" target=\"_blank\">here</a>.<br>";
                         } // END IF
                              
