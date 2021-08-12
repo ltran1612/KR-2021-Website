@@ -6,9 +6,9 @@
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="KR-2021 Submission Edit Based On Colorlib Template">
+    <meta name="description" content="KR 2021 Submission Edit Based On Colorlib Template">
     <meta name="author" content="Long Tran">
-    <meta name="keywords" content="KR-2021 Submission Edit Login">
+    <meta name="keywords" content="KR 2021 Submission Edit Login">
 
     <!-- Jquery JS-->
     <script src="../vendor/jquery/jquery.min.js"></script>
