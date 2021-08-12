@@ -108,8 +108,8 @@
         
                 // other
                 $email = $data->getEmail();
-                // remove all spaces in phone number
-                $phone = str_replace(" ", "", $data->getPhone());
+                // phone number
+                $phone = $data->getPhone();
         
                 // change them to uppercase
                 $isStudent = strtoupper($data->getIsStudent());

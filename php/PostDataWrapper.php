@@ -54,7 +54,9 @@ class PostDataWrapper {
     } // end getFirstName
 
     function getPhone() {
-        return $this->data['phone_number'];
+        $country_code = str_replace(" ", "", $this->data['phone_number_country_code']);
+        $rest_of_phone_number = str_replace(" ", "", $this->data['phone_number_rest']);
+        return $country_code . " " . $rest_of_phone_number;
     } // end getFirstName
 
     function getIsStudent() {

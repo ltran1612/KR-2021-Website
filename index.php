@@ -407,10 +407,15 @@
                         <div class="form-row m-b-55">
                             <div class="name">Phone Number</div>
                             <div class="value">
-                                <div class="col-1">
-                                    <div class="input-group-desc">
-                                        <input class="input--style-5" type="tel" placeholder="Ex: 1 575 111" pattern="[0-9 ]+" name="phone_number">
-                                        <label class="label--desc">country code phone number</label>
+                                <div class="row row-space">
+                                    <div class="input-group col-2">
+                                        <input class="input--style-5" type="tel" placeholder="Ex: +1" pattern="\+[0-9]+" name="phone_number_country_code">
+                                        <label class="label--desc">Country Code (no spaces, only numbers after +)</label>
+                                    </div>
+
+                                    <div class="input-group col-2">
+                                        <input class="input--style-5" type="tel" placeholder="Ex: 575 111" pattern="[0-9 ]+" name="phone_number_rest">
+                                        <label class="label--desc">The rest of the phone number (only numbers and spaces)</label>
                                     </div>
                                 </div>
                             </div>
