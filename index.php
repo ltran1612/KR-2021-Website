@@ -392,7 +392,7 @@
                         </div>
 
                         <!--EMAIL-->
-                        <div class="form-row p-t-20">
+                        <div class="form-row m-t-20">
                             <div class="name">Email<span class="required-field"></span></div>
                             <div class="value">
                                 <div class="input-group">
@@ -404,7 +404,7 @@
 
                         <!--PHONE-->
                         <!--PHONE NUMBER-->
-                        <div class="form-row p-t-30">
+                        <div class="form-row m-t-30">
                             <div class="name">Phone Number</div>
                             <div class="value">
                                 <div class="row row-space">
@@ -422,7 +422,7 @@
                         </div>
 
                         <!--GENDER-->
-                        <div class="form-row p-t-20">
+                        <div class="form-row m-t-20">
                             <label class="label label--block">Gender<span class="required-field"></span></label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Male
