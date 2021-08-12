@@ -34,7 +34,10 @@
     <div class="page-wrapper bg-kr-gray p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
             <div class="card card-5">
-                <div class="card-heading bg-blue">
+                <div class="card-heading bg-kr-color">
+                    <div class="kr-icon">
+                        <a href="https://kr2021.kbsg.rwth-aachen.de/" class="kr-icon"><img src="../images/krlogo-small.png"/></a> 
+                    </div>
                     <h2 class="title">
                         EDIT LOGIN
                     </h2>
