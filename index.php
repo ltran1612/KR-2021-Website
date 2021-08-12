@@ -598,7 +598,7 @@
                         </div>
 
                         <div class="form-row">
-                            <label class="label label--block">Would you plan to participate in NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?</label>
+                            <label class="label label--block">Do you plan to participate in NMR 2021: 19th International Workshop on Non-Monotonic Reasoning?</label>
                             <div class="p-t-15">
                                 <label class="radio-container m-r-55">Yes
                                     <input type="radio" name="participate_nmr" value="yes">
