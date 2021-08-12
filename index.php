@@ -416,6 +416,30 @@
                             </div>
                         </div>
 
+                        <!--GENDER-->
+                        <div class="form-row p-t-20">
+                            <label class="label label--block">Gender<span class="required-field"></span></label>
+                            <div class="p-t-15">
+                                <label class="radio-container m-r-55">Male
+                                    <input type="radio" name="gender" value="male" required>
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radio-container m-r-55">Female
+                                    <input type="radio" name="gender" value="female">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radio-container m-r-55">Other
+                                    <input type="radio" name="gender" value="other">
+                                    <span class="checkmark"></span>
+                                </label>
+
+                                <label class="radio-container">Prefer Not To Answer
+                                    <input type="radio" name="gender" value="prefer_not_to_answer">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+
                         <!--STUDENT?-->
                         <div class="form-row p-t-20">
                             <label class="label label--block">Are you a student?<span class="required-field"></span></label>
@@ -612,29 +636,6 @@
                         </div>
                         
                         <h3>Other Information</h3>
-                        <!--GENDER-->
-                        <div class="form-row p-t-20">
-                            <label class="label label--block">Gender<span class="required-field"></span></label>
-                            <div class="p-t-15">
-                                <label class="radio-container m-r-55">Male
-                                    <input type="radio" name="gender" value="male" required>
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="radio-container m-r-55">Female
-                                    <input type="radio" name="gender" value="female">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="radio-container m-r-55">Other
-                                    <input type="radio" name="gender" value="other">
-                                    <span class="checkmark"></span>
-                                </label>
-
-                                <label class="radio-container">Prefer Not To Answer
-                                    <input type="radio" name="gender" value="prefer_not_to_answer">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
 
                         <!--VIDEO CONSENT-->
                         <h3>Consent</h3>
