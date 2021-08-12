@@ -286,7 +286,7 @@
     <div class="page-wrapper bg-kr-gray p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
             <div class="card card-5">
-                <div class="card-heading bg-orange">
+                <div class="card-heading <?php echo $success ? "bg-orange" : "bg-red"?>">
                     <h2 class="title">
                         <?php
                             if ($success)
@@ -313,7 +313,7 @@
             </div>
 
             <div <?php if (!$success) echo "hidden";?> class="card card-5 m-t-50">
-                <div class="card-heading bg-red">
+                <div class="card-heading bg-blue">
                     <h2 class="title">CONFIRMATION INFORMATION</h2>
                 </div>
                 <div class="card-body">
