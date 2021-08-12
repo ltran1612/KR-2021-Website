@@ -271,6 +271,6 @@
     <!-- Main JS-->
     <script src="../js/global.js"></script>
 </body><!-- This was made based on a template of Colorlib (https://colorlib.com) -->
-
+<footer><?php include "./contact_info.php" ?></footer>
 </html>
 <!-- end document-->
