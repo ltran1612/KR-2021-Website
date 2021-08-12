@@ -129,7 +129,7 @@
                     <!--STARTING THE RESULT-->
                     <?php
                         if ($success) {
-                            echo "Your edits have been saved!" . " " . $email_result_message;
+                            echo "<b>Your edits have been saved!</b>" . " " . $email_result_message;
                             echo "<br><br>";
                             echo "<a href='https://kr2021.kbsg.rwth-aachen.de/'>Back to the conference website</a>";
 
