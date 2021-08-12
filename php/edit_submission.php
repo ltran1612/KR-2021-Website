@@ -82,7 +82,7 @@
                     . "\n\nBest Regards,\nKR 2021";
         
         // send email
-        $email_result = sendEmail($email, "KR-2021 EDIT CONFIRMATION", $email_body);
+        $email_result = sendEmail($email, "KR 2021 EDIT CONFIRMATION", $email_body);
         $email_result_message = $email_result == 0 ? $email_failure_message : $email_success_message;
     } //end if
 ?>
