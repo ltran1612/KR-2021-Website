@@ -115,7 +115,7 @@
     <div class="page-wrapper bg-kr-gray p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
             <div class="card card-5">
-                <div class="card-heading bg-blue">
+                <div class="card-heading bg-orange">
                     <h2 class="title">
                         <?php
                             if ($success)
