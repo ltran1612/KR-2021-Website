@@ -8,12 +8,12 @@
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="KR-2021 Registration Based On Colorlib Template">
+    <meta name="description" content="KR 2021 Registration Based On Colorlib Template">
     <meta name="author" content="Long Tran">
-    <meta name="keywords" content="KR-2021 Registration">
+    <meta name="keywords" content="KR 2021 Registration">
 
     <!-- Title Page-->
-    <title>KR-2021 Registration</title>
+    <title>KR 2021 Registration</title>
 
     <!-- Icons font CSS-->
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -39,7 +39,7 @@
                         <a href="https://kr2021.kbsg.rwth-aachen.de/" class="kr-icon"><img src="images/krlogo-small.png"/></a> 
                     </div>
                     <h2 class="title">
-                        KR-2021 REGISTRATION FORM
+                        KR 2021 REGISTRATION FORM
                     </h2>
                 </div>
                 <div class="card-body">
