@@ -932,6 +932,7 @@ input {
   }
 }
 
+/*Other*/
 .contact-div {
   height: 170px;
   border-top: 30px solid #F39C12;
@@ -942,4 +943,12 @@ input {
 .contact-div div {
   margin-top: 10px;
   color: white;
+}
+
+a:link {
+  color: #fc9403
+}
+
+a:hover {
+  color: #fc5e03
 }
