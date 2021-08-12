@@ -499,7 +499,7 @@
 
                         <!--WORKSHOPS-->
                         <div class="form-row p-t-20">
-                            <label class="label label--block">Please indicate (by ticking) all workshops that you would be interested in attending:</label>
+                            <label class="label label--block">Please select all workshops that you would be interested in attending:</label>
                             <div class="p-t-15">
                                 <!--WORKSHOP 1-->
                                 <label class="checkbox-container">
@@ -553,7 +553,7 @@
 
                         <!--TUTORIALS-->
                         <div class="form-row">
-                            <label class="label label--block">Please indicate (by ticking) all tutorials that you would be interested in attending:</label>
+                            <label class="label label--block">Please select all tutorials that you would be interested in attending:</label>
                             <div class="p-t-15">
                                 <!--TUTORIAL 1-->
                                 <label class="checkbox-container">
