@@ -697,6 +697,6 @@
     <!-- My JS -->
     <script src="js/condition.js"></script>
 </body><!-- This was made based on a template of Colorlib (https://colorlib.com) -->
-
+<footer><?php include "./php/contact_info.php" ?></footer>
 </html>
 <!-- end document-->

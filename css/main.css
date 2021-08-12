@@ -931,3 +931,15 @@ input {
     padding-bottom: 50px;
   }
 }
+
+.contact-div {
+  height: 170px;
+  border-top: 30px solid #F39C12;
+  background: #515A5A;
+  text-align: center;
+}
+
+.contact-div div {
+  margin-top: 10px;
+  color: white;
+}
