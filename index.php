@@ -88,13 +88,13 @@
                         </div>
 
                         <!--ADDRESS-->
-                        <div class="form-row m-b-55">
+                        <div class="form-row m-b-50">
                             <div class="name">Address</div>
                             <div class="value">
                                 <div class="col-1">
                                     <div class="input-group-desc">
                                         <input class="input--style-5" type="text" name="address_line" required>
-                                        <label class="label--desc">Address Line<span class="required-field"></span> (Please enter full address (excluding country) here if there are not appropriate fields)</label>
+                                        <label class="label--desc">Address Line<span class="required-field"></span> (Full address here if there are not appropriate fields)</label>
                                     </div>
                                 </div>
                             </div>
