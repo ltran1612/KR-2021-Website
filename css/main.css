@@ -960,3 +960,8 @@ a:link {
 a:hover {
   color: #fc5e03
 }
+
+/*Input*/
+input:focus {
+  border: 2px solid #fc9403
+}
