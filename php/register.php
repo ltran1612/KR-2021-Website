@@ -60,10 +60,10 @@
         $url = $service_url . '/' . $store_id . '/orders/' . $order_id . '/update_personal' . '?key=' . $store_key;
         
         // last name
-        $lastName = $data->getFirstName();
+        $lastName = $data->getLastName();
 
         // first name
-        $firstName = $data->getLastName();
+        $firstName = $data->getFirstName();
 
         // email
         $email = $data->getEmail();
