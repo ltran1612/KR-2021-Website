@@ -17,7 +17,7 @@
      * Return a string by ensuring all applicable characters are html entities and turn it into a string with spaces to put in GET method
      */
     function safeUrlEncodeValue($value) {
-        return urlencode(safeString($value));
+        return urlencode($value);
     } // end safeEncodeValue
 
     /**
