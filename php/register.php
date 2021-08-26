@@ -136,6 +136,9 @@
     . "<b>" . $postWrapper->getEmail()."</b>"
     . "<br><br>";
 
+    // address confirmation
+    $addressConfirmation = getFullAddress($postWrapper);
+
     // check if the information already exists. 
     try {
         define ("willRegisterPaper", $postWrapper->getWillRegisterPaper());
@@ -162,6 +165,7 @@
                     $confirmation = "CONFIRMATION:".
                     "\n\t+ Name: " . $postWrapper->getFullName().
                     "\n\t+ Affiliation: " . $postWrapper->getAffiliation().
+                    "\n\t+ Address: " . $addressConfirmation .
                     "\n\t+ Email: " . $postWrapper->getEmail().
                     "\n\t+ Is a Student?: " . $postWrapper->getIsStudent().
                     "\n\t+ Will Register a Paper?: " . $postWrapper->getWillRegisterPaper()
@@ -320,6 +324,8 @@
                     Name: <?php safeEcho($postWrapper->getFullName())?>
                     <br>
                     Affiliation: <?php safeEcho($postWrapper->getAffiliation())?>
+                    <br>
+                    Address: <?php safeEcho($addressConfirmation)?>
                     <br>
                     Email: <?php safeEcho($postWrapper->getEmail())?>
                     <br>

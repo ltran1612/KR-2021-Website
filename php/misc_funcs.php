@@ -55,4 +55,22 @@
     function dieBig($message) {
         die("<h4>".safeString($message)."</h4>");
     } // end dieBig
+
+    /*
+        Get full address from 
+    */
+    function getFullAddress(PostDataWrapper $data) {
+        $address_line = $data->getAddressLine();
+        $city = $data->getCity();
+        $state = $data->getState();
+        $zip = $data->getZip();
+        $country = $data->getCountry();
+
+        return $address_line . ", "
+        . (determineValue($city, "") == "" ? "" : "City: $city") . ", "
+        . (determineValue($state, "") == "" ? "" : "State: $state") . ", "
+        . (determineValue($zip, "") == "" ? "" : "Zip: $zip") . ", "
+        . (determineValue($country, "") == "" ? "" : "Country: $country")
+        ;
+    } // end getFullAddress
 ?>
