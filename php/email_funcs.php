@@ -25,7 +25,7 @@ function sendEmail($email, $header, $body) {
 
     try {
         $message = (new Swift_Message($header))
-        ->setFrom(['kr2021reg@gmail.com' => "KR-2021"])
+        ->setFrom(['kr2021reg@gmail.com' => "KR-2021-noreply"])
         ->setTo(["$email"])
         ->setBody($body)
         ;
