@@ -490,7 +490,7 @@
                                 </div>
                                
                                 <div class="value p-t-30">
-                                    <div class="label">EasyChair Paper ID<span class="required-field"></span></div>
+                                    <div class="label">EasyChair Paper ID(s)<span class="required-field"></span></div>
                                     <div class="input-group col-1">
                                         <input class="input--style-5 required-input" type="text" name="paper_number" required>
                                         <label class="label--desc">Please enter the EasyChair Paper ID of all papers separated by semi-colon(;)</label>
