@@ -67,10 +67,10 @@
         $country = $data->getCountry();
 
         return $address_line . ", "
-        . (determineValue($city, "") == "" ? "" : "City: $city") . ", "
-        . (determineValue($state, "") == "" ? "" : "State: $state") . ", "
-        . (determineValue($zip, "") == "" ? "" : "Zip: $zip") . ", "
-        . (determineValue($country, "") == "" ? "" : "Country: $country")
+        . (determineValue($city, "") == "" ? "" : "City: $city, ")
+        . (determineValue($state, "") == "" ? "" : "State: $state, ")
+        . (determineValue($zip, "") == "" ? "" : "Zip: $zip, ")
+        . "Country: $country"
         ;
     } // end getFullAddress
 ?>
