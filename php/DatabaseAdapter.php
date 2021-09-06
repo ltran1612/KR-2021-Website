@@ -111,8 +111,10 @@
                 // phone number
                 $phone = $data->getPhone();
         
-                // change them to uppercase
+                // student
                 $isStudent = strtoupper($data->getIsStudent());
+                
+                // paper
                 $registerPaper = strtoupper($data->getWillRegisterPaper());
                 // paper number
                 if ($registerPaper != null && $registerPaper == "YES") {

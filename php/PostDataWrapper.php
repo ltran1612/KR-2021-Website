@@ -63,6 +63,14 @@ class PostDataWrapper {
         return $this->data['is_student'];
     } // end getFirstName
 
+    function getHasScholarship() {
+        return $this->data['has_scholarship'];
+    } // end getHasScholarship
+
+    function getScholarshipID() {
+        return $this->data['scholarship_id'];
+    } // end getHasScholarship
+
     function getWillRegisterPaper() {
         return $this->data['register_paper'];
     } // end getFirstName
