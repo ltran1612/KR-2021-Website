@@ -39,9 +39,12 @@
          */
         private function createConn() {            
             // Create connection
-            $conn = new mysqli($this->serverName, $this->userName, $this->passWord, $this->dbName);
-    
-            return $conn;
+            try {
+                $conn = new mysqli($this->serverName, $this->userName, $this->passWord, $this->dbName);
+                return $conn;
+            } catch (mysqli_sql_exception $e) {
+                dieBig("createConn() Cannot connect to the database");
+            } // end if
         } // end createConn
 
         /**
