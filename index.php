@@ -481,7 +481,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="value p-t-30">
+                                    <div id="scholarship_info_section" class="value p-t-30">
                                         <h4>If you chose yes, please fill out this information:</h4>
                                         <div class="label">Scholarship ID<span class="required-field"></span></div>
                                         <div class="input-group col-1">
