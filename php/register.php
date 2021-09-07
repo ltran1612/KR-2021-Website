@@ -156,97 +156,133 @@
     
             // check unique email
             if ($dbAdapter->isUniqueEmail($email)) {
-                // send email
-                try {
-                    $email_body = getEmailGenericBody();
-                    // add name
-                    $email_body = str_replace("{user}", ucwords($postWrapper->getFullName()), $email_body);
-                    // add confirmation
-                    $confirmation = "CONFIRMATION:".
-                    "\n\t+ Name: " . $postWrapper->getFullName().
-                    "\n\t+ Affiliation: " . $postWrapper->getAffiliation().
-                    "\n\t+ Address: " . $addressConfirmation .
-                    "\n\t+ Email: " . $postWrapper->getEmail().
-                    "\n\t+ Is a Student?: " . $postWrapper->getIsStudent().
-                    "\n\t+ Will Register a Paper?: " . $postWrapper->getWillRegisterPaper()
-                        ;
-                    
-                    $paper_message = "";
-                    if (willRegisterPaper == "yes") {
-                        $checkout_url = "";
-                        // create order
-                        $order_id = createOrder($service_url, $store_key, $store_id);
-                        if ($order_id != "") {
-                            // add information
-                            updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $postWrapper);
-                            // checkout order
-                            $checkout_url = checkoutOrder($service_url, $store_key, $store_id, $order_id);
-                        } // end if
+                // check scholarship
+                // is student -> yes -> check has scholarship -> yes -> check validity of scholarship code -> yes -> no payment if register paper
+                // is student -> yes -> check has scholarship -> yes -> check validity of scholarship code -> no -> noMatch -> error
+                // is student -> yes -> check has scholarship -> no -> payment if register paper
+                // is student -> no -> payment if register paper
+                $isStudent = strtoupper($postWrapper->getIsStudent());
+                // 0: no payment
+                // 1: payment
+                // -1: noMatch
+                define("payment", 1);
+                define("noPayment", 0);
+                define("noMatch", -1);
+                $scholarshipResult = payment;
 
-                         // message for displaying
-                        $message = "<b class=\"important\">The payment for the Paper Registration (100$/paper registration) is separate</b> and has to be done by following these steps:
-                            <br>
-                        1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>" . ($checkout_url == "" ? "" : " or <a href=$checkout_url target=\"_blank\">Checkout Link</a> to skip to step 8") . "." .
-                        "<br>
-                        2) Click on \"Paper Registration\" under Featured Products.
-                        <br>
-                        3) Click \"Add to cart\".
-                        <br>
-                        4) Make sure the quantity is correct, you can adjust and update it with Update Quantities. 
-                        <br>
-                        5) Proceed to checkout.
-                        <br>
-                        6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later).
-                        <br>
-                        7) Proceed to checkout.
-                        <br>
-                        8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required). 
-                        <br>
-                        <i><b>Note: No spaces in card number</b></i>
-                        <br>
-                        9) Continue Checkout.
-                        <br>
-                        10) Review your order and payment information, then click \"Submit Payment\".
-                        ";
-                        
-                        // add paper number
-                        $confirmation = $confirmation . "\n        +Paper Number: " . $postWrapper->getPaperNumber();
-                        // add paper registration
-                        $paper_message = "\nPlease note that you have to pay for the Paper Registration (100$/paper registration) separately by: "
-                                        . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021" . ($checkout_url == "" ? "" : " or $checkout_url to skip to step 8")
-                                        . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
-                                        . "\n\t3) Click \"Add to cart\"."
-                                        . "\n\t4) Make sure the quantity is correct, you can adjust and update it with Update Quantities."
-                                        . "\n\t5) Proceed to checkout"
-                                        . "\n\t6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later)."
-                                        . "\n\t7) Proceed to checkout."
-                                        . "\n\t8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required)."
-                                        . "\n\tNote: No spaces in card number"
-                                        . "\n\t9) Continue Checkout."
-                                        . "\n\t10) Review your order and payment information, then click \"Submit Payment\"."
-                        ; // end paper_message
+                if ($isStudent == "YES") {
+                    $hasScholarship = strtoupper($postWrapper->getHasScholarship());    
+                    if ($hasScholarship == "YES") {
+                        $scholarshipId = $postWrapper->getScholarshipID();
+                        $isValid = $dbAdapter->hasScholarship($email, $scholarshipId);
 
-                       
+                        if ($isValid) {
+                            $scholarshipResult = noPayment;
+                        } else {
+                            $scholarshipResult = noMatch;
+                        } // end else
                     } // end if
-    
-                    // put the confirmation into the email body
-                    $email_body = str_replace(["{confirmation}\n", "{confirmation}\r\n"], $confirmation, $email_body);
-                    // put the paper message into the email body
-                    $email_body = str_replace("{paper_registration}", $paper_message, $email_body);
-    
-                    // send the email
-                    $result = sendEmail($email, "KR 2021 REGISTRATION CONFIRMATION", $email_body);
-    
-                    // get email result message
-                    $email_result = $result == 0 ? $email_failure_message : $email_success_message;
+                } // end if
 
-                    // save to database
-                    $success = $dbAdapter->saveToDatabase($postWrapper);
-                    if (!$success)
-                        $messsage = "Cannot save to database, please try again.";
-                } catch(Swift_RfcComplianceException $e) {
-                    $email_result = "Your email is invalid, please register with an another email address";
-                } // end catch
+                if ($scholarshipResult != noMatch) {
+                    // send email
+                    try {
+                        $email_body = getEmailGenericBody();
+                        // add name
+                        $email_body = str_replace("{user}", ucwords($postWrapper->getFullName()), $email_body);
+                        // add confirmation
+                        $confirmation = "CONFIRMATION:".
+                        "\n\t+ Name: " . $postWrapper->getFullName().
+                        "\n\t+ Affiliation: " . $postWrapper->getAffiliation().
+                        "\n\t+ Address: " . $addressConfirmation .
+                        "\n\t+ Email: " . $postWrapper->getEmail().
+                        "\n\t+ Is a Student?: " . $postWrapper->getIsStudent().
+                        "\n\t+ Will Register a Paper?: " . $postWrapper->getWillRegisterPaper()
+                            ;
+                        
+                        $paper_message = "";
+                        if (willRegisterPaper == "yes") {
+
+                            // if you have to pay, payment related contents
+                            if ($scholarshipResult == payment) {
+                                $checkout_url = "";
+                                // create order
+                                $order_id = createOrder($service_url, $store_key, $store_id);
+                                if ($order_id != "") {
+                                    // add information
+                                    updateOrder($service_url, $store_key, $store_id, $order_id, $product_id, $postWrapper);
+                                    // checkout order
+                                    $checkout_url = checkoutOrder($service_url, $store_key, $store_id, $order_id);
+                                } // end if
+    
+                                // message for displaying
+                                $message = "<b class=\"important\">The payment for the Paper Registration (100$/paper registration) is separate</b> and has to be done by following these steps:
+                                <br>
+                                1) Go to <a href=https://shopcart.nmsu.edu/shop/kr2021 target=\"_blank\">Paper Registration Store</a>" . ($checkout_url == "" ? "" : " or <a href=$checkout_url target=\"_blank\">Checkout Link</a> to skip to step 8") . "." .
+                                "<br>
+                                2) Click on \"Paper Registration\" under Featured Products.
+                                <br>
+                                3) Click \"Add to cart\".
+                                <br>
+                                4) Make sure the quantity is correct, you can adjust and update it with Update Quantities. 
+                                <br>
+                                5) Proceed to checkout.
+                                <br>
+                                6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later).
+                                <br>
+                                7) Proceed to checkout.
+                                <br>
+                                8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required). 
+                                <br>
+                                <i><b>Note: No spaces in card number</b></i>
+                                <br>
+                                9) Continue Checkout.
+                                <br>
+                                10) Review your order and payment information, then click \"Submit Payment\".
+                                ";
+
+                                // add paper registration
+                                $paper_message = "\nPlease note that you have to pay for the Paper Registration (100$/paper registration) separately by: "
+                                . "\n\t1) Go to https://shopcart.nmsu.edu/shop/kr2021" . ($checkout_url == "" ? "" : " or $checkout_url to skip to step 8")
+                                . "\n\t2) Click on \"Paper Registration\" under Featured Prodcuts."
+                                . "\n\t3) Click \"Add to cart\"."
+                                . "\n\t4) Make sure the quantity is correct, you can adjust and update it with Update Quantities."
+                                . "\n\t5) Proceed to checkout"
+                                . "\n\t6) Fill in all of the fields (If any field in Address doesn't apply to you, enter randomly as you can remove it later)."
+                                . "\n\t7) Proceed to checkout."
+                                . "\n\t8) Fill in all of the fields (After you have filled Country, some fields in Address may no longer be required)."
+                                . "\n\tNote: No spaces in card number"
+                                . "\n\t9) Continue Checkout."
+                                . "\n\t10) Review your order and payment information, then click \"Submit Payment\"."
+                                ; // end paper_message
+                            } // end if
+                           
+                            // add paper number into confirmation
+                            $confirmation = $confirmation . "\n        +Paper Number: " . $postWrapper->getPaperNumber();
+                        } // end if
+        
+                        // put the confirmation into the email body
+                        $email_body = str_replace(["{confirmation}\n", "{confirmation}\r\n"], $confirmation, $email_body);
+                        // put the paper message into the email body
+                        $email_body = str_replace("{paper_registration}", $paper_message, $email_body);
+        
+                        // send the email
+                        $result = sendEmail($email, "KR 2021 REGISTRATION CONFIRMATION", $email_body);
+        
+                        // get email result message
+                        $email_result = $result == 0 ? $email_failure_message : $email_success_message;
+
+                        // save to database
+                        $success = $dbAdapter->saveToDatabase($postWrapper);
+                        if (!$success)
+                            $messsage = "Cannot save to database, please try again.";
+                    } catch(Swift_RfcComplianceException $e) {
+                        $email_result = "Your email is invalid, please register with an another email address";
+                    } // end catch
+                } else {
+                    $message = "You don't have any KR 2021 scholarship with this email and scholarship id. Please try again.<br>";
+                    $success = false;
+                } // end else 
             } // end if
             else {
                 $message = "The email you entered has already been used. Please register with a unique email address.<br>";

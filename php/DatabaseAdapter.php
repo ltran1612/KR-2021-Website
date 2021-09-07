@@ -222,7 +222,56 @@
                 if ($conn != null)
                     $conn->close();
             } // end finally
-        } // end uniqueEmail
+        } // end 
+
+         /**
+         * Check if an email is associated with a scholarship
+         * 
+         * @return bool true if the email is unique
+         */
+        public function hasScholarship($email, $scholarshipID) {
+            try {
+                // create a connection
+                $conn = $this->createConn();
+                // Check connection
+                if ($conn->connect_error) {
+                    dieBig("Connection failed: " . $conn->connect_error);
+                } // end if
+
+                $stmt = $conn->prepare("SELECT * FROM StudentsScholarships WHERE Email=? and ScholarshipID=?");
+                if ($stmt == false) {
+                    dieBig("prepare() for select (check has scholarship) failed: $conn->error");
+                } // end if
+
+                $temp = $stmt->bind_param("ss", $email, $scholarshipID);
+                if ($temp == false) {
+                    dieBig("bind_param for select (check has scholarship) failed: $stmt->error");
+                } // end if
+
+                $temp = $stmt->execute();
+                if ($temp == false) {
+                    dieBig("execute() for select (check has scholarship) failed: $stmt->error");
+                } // end if
+                
+                // get the result
+                $result = $stmt->get_result();
+                if ($result == false) {
+                    dieBig("get_result() for select (check has scholarship) failed: $stmt->error");
+                } // end if
+
+                // if there is any number of rows, then the email is associated with a scholarship
+                return $result->num_rows != 0;
+            } catch(mysqli_sql_exception $ex) {
+                dieBig($ex);
+            } finally {
+                // closing connection
+                if ($stmt != null)
+                    $stmt->close();
+                if ($conn != null)
+                    $conn->close();
+            } // end finally
+        } // end hasScholarship
+
 
         /**
          * Get the result from the database
