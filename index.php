@@ -445,9 +445,8 @@
                             </div>
                         </div>
 
-                        <hr>
-                        <!--STUDENT, SCHOLARSHIP-->
-                        <div class="m-b-55">
+                        <!--STUDENT-->
+                        <div class="">
                             <!--STUDENT?-->
                             <div class="form-row">
                                 <label class="label label--block">Are you a student?<span class="required-field"></span></label>
@@ -463,37 +462,9 @@
                                 </div>
                             </div>
 
-                            <!--SCHOLARSHIP-->
-                            <div id="scholarship_section" class="">
-                                <!--NUMBER OF PAPER-->
-                                <div class="form-row">
-                                    <div class="value">
-                                        <div class="label">Do you have KR 2021 Student Scholarship?<span class="required-field"></span></div>
-                                        <div class="p-t-15">
-                                            <label class="radio-container m-r-55">Yes
-                                                <input type="radio" name="has_scholarship" value="yes" required>
-                                                <span class="checkmark"></span>
-                                            </label>
-                                            <label class="radio-container">No
-                                                <input type="radio" name="has_scholarship" value="no">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div id="scholarship_info_section" class="value p-t-30">
-                                        <h4>If you chose yes, please fill out this information:</h4>
-                                        <div class="label">Scholarship ID<span class="required-field"></span></div>
-                                        <div class="input-group col-1">
-                                            <input class="input--style-5 required-input" type="text" name="scholarship_id" required>
-                                            <label class="label--desc">Please enter your scholarship ID</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
+
                         <hr>
-                        
                         <!-- PAPER REGISTRATION, PAPER ID-->
                         <div class="m-b-55">
                             <h3>Paper Registration</h3>
@@ -530,6 +501,35 @@
                                         <div class="input-group col-1">
                                             <input class="input--style-5 required-input" type="text" name="paper_number" required>
                                             <label class="label--desc">Please enter the EasyChair Paper ID of all papers separated by semi-colon(;)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--SCHOLARSHIP-->
+                            <div id="scholarship_section" class="p-t-20">
+                                <!--NUMBER OF PAPER-->
+                                <div class="form-row">
+                                    <div class="value">
+                                        <div class="label">Do you have KR 2021 Student Scholarship?<span class="required-field"></span></div>
+                                        <div class="p-t-15">
+                                            <label class="radio-container m-r-55">Yes
+                                                <input type="radio" name="has_scholarship" value="yes" required>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="radio-container">No
+                                                <input type="radio" name="has_scholarship" value="no">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div id="scholarship_info_section" class="value p-t-30">
+                                        <h4>If you chose yes, please fill out this information:</h4>
+                                        <div class="label">Scholarship ID<span class="required-field"></span></div>
+                                        <div class="input-group col-1">
+                                            <input class="input--style-5 required-input" type="text" name="scholarship_id" required>
+                                            <label class="label--desc">Please enter your scholarship ID</label>
                                         </div>
                                     </div>
                                 </div>
