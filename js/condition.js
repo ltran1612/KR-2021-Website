@@ -19,41 +19,6 @@ const scholarshipInfoSection = document.getElementById("scholarship_info_section
 const scholarshipInfoSectionInputs = scholarshipInfoSection.getElementsByClassName("required-input");
 
 
-
-// paper number section
-// initialization
-todoNo(paperNumberSectionInputs, paperNumberSection);
-// initialize the display
-for (let i = 0; i < registerPaperField.length; ++i) {
-    let radioButt = registerPaperField[i];
-    let value = radioButt.value;
-
-    // initialization
-    if (radioButt.checked) {
-        if (value == "yes") {
-            //console.log("checked yes");
-            todoYes(paperNumberSectionInputs, paperNumberSection);
-        } else if (value == "no") {
-            //console.log("no");
-            todoNo(paperNumberSectionInputs, paperNumberSection);
-        } else {
-            console.log("Something is wrong");
-        } // end else
-    }  // end if
-
-    if (value == "yes") {
-        radioButt.onclick = () => {
-            todoYes(paperNumberSectionInputs, paperNumberSection);
-        }; // end onclick
-    } else if (value == "no") {
-        radioButt.onclick = () => {
-            todoNo(paperNumberSectionInputs, paperNumberSection);
-        }; // end onclick
-    } else {
-        console.log("Register Paper - Something is wrong");
-    } // end else
-} // end for i
-
 //------------SCHOLARSHIPS SECTIONS-------------//
 // scholarship sections
 function unrequiring() {
@@ -67,39 +32,47 @@ function requiring() {
         makeRequired(hasScholarshipField[i]);
     } // end for i
 } // end temp
+
+// paper number section
 // initialization
+todoNo(paperNumberSectionInputs, paperNumberSection);
 hideSection(scholarshipSection);
 unrequiring();
+// initialize the display
+for (let i = 0; i < registerPaperField.length; ++i) {
+    let radioButt = registerPaperField[i];
+    let value = radioButt.value;
 
-
+    if (value == "yes") {
+        radioButt.onclick = () => {
+            todoYes(paperNumberSectionInputs, paperNumberSection);
+            if (document.querySelector('input[name="is_student"]:checked').value == "yes") {
+                showScholarshipSection();
+            } // end if
+        }; // end onclick
+    } else if (value == "no") {
+        radioButt.onclick = () => {
+            todoNo(paperNumberSectionInputs, paperNumberSection);
+            hideScholarshipSection();
+        }; // end onclick
+    } else {
+        console.log("Register Paper - Something is wrong");
+    } // end else
+} // end for i
 // show/hide based on isStudent answer
 for (let i = 0; i < isStudentField.length; ++i) {
     let radioButt = isStudentField[i];
     let value = radioButt.value;
 
-    // initialization
-    if (radioButt.checked) {
-        if (value == "yes") {
-            showSection(scholarshipSection);
-            requiring();
-        } else if (value == "no") {
-            //console.log("no");
-            hideSection(scholarshipSection);
-            unrequiring();
-        } else {
-            console.log("Something is wrong");
-        } // end else
-    }  // end if
-
     if (value == "yes") {
         radioButt.onclick = () => {
-            showSection(scholarshipSection);
-            requiring();
+            if (document.querySelector('input[name="register_paper"]:checked').value == "yes") {
+                showScholarshipSection();
+            } // end if
         }; // end onclick
     } else if (value == "no") {
         radioButt.onclick = () => {
-            hideSection(scholarshipSection);
-            unrequiring();
+            hideScholarshipSection();
         }; // end onclick
     } else {
         console.log("Scholarship: Something is wrong");
@@ -109,18 +82,6 @@ for (let i = 0; i < isStudentField.length; ++i) {
 for (let i = 0; i < hasScholarshipField.length; ++i) {
     let radioButt = hasScholarshipField[i];
     let value = radioButt.value;
-
-    // initialization
-    if (radioButt.checked) {
-        if (value == "yes") {
-            todoYes(scholarshipInfoSectionInputs, scholarshipInfoSection);
-        } else if (value == "no") {
-            //console.log("no");
-            todoNo(scholarshipInfoSectionInputs, scholarshipInfoSection);
-        } else {
-            console.log("Something is wrong");
-        } // end else
-    }  // end if
 
     if (value == "yes") {
         radioButt.onclick = () => {
@@ -160,6 +121,35 @@ function todoNo(inputs, section) {
     hideSection(section);
 } // end todoNo
 
+
+/*
+    Show the scholarship section, and any nested section that's applicable
+*/
+function showScholarshipSection() {
+    showSection(scholarshipSection);
+    requiring();
+    for (let i = 0; i < hasScholarshipField.length; ++i) {
+        let radioButt = hasScholarshipField[i];
+        let value = radioButt.value;
+        
+        if (radioButt.checked) {
+            if (value == "yes") {
+                    todoYes(scholarshipInfoSectionInputs, scholarshipInfoSection);
+            } else if (value == "no") {
+                radioButt.onclick = () => {
+                    todoNo(scholarshipInfoSectionInputs, scholarshipInfoSection);
+                }; // end onclick
+            } else {
+                console.log("Scholarship Info: Something is wrong");
+            } // end else
+        } // end if
+    } // end for i
+} // end showScholarshipSection
+
+function hideScholarshipSection() {
+    hideSection(scholarshipSection);
+    unrequiring();
+} // end hideScholarshipSection
 /*
     Hide the section
 */
