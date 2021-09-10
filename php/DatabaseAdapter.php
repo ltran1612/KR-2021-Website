@@ -62,6 +62,8 @@
          * + email_address
          * + phone_number
          * + is_student
+         * + has_scholarship
+         * + scholarship_id
          * + register_paper
          * + number_paper
          * + paper_number
@@ -114,8 +116,22 @@
                 // phone number
                 $phone = $data->getPhone();
         
-                // change them to uppercase
+                // student
                 $isStudent = strtoupper($data->getIsStudent());
+                $hasScholarship = "";
+                $scholarshipID = null;
+
+                // is student -> yes -> has scholarship -> yes -> update scholarshipID
+                // is student -> yes -> has scholarship -> no -> empty scholarship ID
+                // is student -> no -> scholarship ID empty
+                if ($isStudent == "YES") {
+                    $hasScholarship = strtoupper($data->getHasScholarship());    
+                    if ($hasScholarship == "YES") {
+                        $scholarshipID = $data->getScholarshipID();
+                    } // end if
+                } // end if
+                
+                // paper
                 $registerPaper = strtoupper($data->getWillRegisterPaper());
                 // paper number
                 if ($registerPaper != null && $registerPaper == "YES") {
@@ -149,11 +165,11 @@
                 $videosNotToPublish = $data->getVideosNotToPublishPublicly();
         
                 // prepare and bind
-                $stmt = $conn->prepare("INSERT INTO Participants (FirstName, MiddleName, LastName, Affiliation, Address, Email, Phone, IsStudent, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, PrivateVideoConsent, PublicVideoConsent, VideosNotToPublishPublicly) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO Participants (FirstName, MiddleName, LastName, Affiliation, Address, Email, Phone, IsStudent, HasScholarship, ScholarshipID, RegisterPaper, NumberPaper, PaperNumber, Workshops, Tutorials, GoNMR, Gender, PrivateVideoConsent, PublicVideoConsent, VideosNotToPublishPublicly) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 if ($stmt == false) {
                     dieBig("prepare() for insertion failed: $conn->error");
                 } // end if
-                $temp = $stmt->bind_param("sssssssssissssssss", $firstName, $middleName, $lastName, $affiliation, $address, $email, $phone, $isStudent, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $privateVideoConsent, $publicVideoConsent, $videosNotToPublish);
+                $temp = $stmt->bind_param("sssssssssssissssssss", $firstName, $middleName, $lastName, $affiliation, $address, $email, $phone, $isStudent, $hasScholarship, $scholarshipID, $registerPaper, $numberPaper, $paperNumber, $workshops, $tutorials, $goNMR, $gender, $privateVideoConsent, $publicVideoConsent, $videosNotToPublish);
                 if ($temp == false) {
                     dieBig("bind_param() for insertion failed: $stmt->error");
                 } // end if
@@ -161,13 +177,7 @@
                 // execute
                 return $stmt->execute();
             } catch (mysqli_sql_exception $exception) {
-                $state = $conn->sqlstate;
-                if ($state == "23000") {
-                    dieBig("Someone has already registered with this email address: " . $email . ". Please register with a different email address");
-                } else {
-                    // for debug
-                    dieBig($exception);
-                } // end else
+                dieBig($exception);
             } finally {
                 // closing connection
                 if ($stmt != null)
@@ -223,7 +233,56 @@
                 if ($conn != null)
                     $conn->close();
             } // end finally
-        } // end uniqueEmail
+        } // end 
+
+         /**
+         * Check if an email is associated with a scholarship
+         * 
+         * @return bool true if the email is unique
+         */
+        public function hasScholarship($email, $scholarshipID) {
+            try {
+                // create a connection
+                $conn = $this->createConn();
+                // Check connection
+                if ($conn->connect_error) {
+                    dieBig("Connection failed: " . $conn->connect_error);
+                } // end if
+
+                $stmt = $conn->prepare("SELECT * FROM StudentsScholarships WHERE Email=? and ScholarshipID=?");
+                if ($stmt == false) {
+                    dieBig("prepare() for select (check has scholarship) failed: $conn->error");
+                } // end if
+
+                $temp = $stmt->bind_param("ss", $email, $scholarshipID);
+                if ($temp == false) {
+                    dieBig("bind_param for select (check has scholarship) failed: $stmt->error");
+                } // end if
+
+                $temp = $stmt->execute();
+                if ($temp == false) {
+                    dieBig("execute() for select (check has scholarship) failed: $stmt->error");
+                } // end if
+                
+                // get the result
+                $result = $stmt->get_result();
+                if ($result == false) {
+                    dieBig("get_result() for select (check has scholarship) failed: $stmt->error");
+                } // end if
+
+                // if there is any number of rows, then the email is associated with a scholarship
+                return $result->num_rows != 0;
+            } catch(mysqli_sql_exception $ex) {
+                dieBig($ex);
+            } finally {
+                // closing connection
+                if ($stmt != null)
+                    $stmt->close();
+                if ($conn != null)
+                    $conn->close();
+            } // end finally
+        } // end hasScholarship
+
 
         /**
          * Get the result from the database

@@ -445,60 +445,98 @@
                             </div>
                         </div>
 
-                        <!--STUDENT?-->
-                        <div class="form-row m-b-55">
-                            <label class="label label--block">Are you a student?<span class="required-field"></span></label>
-                            <div class="p-t-15">
-                                <label class="radio-container m-r-55">Yes
-                                    <input type="radio" name="is_student" value="yes" required>
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="radio-container">No
-                                    <input type="radio" name="is_student" value="no">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <h3>Paper Registration</h3>
-                        <!--PAPER REGISTRATION-->
-                        <div class="form-row p-t-20">
-                            <label class="label label--block">Will you register a paper for KR 2021?<span class="required-field"></span></label>
-                            <div class="p-t-15">
-                                <label class="radio-container m-r-55">Yes
-                                    <input type="radio" name="register_paper" value="yes" required>
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="radio-container">No
-                                    <input type="radio" name="register_paper" value="no">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <!--PAPER NUMBER-->
-                        <div id="paper_number_section" class="">
-                            <!--NUMBER OF PAPER-->
-                            <h4>If you chose yes, please fill out this information:</h4>
+                        <hr>
+                        <!--STUDENT, SCHOLARSHIP-->
+                        <div class="m-b-55">
+                            <!--STUDENT?-->
                             <div class="form-row">
-                                <div class="value">
-                                    <div class="label">How many papers will you register?<span class="required-field"></span></div>
-                                    <div class="input-group col-2">
-                                        <input class="input--style-5 required-input" type="number" min="1" max="255" name="number_paper" required>
-                                        <label class="label--desc">Number of papers</label>
-                                    </div>
+                                <label class="label label--block">Are you a student?<span class="required-field"></span></label>
+                                <div class="p-t-15">
+                                    <label class="radio-container m-r-55">Yes
+                                        <input type="radio" name="is_student" value="yes" required>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-container">No
+                                        <input type="radio" name="is_student" value="no">
+                                        <span class="checkmark"></span>
+                                    </label>
                                 </div>
-                               
-                                <div class="value p-t-30">
-                                    <div class="label">EasyChair Paper ID(s)<span class="required-field"></span></div>
-                                    <div class="input-group col-1">
-                                        <input class="input--style-5 required-input" type="text" name="paper_number" required>
-                                        <label class="label--desc">Please enter the EasyChair Paper ID of all papers separated by semi-colon(;)</label>
+                            </div>
+
+                            <!--SCHOLARSHIP-->
+                            <div id="scholarship_section" class="">
+                                <!--NUMBER OF PAPER-->
+                                <div class="form-row">
+                                    <div class="value">
+                                        <div class="label">Do you have KR 2021 Student Scholarship?<span class="required-field"></span></div>
+                                        <div class="p-t-15">
+                                            <label class="radio-container m-r-55">Yes
+                                                <input type="radio" name="has_scholarship" value="yes" required>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="radio-container">No
+                                                <input type="radio" name="has_scholarship" value="no">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div id="scholarship_info_section" class="value p-t-30">
+                                        <h4>If you chose yes, please fill out this information:</h4>
+                                        <div class="label">Scholarship ID<span class="required-field"></span></div>
+                                        <div class="input-group col-1">
+                                            <input class="input--style-5 required-input" type="text" name="scholarship_id" required>
+                                            <label class="label--desc">Please enter your scholarship ID</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <hr>
                         
+                        <!-- PAPER REGISTRATION, PAPER ID-->
+                        <div class="m-b-55">
+                            <h3>Paper Registration</h3>
+                            <!--PAPER REGISTRATION-->
+                            <div class="form-row p-t-20">
+                                <label class="label label--block">Will you register a paper for KR 2021?<span class="required-field"></span></label>
+                                <div class="p-t-15">
+                                    <label class="radio-container m-r-55">Yes
+                                        <input type="radio" name="register_paper" value="yes" required>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="radio-container">No
+                                        <input type="radio" name="register_paper" value="no">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!--PAPER NUMBER-->
+                            <div id="paper_number_section" class="">
+                                <!--NUMBER OF PAPER-->
+                                <h4>If you chose yes, please fill out this information:</h4>
+                                <div class="form-row">
+                                    <div class="value">
+                                        <div class="label">How many papers will you register?<span class="required-field"></span></div>
+                                        <div class="input-group col-2">
+                                            <input class="input--style-5 required-input" type="number" min="1" max="255" name="number_paper" required>
+                                            <label class="label--desc">Number of papers</label>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="value p-t-30">
+                                        <div class="label">EasyChair Paper ID(s)<span class="required-field"></span></div>
+                                        <div class="input-group col-1">
+                                            <input class="input--style-5 required-input" type="text" name="paper_number" required>
+                                            <label class="label--desc">Please enter the EasyChair Paper ID of all papers separated by semi-colon(;)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+
                         <!--PARTICIPATION-->
                         <h3 class="p-t-20">Participation</h3>
 
