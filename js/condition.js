@@ -80,8 +80,7 @@ for (let i = 0; i < isStudentField.length; ++i) {
     // initialization
     if (radioButt.checked) {
         if (value == "yes") {
-            showSection(scholarshipSection);
-            requiring();
+            showScholarshipSection();
         } else if (value == "no") {
             //console.log("no");
             hideSection(scholarshipSection);
@@ -93,8 +92,7 @@ for (let i = 0; i < isStudentField.length; ++i) {
 
     if (value == "yes") {
         radioButt.onclick = () => {
-            showSection(scholarshipSection);
-            requiring();
+            showScholarshipSection();
         }; // end onclick
     } else if (value == "no") {
         radioButt.onclick = () => {
@@ -135,8 +133,33 @@ for (let i = 0; i < hasScholarshipField.length; ++i) {
     } // end else
 } // end for i
 
-
 /**-----FUNCTIONS--------**/
+
+/**
+ * Show the scholarship section
+ */
+function showScholarshipSection() {
+    showSection(scholarshipSection);
+    requiring();
+
+    for (let i = 0; i < hasScholarshipField.length; ++i) {
+        let radioButt = hasScholarshipField[i];
+        let value = radioButt.value;
+    
+        // initialization
+        if (radioButt.checked) {
+            if (value == "yes") {
+                todoYes(scholarshipInfoSectionInputs, scholarshipInfoSection);
+            } else if (value == "no") {
+                //console.log("no");
+                todoNo(scholarshipInfoSectionInputs, scholarshipInfoSection);
+            } else {
+                console.log("Something is wrong");
+            } // end else
+        }  // end if
+    } // end for i
+} // end showSchoalrshipSection
+
 /*
     Make the inputs required
 
