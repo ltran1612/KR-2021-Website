@@ -168,23 +168,30 @@
                 define("payment", 1);
                 define("noPayment", 0);
                 define("noMatch", -1);
+                define("noPaper", 2);
+
                 $scholarshipResult = payment;
-
-                if ($isStudent == "YES") {
-                    $hasScholarship = strtoupper($postWrapper->getHasScholarship());    
-                    if ($hasScholarship == "YES") {
-                        $scholarshipId = $postWrapper->getScholarshipID();
-                        $isValid = $dbAdapter->hasScholarship($email, $scholarshipId);
-
-                        if ($isValid) {
-                            $scholarshipResult = noPayment;
-                        } else {
-                            $scholarshipResult = noMatch;
-                        } // end else
-                    } // end if
+                if (willRegisterPaper == "yes") {
+                    if ($isStudent == "YES") {
+                        $hasScholarship = strtoupper($postWrapper->getHasScholarship());    
+                        if ($hasScholarship == "YES") {
+                            $scholarshipId = $postWrapper->getScholarshipID();
+                            $isValid = $dbAdapter->hasScholarship($email, $scholarshipId);
+    
+                            if ($isValid) {
+                                $scholarshipResult = noPayment;
+                            } else {
+                                $scholarshipResult = noMatch;
+                            } // end else
+                        } // end if
+                    } // end if 
+                } else {
+                    $scholarshipResult = noPaper;
                 } // end if
+               
 
-                if ($scholarshipResult != noMatch) {
+                // we will proceed if the user don't register a papper and if the person register for paper but no scholarship matches
+                if ($scholarshipResult != noMatch || $scholarshipResult == noPaper) {
                     // send email
                     try {
                         $email_body = getEmailGenericBody();
