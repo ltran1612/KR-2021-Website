@@ -681,7 +681,7 @@
                         <!--MISTERY-->
                         <div class="form-row">
                             <label class="label label--block">Special Event !!</label>
-                            <div class="p-t-15">
+                            <div class="">
                                 To register for the <b>mystery adventure, a free and interactive activity with fellow conference attendees</b>, please fill out the following form until Friday, October 15th: <br>
                                 <a href=" https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.gle%2FDu9FFsgiDwTPt78k8&amp;data=04%7C01%7Clongtran%40nmsu.edu%7C9072e62db11e49ff630b08d979d8f6bf%7Ca3ec87a89fb84158ba8ff11bace1ebaa%7C1%7C0%7C637674795046101807%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=%2FUBfpj3kqL12YFUDvKT1nqyyUCELRjWJtnCIyZbqM%2Bk%3D&amp;reserved=0" target="_blank">Link to form</a>
                             </div>
