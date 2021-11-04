@@ -260,6 +260,10 @@
                             // add paper number into confirmation
                             $confirmation = $confirmation . "\n        +Paper Number: " . $postWrapper->getPaperNumber();
                         } // end if
+
+                        $confirmation = $confirmation . "\nPlease join the conference using the following Slack invite link: "
+                        . "\n\thttps://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjoin.slack.com%2Ft%2Fkr-2021%2Fshared_invite%2Fzt-wuroxggn-d21F5p6N~b6aYKgCGTwuDw&amp;data=04%7C01%7Cstran%40nmsu.edu%7C525b3e41e69d4a523a6108d99f952b36%7Ca3ec87a89fb84158ba8ff11bace1ebaa%7C1%7C0%7C637716285304143143%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=COjX9aBfRQi6HOnwXTyxMxHjpsrgTzot7WZUYIKHJU8%3D&amp;reserved=0"
+                        . "\n\tAll further links, passwords and instructions are contained in a PDF document pinned to the #general channel.";
         
                         // put the confirmation into the email body
                         $email_body = str_replace(["{confirmation}\n", "{confirmation}\r\n"], $confirmation, $email_body);
@@ -346,6 +350,13 @@
                              
                         echo $email_result;
                         echo $message;
+                        
+                        // slark links
+                        if ($success) {
+                            echo 
+                            "Please join the conference using the following Slack invite link: <a href=\"https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjoin.slack.com%2Ft%2Fkr-2021%2Fshared_invite%2Fzt-wuroxggn-d21F5p6N~b6aYKgCGTwuDw&amp;data=04%7C01%7Clongtran%40nmsu.edu%7C525b3e41e69d4a523a6108d99f952b36%7Ca3ec87a89fb84158ba8ff11bace1ebaa%7C1%7C0%7C637716285304444830%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=IRN9onyKuXkDQuZYgKR0Vx2zzcxZTkYvnGbgrlL1Cqk%3D&amp;reserved=0\" target=\"_blank\">here</a>
+                            <br>All further links, passwords and instructions are contained in a PDF document pinned to the #general channel.";
+                        } // end if
                     ?>
                     <!---->
                 </div>
@@ -373,6 +384,7 @@
                         if(willRegisterPaper == "yes") safeEcho("Paper Number: ".$postWrapper->getPaperNumber())
                     ?>
                     <br>
+
                     <!---->
                 </div>
             </div>
